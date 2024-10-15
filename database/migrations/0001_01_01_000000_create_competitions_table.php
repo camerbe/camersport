@@ -14,12 +14,7 @@ return new class extends Migration
         Schema::create('competitions', function (Blueprint $table) {
             $table->id();
             $table->string('competition');
-            $table->unsignedBigInteger('categorie_id');
-            $table->foreign('categorie_id')
-                ->references('id')
-                ->on('categories')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+            $table->string('slugcompetition')->unique();
             $table->timestamps();
         });
 

@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('categorie');
-            $table->string('slugcategorie')->unique();
-            $table->timestamps();
+        Schema::create('pays', function (Blueprint $table) {
+            $table->char('code',length: 2)->primary();
+            $table->char('code3',length: 3)->unique();
+            $table->string('pays');
+            $table->string('country');
         });
-
-
     }
 
     /**
@@ -26,7 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('livematchs');
-
+        Schema::dropIfExists('pays');
     }
 };
