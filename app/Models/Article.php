@@ -13,4 +13,7 @@ class Article extends Model
     public function user():BelongsTo{
         return $this->belongsTo(User::class);
     }
+    public function bled():BelongsTo{
+        return $this->belongsTo(Pays::class);
+    }
 }

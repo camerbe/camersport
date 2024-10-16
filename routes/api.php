@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\PaysController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -10,4 +11,5 @@ use Illuminate\Support\Facades\Route;
 
     Route::apiResources([
         "users"=>UserController::class,
+        "countries"=>PaysController::class,
     ]);
