@@ -16,4 +16,7 @@ class Article extends Model
     public function bled():BelongsTo{
         return $this->belongsTo(Pays::class);
     }
+    public function categories():BelongsTo{
+        return $this->belongsTo(Categorie::class);
+    }
 }
