@@ -18,9 +18,10 @@ return new class extends Migration
             $table->string('auteur');
             $table->string('source');
             $table->string('motclef');
-            $table->string('chapeau',158);
+            $table->string('chapeau');
             $table->longText('article');
             $table->string('image');
+            $table->integer('hit')->default(0);
             $table->dateTime('date_parution');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');

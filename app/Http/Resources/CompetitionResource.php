@@ -20,6 +20,7 @@ class CompetitionResource extends JsonResource
             'slugcompetition'=>$this->slugcompetition,
 
 
+
         ];
     }
 }

@@ -1,0 +1,96 @@
+<div class="min-h-screen flex">
+  <!-- Sidebar -->
+  <aside class="bg-green-600 text-white w-64 space-y-6 py-7 px-2">
+    <!-- Logo et Déconnexion -->
+    <div class="flex items-center justify-between px-4">
+      <div class="text-2xl font-semibold"></div>
+      <button class="text-white bg-green-500 p-2 rounded-full">
+        <!-- Déconnexion SVG -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+             stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 11-6 0v-1m0-8V7a3 3 0 116 0v1" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="space-y-4">
+      <!-- Administrateur -->
+
+      <div class="relative text-nowrap  group">
+        <h2 class="text-lg font-semibold">
+          Examens
+        </h2>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+        </svg>
+
+      </div>
+      <div>
+        <h2 class="text-lg font-semibold">Administrateur</h2>
+        <ul class="space-y-2 mt-2">
+          <li>
+            <a
+              routerLinkActive="bg-green-500"
+              [routerLinkActiveOptions]="{exact: false}"
+              [routerLink]="['/dashboard/user/add']"
+              class="block p-2 rounded hover:bg-green-500">
+              Nouveau
+            </a>
+          </li>
+          <li>
+            <a
+              routerLinkActive="bg-green-500"
+              [routerLinkActiveOptions]="{exact: false}"
+              [routerLink]="['/dashboard/user/list']"
+              class="block p-2 rounded hover:bg-green-500">
+              Gestion
+            </a>
+          </li>
+        </ul>
+      </div>
+      <!-- Articles -->
+      <div>
+        <h2 class="text-lg font-semibold">Articles</h2>
+        <ul class="space-y-2 mt-2">
+          <li><a href="#" class="block p-2 rounded hover:bg-green-500">Nouveau</a></li>
+          <li><a href="#" class="block p-2 rounded hover:bg-green-500">Gestion</a></li>
+        </ul>
+      </div>
+      <!-- Catégories -->
+      <div>
+        <h2 class="text-lg font-semibold">Catégories</h2>
+        <ul class="space-y-2 mt-2">
+          <li><a href="#" class="block p-2 rounded hover:bg-green-500">Nouveau</a></li>
+          <li><a href="#" class="block p-2 rounded hover:bg-green-500">Gestion</a></li>
+        </ul>
+      </div>
+      <!-- Compétitions -->
+      <div>
+        <h2 class="text-lg font-semibold">Compétitions</h2>
+        <ul class="space-y-2 mt-2">
+          <li><a href="#" class="block p-2 rounded hover:bg-green-500">Nouveau</a></li>
+          <li><a href="#" class="block p-2 rounded hover:bg-green-500">Gestion</a></li>
+        </ul>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Content principal -->
+  <main class="flex-1 bg-gray-100 p-8">
+    <!-- Header avec profil et déconnexion -->
+    <header class="flex justify-end items-center space-x-4">
+      <div class="text-gray-800 font-semibold">{{currentProfile}}</div>
+      <button class="text-gray-500 hover:text-gray-800">
+        <!-- Profil SVG -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+             stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M5.121 17.804A9 9 0 0112 15a9 9 0 016.879 2.804M12 12a4 4 0 100-8 4 4 0 000 8z" />
+        </svg>
+      </button>
+    </header>
+    <router-outlet></router-outlet>
+  </main>
+</div>

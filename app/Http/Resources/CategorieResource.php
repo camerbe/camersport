@@ -18,6 +18,7 @@ class CategorieResource extends JsonResource
             'id'=>$this->id,
             'categorie'=>$this->categorie,
             'slugcategorie'=>$this->slugcategorie,
+            'competitions'=> CompetitionResource::collection($this->competitions)
 
 
         ];

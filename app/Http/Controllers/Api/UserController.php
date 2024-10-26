@@ -123,28 +123,6 @@ class UserController extends Controller
             "message"=>"Une erreur s'est produite..."
         ],Response::HTTP_NOT_FOUND);
     }
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function changePassword(Request $request,int $id):JsonResponse
-    {
-        $user=User::find($id);
-        if(is_null($user->password_changed_at)){
-            $user->password = bcrypt($request->password);
-            $user->password_changed_at = now();
-            $user->email_verified_at = now();
-            $user->save();
 
-            return response()->json([
-                'success'=>true,
-                'message' => 'Le mot de passe a été changé avec succès'
-            ],Response::HTTP_OK);
-        }
-        return response()->json([
-            'success'=>false,
-            'message' => 'La mise à jour a déjà été faite'
-        ],Response::HTTP_NOT_MODIFIED);
-    }
 
 }

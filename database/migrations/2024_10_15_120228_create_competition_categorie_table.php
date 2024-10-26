@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('competition_categorie', function (Blueprint $table) {
+        Schema::create('categorie_competition', function (Blueprint $table) {
             $table->unsignedBigInteger('competition_id');
             $table->unsignedBigInteger('categorie_id');
             $table->primary(['competition_id', 'categorie_id']);
