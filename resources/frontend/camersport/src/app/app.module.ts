@@ -8,6 +8,7 @@ import {SecureModule} from "./secure/secure.module";
 import {provideHttpClient, withFetch, withInterceptors} from "@angular/common/http";
 import {authInterceptor} from "./share/interceptors/auth.interceptor";
 
+
 @NgModule({
   declarations: [
     AppComponent

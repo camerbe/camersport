@@ -1,7 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
 import {TokenExpirationService} from "../share/services/token-expiration.service";
 import {ProfileObservableService} from "../share/services/profile-observable.service";
 import {Router} from "@angular/router";
+import {AuthService} from "../public/auth.service";
+import {isPlatformBrowser} from "@angular/common";
 
 @Component({
   selector: 'app-secure',
@@ -14,6 +16,8 @@ export class SecureComponent  implements OnInit{
   constructor(
     private tokenExpirationService: TokenExpirationService,
     private profileObservableService:ProfileObservableService,
+    private authService:AuthService,
+    @Inject(PLATFORM_ID) private platformId:Object,
     private router:Router
   ) {
   }
@@ -32,4 +36,19 @@ export class SecureComponent  implements OnInit{
 
   }
 
+  onLogout() {
+    const token =`Bearer `+localStorage.getItem('token');
+    this.authService.logout(token).subscribe({
+      next:(res)=>{
+        if(res.success){
+          this.router.navigate(['login']);
+          if(isPlatformBrowser(this.platformId)){
+            localStorage.removeItem('token');
+            localStorage.removeItem('expires_at');
+          }
+
+        }
+      }
+    })
+  }
 }

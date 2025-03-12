@@ -58,5 +58,13 @@ class CompetitionRepository extends BaseRepository
         );
     }
 
+    public function getCategories(){
+        return CategorieResource::collection(
+            Categorie::orderBy('categorie')
+                ->get()
+
+        );
+    }
+
 
 }

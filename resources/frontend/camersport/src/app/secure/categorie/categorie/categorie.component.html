@@ -1,1 +1,24 @@
-<p>categorie works!</p>
+<div class="h-screen flex items-center justify-center">
+  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Nouvelle Catégorie</h2>
+    <form [formGroup]="frmGroupCategorie"  (ngSubmit)="onSubmit()">
+      <div class="mb-4">
+        <label for="categorie" class="block text-sm font-medium text-gray-600 mb-1">Catégorie</label>
+        <input
+          formControlName="categorie"
+          type="text"
+          id="categorie"
+          placeholder="Categorie"
+          class="{{ categorie?.invalid && (categorie?.touched || categorie?.dirty) ? 'border-2 border-rose-600':'border border-gray-300' }} w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+        >
+        <div *ngIf="categorie?.invalid && categorie?.touched" class="my-1 px-1 py-1 text-red-600">
+          <span>* Le nom est requis </span>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <app-submit-button [label]="label" [disabled]="!frmGroupCategorie.valid"></app-submit-button>
+      </div>
+    </form>
+  </div>
+</div>

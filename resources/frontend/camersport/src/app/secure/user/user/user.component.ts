@@ -74,7 +74,6 @@ export class UserComponent implements OnInit{
 
   ngOnInit(): void {
     this.id=this.route.snapshot.params['id'];
-    console.log(`frmGroupUser: ${this.frmGroupUser.valid}`)
     this.isAddMode=!this.id;
     if(!this.isAddMode){
       this.redacteurService.show(this.id)

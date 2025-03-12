@@ -23,4 +23,7 @@ export class AuthService {
   changePassword(credentials:Credentials){
     return this.httpClient.post<any>(this.baseUrl+`auth/changepassword`,credentials);
   }
+  logout(resource:any){
+    return this.httpClient.post<any>(this.baseUrl+`auth/logout`,{resource})
+  }
 }

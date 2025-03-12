@@ -142,6 +142,10 @@ class ArticleController extends Controller
         ],Response::HTTP_NO_CONTENT);
     }
 
+    /**
+     * @param $user_id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getArticleByUserId($user_id){
         $articles=$this->articleRepository->getArticleByUserId($user_id);
         if($articles){
@@ -155,5 +159,41 @@ class ArticleController extends Controller
             "success"=>false,
             "message"=>"Articles inexistants"
         ],Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getCategories(){
+        $categories=$this->articleRepository->getCategories();
+        if ($categories){
+            return response()->json([
+                'success'=>true,
+                'data'=>$categories,
+                'message'=>"Liste des categories"
+            ],Response::HTTP_OK);
+        }
+        return response()->json([
+            "success"=>false,
+            "message"=>"Pas de categorie trouvée"
+        ],Response::HTTP_NOT_FOUND);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getCompetitions(){
+        $competitions=$this->articleRepository->getCompetitions();
+        if ($competitions){
+            return response()->json([
+                'success'=>true,
+                'data'=>$competitions,
+                'message'=>"Liste des compétitions"
+            ],Response::HTTP_OK);
+        }
+        return response()->json([
+            "success"=>false,
+            "message"=>"Pas de compétition trouvée"
+        ],Response::HTTP_NOT_FOUND);
     }
 }

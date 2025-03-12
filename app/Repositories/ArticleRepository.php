@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\CategorieResource;
+use App\Http\Resources\CompetitionResource;
 use App\Models\Article;
 use App\Models\Categorie;
 use App\Models\Competition;
@@ -20,19 +21,38 @@ class ArticleRepository extends BaseRepository
         $this->model=$article;
     }
 
+    /**
+     * @param $id
+     * @return ArticleResource
+     */
     public function findById($id)
     {
         return new ArticleResource(parent::findById($id)) ;
     }
+
+    /**
+     * @param $slug
+     * @return ArticleResource
+     */
     public function findBySlug($slug)
     {
         return new ArticleResource(Article::find($slug)) ;
     }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function delete($id)
     {
         return parent::delete($id);
     }
 
+    /**
+     * @param array $input
+     * @param $id
+     * @return mixed
+     */
     public function update(array $input, $id)
     {
         $currentArticle=parent::findById($id);
@@ -41,6 +61,10 @@ class ArticleRepository extends BaseRepository
         return parent::update($input, $id);
     }
 
+    /**
+     * @param array $input
+     * @return ArticleResource
+     */
     public function create(array $input)
     {
 
@@ -63,10 +87,31 @@ class ArticleRepository extends BaseRepository
         return new ArticleResource(parent::create($input));
     }
 
+    /**
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function findAll(){
         $articles=Article::where('date_parution','<=',now())
             ->get();
        return ArticleResource::collection($articles);
+    }
+
+
+    public function getCategories(){
+        return  Categorie::orderBy('categorie','asc')->get();
+        /*return CategorieResource::collection(
+            Categorie::orderBy('categorie','asc')
+        );*/
+    }
+
+    /**
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function getCompetitions(){
+        return Competition::orderBy('competition','asc')->get();
+        /*return CompetitionResource::collection(
+            Competition::orderBy('competition','asc')
+        );*/
     }
     /*public function findWithPagination(){
         return CategorieResource::collection(
@@ -77,9 +122,9 @@ class ArticleRepository extends BaseRepository
     }*/
 
     private function addSlug($code,$title){
-        $bleg=Pays::find($code);
-        $titre=Str::contains($title,$bleg->pays,ignoreCase: true)? $title: $bleg->pays."-".$title;
-        $titre=Str::contains($titre,$bleg->country,ignoreCase: true)? $titre: $titre."-".$bleg->country;
+        $bled=Pays::find($code);
+        $titre=Str::contains($title,$bled->pays,ignoreCase: true)? $title: $bled->pays."-".$title;
+        $titre=Str::contains($titre,$bled->country,ignoreCase: true)? $titre: $titre."-".$bled->country;
         return Str::slug($titre);
 
     }

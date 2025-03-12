@@ -68,7 +68,7 @@ class AuthController extends Controller
 
             if(!is_null(Auth::guard('web')->user()->email_verified_at) && !is_null(Auth::guard('web')->user()->password_changed_at))
             {
-                $token=Auth::guard('web')->user()->createToken('user',['*'],Carbon::now()->addMinute(5))->plainTextToken;
+                $token=Auth::guard('web')->user()->createToken('user',['*'],Carbon::now()->addMinute(30))->plainTextToken;
                 $varArray=explode("|",$token);
                 $id=$varArray[0];
                 $personalAccessTokens= DB::table('personal_access_tokens')->where('id', $id)->first();
@@ -96,8 +96,9 @@ class AuthController extends Controller
      */
     public function logout(Request $request): JsonResponse
     {
+        //dd($request->user()->currentAccessToken()->delete());
         $request->user()->currentAccessToken()->delete();
-        return \response()->json([
+        return response()->json([
             "success"=>true,
             "message"=>"Logout ok"
         ],Response::HTTP_OK);

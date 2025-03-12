@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -30,7 +31,11 @@ return new class extends Migration
             $table->char('pays_code',2);
             $table->foreign('pays_code')->references('code')->on('pays');
             $table->timestamps();
+            //$table->index(DB::raw('`date_parution` DESC'), 'idx_date_parution_desc');
+            $table->fullText('article');
         });
+        DB::statement('CREATE INDEX idx_date_parution_desc ON articles (date_parution DESC)');
+
     }
 
     /**

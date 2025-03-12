@@ -9,6 +9,12 @@ import { HeaderListComponent } from './components/header-list/header-list.compon
 import { SubmitButtonComponent } from './components/submit-button/submit-button.component';
 import { CategorieComponent } from './categorie/categorie/categorie.component';
 import { CategorieListComponent } from './categorie/categorie-list/categorie-list.component';
+import { CompetitionComponent } from './competition/competition/competition.component';
+import { CompetitionListComponent } from './competition/competition-list/competition-list.component';
+import { ArticleListComponent } from './article/article-list/article-list.component';
+import { ArticleComponent } from './article/article/article.component';
+import {EditorComponent} from "@tinymce/tinymce-angular";
+import {EditorModule, TINYMCE_SCRIPT_SRC} from "@tinymce/tinymce-angular";
 
 
 
@@ -21,14 +27,23 @@ import { CategorieListComponent } from './categorie/categorie-list/categorie-lis
     HeaderListComponent,
     SubmitButtonComponent,
     CategorieComponent,
-    CategorieListComponent
+    CategorieListComponent,
+    CompetitionComponent,
+    CompetitionListComponent,
+    ArticleListComponent,
+    ArticleComponent
   ],
-  imports: [
-    CommonModule,
-    RouterOutlet,
-    RouterLink,
-    RouterLinkActive,
-    ReactiveFormsModule
+    imports: [
+        CommonModule,
+        RouterOutlet,
+        RouterLink,
+        RouterLinkActive,
+        ReactiveFormsModule,
+        EditorComponent,
+        EditorModule
+    ],
+  providers: [
+    {provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js'}
   ]
 })
 export class SecureModule { }

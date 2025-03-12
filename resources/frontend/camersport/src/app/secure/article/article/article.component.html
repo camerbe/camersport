@@ -1,0 +1,116 @@
+<!--<div class="h-screen flex items-center justify-center md:mt-15">-->
+  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md md:max-w-3xl">
+
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Nouvel Article</h2>
+    <form [formGroup]="frmGroupArticle"  (ngSubmit)="onSubmit()">
+      <div class="mb-4">
+
+        <input
+          formControlName="titre"
+          type="text"
+          id="titre"
+          placeholder="Titre"
+          class="{{ titre?.invalid && (titre?.touched || titre?.dirty) ? 'border-2 border-rose-600':'border border-gray-300' }} w-full px-3 py-2  rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+        >
+        <div *ngIf="titre?.invalid && titre?.touched" class="my-1 px-1 py-1 text-red-600">
+          <span>* Le titre est requis </span>
+        </div>
+      </div>
+      <div class="mb-6">
+
+        <!-- Conteneur pour les inputs en ligne -->
+        <div class="flex space-x-6">
+          <input
+            formControlName="auteur"
+            type="text"
+            id="auteur"
+            class="{{ auteur?.invalid && (auteur?.touched || auteur?.dirty) ? 'border-2 border-rose-600':'border border-gray-300' }} w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            placeholder="Auteur">
+
+          <input
+            formControlName="source"
+            type="text"
+            id="source"
+            class="{{ source?.invalid && (source?.touched || source?.dirty) ? 'border-2 border-rose-600':'border border-gray-300' }} w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            placeholder="Source">
+          <input
+            formControlName="date_parution"
+            type="datetime-local"
+            id="date_parution"
+            class="{{ date_parution?.invalid && (date_parution?.touched || date_parution?.dirty) ? 'border-2 border-rose-600':'border border-gray-300' }} w-full px-3 py-2  rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            placeholder="Date de parution">
+        </div>
+
+        <!-- Message d'erreur pour Prénom -->
+        <div *ngIf="auteur?.invalid && auteur?.touched" class="my-1 px-1 py-1 text-red-600">
+          <span>* L'Auteur est requis</span>
+        </div>
+        <div *ngIf="source?.invalid && source?.touched" class="my-1 px-1 py-1 text-red-600">
+          <span>* La source est requise</span>
+        </div>
+        <div *ngIf="date_parution?.invalid && date_parution?.touched" class="my-1 px-1 py-1 text-red-600">
+          <span>* La date de parution est requise</span>
+        </div>
+      </div>
+      <div class="mb-6">
+
+        <!-- Conteneur pour les inputs en ligne -->
+        <div class="flex space-x-3">
+          <select
+            formControlName="categorie_id"
+            (change)="onCategorieChange($event)"
+            id="categorie_id"
+            class="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          >
+            <option value="0" disabled selected>Catégorie</option>
+            <option *ngFor="let cat of categories" value="{{cat.id}}">{{cat.categorie}}</option>
+
+          </select>
+
+
+          <select
+            formControlName="competition_id"
+            (change)="onCompetitionChange($event)"
+            id="competition_id"
+            class="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          >
+            <option value="0" disabled selected>Compétition</option>
+            <option *ngFor="let compet of competitions" value="{{compet.id}}">{{compet.competition}}</option>
+
+          </select>
+        </div>
+
+
+      </div>
+      <div class="mb-6">
+
+        <input
+          formControlName="motclef"
+          type="text"
+          id="motclef"
+          class="{{ motclef?.invalid && (motclef?.touched || motclef?.dirty) ? 'border-2 border-rose-600':'border border-gray-300' }} w-full px-3 py-2  rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          placeholder="Mots clés et Hashtags séparés par la virgule">
+        <div *ngIf="motclef?.invalid && motclef?.touched" class="my-1 px-1 py-1 text-red-600">
+          <span>* Les mots clés ou hashtags sont requis </span>
+        </div>
+      </div>
+
+
+      <div class="mb-6">
+        <editor
+          [init]="init"
+          formControlName="article"
+          aria-placeholder="Article Article Article"
+        >
+        </editor>
+      </div>
+      <div class="mb-6">
+
+      </div>
+      <div class="flex items-center justify-between">
+        <app-submit-button [label]="label" [disabled]="!frmGroupArticle.valid"></app-submit-button>
+      </div>
+    </form>
+  </div>
+<!--</div>-->
+

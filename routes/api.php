@@ -9,15 +9,26 @@ use App\Http\Controllers\Api\PaysController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use UniSharp\LaravelFilemanager\Lfm;
 
-    /*Route::get('/user', function (Request $request) {
-        return $request->user();
-    })->middleware('auth:sanctum');*/
+/*Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');*/
+    Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web']], function () {
+        Lfm::routes();
+    });
+
     Route::get('articles/slug/{articles}', [ArticleController::class, 'getArticleBySlug']);
     Route::get('articles/user/{articles}', [ArticleController::class, 'getArticleByUserId']);
     Route::post('auth/login', [AuthController::class, 'login']);
     Route::post('auth/changepassword', [AuthController::class, 'changePassword']);
     Route::group(['middleware' => 'auth:sanctum'], function (){
+        Route::get('articles/categories', [ArticleController::class, 'getCategories']);
+        Route::get('articles/competitions', [ArticleController::class, 'getCompetitions']);
+        /*Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web']], function () {
+            Lfm::routes();
+        });*/
+        Route::post('auth/logout', [AuthController::class, 'logout']);
         Route::apiResources([
             "users"=>UserController::class,
             "countries"=>PaysController::class,
@@ -27,5 +38,8 @@ use Illuminate\Support\Facades\Route;
             "articles"=>ArticleController::class,
 
         ]);
+
+
+
     } );
 

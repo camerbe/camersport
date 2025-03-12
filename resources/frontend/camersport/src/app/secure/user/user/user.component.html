@@ -9,7 +9,7 @@
           type="text"
           id="nom"
           placeholder="Nom"
-          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          class="{{ nom?.invalid && (nom?.touched || nom?.dirty) ? 'border-2 border-rose-600':'border border-gray-300' }}w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
         >
         <div *ngIf="nom?.invalid && nom?.touched" class="my-1 px-1 py-1 text-red-600">
           <span>* Le nom est requis </span>
@@ -21,7 +21,7 @@
           formControlName="prenom"
           type="text"
           id="prenom"
-          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          class="{{ prenom?.invalid && (prenom?.touched || prenom?.dirty) ? 'border-2 border-rose-600':'border border-gray-300' }} w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           placeholder="Prénom">
         <div *ngIf="prenom?.invalid && prenom?.touched" class="my-1 px-1 py-1 text-red-600">
           <span>* Le prénom est requis </span>
@@ -33,7 +33,7 @@
           formControlName="email"
           type="email"
           id="email"
-          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            class="{{ email?.invalid && (email?.touched || email?.dirty) ? 'border-2 border-rose-600':'border border-gray-300' }} w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           placeholder="Email">
         <div *ngIf="email?.invalid && email?.touched" class="my-1 px-1 py-1 text-red-600">
           <span>* L'adresse mail  et valide est requise </span>
