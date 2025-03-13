@@ -28,7 +28,21 @@ class AuthController extends Controller
             new Middleware('auth:sanctum', except: ['login']),
         ];
     }
+    /**
+     * Get the token array structure.
+     *
+     * @param  string $token
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function respondWithToken($token)
+    {
+        return response()->json(
+            [
+                'token' => $token,
 
+            ]);
+    }
     /**
      * @param Request $request
      * @return JsonResponse
@@ -68,17 +82,21 @@ class AuthController extends Controller
 
             if(!is_null(Auth::guard('web')->user()->email_verified_at) && !is_null(Auth::guard('web')->user()->password_changed_at))
             {
-                $token=Auth::guard('web')->user()->createToken('user',['*'],Carbon::now()->addMinute(30))->plainTextToken;
-                $varArray=explode("|",$token);
-                $id=$varArray[0];
-                $personalAccessTokens= DB::table('personal_access_tokens')->where('id', $id)->first();
-                $token=$varArray[1];
+                $token=$this->respondWithToken(Auth::attempt($credentials));
+                // dd($token1);
+                // $token=Auth::guard('web')->user()->createToken('user',['*'],Carbon::now()->addMinute(30))->plainTextToken;
+                // dd($token);
+                // $varArray=explode("|",$token);
+                // $id=$varArray[0];
+                // $personalAccessTokens= DB::table('personal_access_tokens')->where('id', $id)->first();
+                // $token=$varArray[1];
+                //dd($token->original["token"]);
                 return response()->json([
                     'success'=>true,
-                    'user'=>$user,
-                    'token'=>$token,
-                    'expires_at'=>$personalAccessTokens->expires_at,
-                    'message'=>"Login OK"
+                    'token'=>$token->original["token"],
+                    'message'=>"Login OK",
+
+
                 ],Response::HTTP_OK);
             }
         }
@@ -127,4 +145,5 @@ class AuthController extends Controller
             'message' => 'La mise à jour a déjà été faite'
         ],Response::HTTP_NOT_MODIFIED);
     }
+
 }

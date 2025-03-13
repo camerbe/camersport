@@ -1,1 +1,47 @@
-<p>login works!</p>
+<div class="h-screen bg-indigo-100">
+  <h2 class="text-3xl font-bold text-indigo-800 text-center mb-12"><i class="fa-solid fa-right-to-bracket"></i> Login</h2>
+  <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full mx-4 mx-auto">
+    <!-- Bouton de fermeture
+    <a href="#" class="absolute top-3 right-3 text-indigo-700 hover:text-indigo-900">
+        <i class="fas fa-times text-xl"></i>
+    </a>-->
+
+
+
+    <form [formGroup]="frmLogin"  (ngSubmit)="onSubmit()">
+        <div class="mb-4">
+            <label for="email" class="block text-indigo-700 mb-2">Email</label>
+            <div class="relative">
+                <span class="absolute left-3 top-3 text-indigo-400">
+                    <i class="fas fa-envelope"></i>
+                </span>
+                <input formControlName="email" type="email" id="email" class="pl-10 w-full border border-indigo-200 p-2 rounded focus:outline-none focus:border-indigo-500" placeholder="votre@email.com">
+            </div>
+        </div>
+
+        <div class="mb-6">
+            <label for="password" class="block text-indigo-700 mb-2">Mot de passe</label>
+            <div class="relative">
+                <span class="absolute left-3 top-3 text-indigo-400">
+                    <i class="fas fa-lock"></i>
+                </span>
+                <input formControlName="password" type="password" id="password" class="pl-10 w-full border border-indigo-200 p-2 rounded focus:outline-none focus:border-indigo-500" placeholder="••••••••">
+            </div>
+        </div>
+
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center">
+                <input type="checkbox" id="remember" class="mr-2 accent-indigo-600">
+                <label for="remember" class="text-indigo-800 text-sm">Se souvenir de moi</label>
+            </div>
+            <a href="#" class="text-indigo-600 text-sm hover:underline">Mot de passe oublié?</a>
+        </div>
+        @if(erreur!=undefined && erreur.length>0){
+        <span class="text-red-500 text-md font-bold">* {{ erreur }}</span>
+        }
+        <button type="submit" class="w-full bg-indigo-700 text-white p-3 rounded-lg hover:bg-indigo-800 transition">Se connecter</button>
+    </form>
+
+
+  </div>
+</div>

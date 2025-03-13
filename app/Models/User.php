@@ -9,8 +9,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Support\Carbon;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail,JWTSubject
 {
     use HasFactory, Notifiable,HasApiTokens ;
 
@@ -52,5 +54,28 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     public function articles():HasMany{
         return $this->hasMany(Article::class);
+    }
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [
+            'role' => $this->role,
+            'fullName' => $this->nom . ' ' . $this->prenom,
+            'expires_in' => Carbon::now()->addMinutes(30)->format('d/m/Y H:i:s')
+
+        ];
     }
 }

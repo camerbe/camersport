@@ -7,5 +7,6 @@ export interface JwtPayload {
   sub:string;
   prv:string;
   role:string;
-  fullName:string
+  fullName:string;
+  expires_in:string;
 }

@@ -25,4 +25,14 @@ export class AuthService {
     localStorage.clear();
     this.router.navigate(['login'])
   }
+  isExpired():boolean{
+
+    const dateNow=new Date().toLocaleString();
+    const expire_At = localStorage.getItem('expiredAt')|| '';
+    console.log(`now ${dateNow}`)
+    console.log(`Expired at ${expire_At}`)
+    console.log(`isExpired ${dateNow > expire_At}`)
+    return dateNow > expire_At
+
+  }
 }
