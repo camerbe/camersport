@@ -40,6 +40,7 @@ class UserRepository extends BaseRepository
         $input['prenom']=Str::title($input['prenom']);
         $password=$input['password'] ?? '123456';
         $input['password']=bcrypt($password);
+        //dd($input);
         return new UserResource(parent::create($input));
     }
 

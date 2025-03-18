@@ -3,12 +3,14 @@ import { BrowserModule, provideClientHydration } from '@angular/platform-browser
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './shared/interceptors/auth.interceptor';
+import { CompetitionComponent } from './shared/dashboard/competition/competition.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CompetitionComponent
   ],
   imports: [
     BrowserModule,
@@ -16,9 +18,10 @@ import { authInterceptor } from './shared/interceptors/auth.interceptor';
   ],
   providers: [
     provideClientHydration(),
+    provideHttpClient(),
     provideHttpClient(withInterceptors([
-      authInterceptor
-    ]))
+        authInterceptor
+    ]), withFetch())
   ],
   bootstrap: [AppComponent]
 })

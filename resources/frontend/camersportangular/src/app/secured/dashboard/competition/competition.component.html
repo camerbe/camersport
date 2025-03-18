@@ -1,1 +1,20 @@
-<p>competition works!</p>
+<div class="flex">
+  <span class="mr-2 text-indigo-800"><i class="fa-solid fa-plus"></i></span> <app-title [title]="title"/>
+</div>
+
+<div class="bg-white p-4 rounded shadow mt-6">
+  <app-button-link [link]="link" [label]="label" />
+  <form [formGroup]="frmCompetition" (ngSubmit)="onSubmit()">
+    <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
+      <div class="mb-4">
+        <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Compétition</label>
+        <input type="text" formControlName="competition" class="w-full border px-3 py-2 rounded  {{ competition?.invalid && (competition?.touched || competition?.dirty)? 'border-2 border-rose-600 rounded':'' }}">
+        <span *ngIf="competition?.invalid && (competition?.touched || competition?.dirty)" class="text-red-800">* La compétitionest requise</span>
+      </div>
+
+     </div>
+      <button *ngIf="isAddMode"  [disabled]="!frmCompetition.valid" class="bg-indigo-600 text-white px-4 py-2 rounded">Ajouter</button>
+      <button *ngIf="!isAddMode" [disabled]="!frmCompetition.valid" class="bg-indigo-600 text-white px-4 py-2 rounded">Mettre à jour</button>
+  </form>
+</div>
+

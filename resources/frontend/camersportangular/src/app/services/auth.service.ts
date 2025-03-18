@@ -1,12 +1,11 @@
-import { Login } from './../../../../camersport/src/app/share/models/login.model';
-import { provideClientHydration } from '@angular/platform-browser';
-import { inject, Injectable } from '@angular/core';
+import { Inject, inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Credentials } from '../core/models/credentials';
 import { Observable } from 'rxjs';
 import { Jwt } from '../core/models/jwt';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -15,24 +14,33 @@ export class AuthService {
   private baseURL:string=environment.baseUrl;
   httpClient:HttpClient=inject(HttpClient);
   router:Router=inject(Router);
-
+  /**
+   *
+   */
+  constructor(@Inject(PLATFORM_ID) private platformId: object) {}
   login(credentials:Credentials):Observable<Jwt>{
     return this.httpClient.post<Jwt>(this.baseURL+`/auth/login`,credentials);
   }
   logout():void{
-    localStorage.removeItem('expireAt');
-    localStorage.removeItem('fullName');
-    localStorage.clear();
+    if(isPlatformBrowser(this.platformId)){
+      localStorage.removeItem('expireAt');
+      localStorage.removeItem('fullName');
+      localStorage.clear();
+    }
+
     this.router.navigate(['login'])
   }
   isExpired():boolean{
 
-    const dateNow=new Date().toLocaleString();
-    const expire_At = localStorage.getItem('expiredAt')|| '';
-    console.log(`now ${dateNow}`)
-    console.log(`Expired at ${expire_At}`)
-    console.log(`isExpired ${dateNow > expire_At}`)
-    return dateNow > expire_At
+    if(isPlatformBrowser(this.platformId)){
+      const dateNow=new Date().toLocaleString();
+      const expire_At =  localStorage.getItem('expiredAt')|| '';
+      // console.log(`now ${dateNow}`)
+      // console.log(`Expired at ${expire_At}`)
+      // console.log(`isExpired ${dateNow > expire_At}`)
+      return dateNow > expire_At
+    }
+    return true;
 
   }
 }

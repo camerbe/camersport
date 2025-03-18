@@ -48,6 +48,7 @@ class UserController extends Controller
     public function store(RequestUser $request)
     {
         //
+        dd($request);
         $user=$this->userRepository->create($request->all());
 
         if ($user){

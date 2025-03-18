@@ -13,6 +13,12 @@ import { VideoComponent } from './video/video.component';
 import { VideoListComponent } from './video/video-list/video-list.component';
 import { LiveComponent } from './live/live.component';
 import { LiveListComponent } from './live/live-list/live-list.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { TitleComponent } from './components/title/title.component';
+import { ButtonLinkComponent } from './components/button-link/button-link.component';
+import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
+import { ArticleComponent } from './article/article.component';
+import { ArticleListComponent } from './article/article-list/article-list.component';
 
 
 @NgModule({
@@ -27,11 +33,21 @@ import { LiveListComponent } from './live/live-list/live-list.component';
     VideoComponent,
     VideoListComponent,
     LiveComponent,
-    LiveListComponent
+    LiveListComponent,
+    TitleComponent,
+    ButtonLinkComponent,
+    ArticleComponent,
+    ArticleListComponent,
+
   ],
   imports: [
     CommonModule,
-    DashboardRoutingModule
-  ]
+    DashboardRoutingModule,
+    ReactiveFormsModule,
+    EditorModule
+  ],
+  providers: [
+    { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }
+  ],
 })
 export class DashboardModule { }

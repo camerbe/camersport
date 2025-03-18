@@ -196,4 +196,19 @@ class ArticleController extends Controller
             "message"=>"Pas de compétition trouvée"
         ],Response::HTTP_NOT_FOUND);
     }
+    public function getCountries(){
+        $countries=$this->articleRepository->getPays();
+        if ($countries){
+            return response()->json([
+                'success'=>true,
+                'data'=>$countries,
+                'message'=>"Liste des pays"
+            ],Response::HTTP_OK);
+        }
+        return response()->json([
+            "success"=>false,
+            "message"=>"Pas de pays trouvé"
+        ],Response::HTTP_NOT_FOUND);
+    }
+
 }

@@ -19,15 +19,14 @@ use UniSharp\LaravelFilemanager\Lfm;
     });
 
     Route::get('articles/slug/{articles}', [ArticleController::class, 'getArticleBySlug']);
-    Route::get('articles/user/{articles}', [ArticleController::class, 'getArticleByUserId']);
+
     Route::post('auth/login', [AuthController::class, 'login']);
     Route::post('auth/changepassword', [AuthController::class, 'changePassword']);
     Route::group(['middleware' => 'auth:api'], function (){
         Route::get('articles/categories', [ArticleController::class, 'getCategories']);
         Route::get('articles/competitions', [ArticleController::class, 'getCompetitions']);
-        /*Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web']], function () {
-            Lfm::routes();
-        });*/
+        Route::get('articles/pays', [ArticleController::class, 'getCountries']);
+        Route::get('articles/user/{articles}', [ArticleController::class, 'getArticleByUserId']);
         Route::post('auth/logout', [AuthController::class, 'logout']);
         Route::apiResources([
             "users"=>UserController::class,
@@ -36,6 +35,7 @@ use UniSharp\LaravelFilemanager\Lfm;
             "competitions"=>CompetitionController::class,
             "lives"=>LiveMatchController::class,
             "articles"=>ArticleController::class,
+
 
         ]);
 

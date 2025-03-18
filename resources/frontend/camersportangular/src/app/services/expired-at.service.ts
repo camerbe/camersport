@@ -10,6 +10,5 @@ export class ExpiredAtService {
   state$ = this.stateSubject.asObservable();
   updateState(newState: boolean) {
     this.stateSubject.next(newState);
-
   }
 }

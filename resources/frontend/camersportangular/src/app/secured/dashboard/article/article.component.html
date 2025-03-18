@@ -1,0 +1,87 @@
+<div class="flex">
+  <span class="mr-2 text-indigo-800"><i class="fa-solid fa-plus"></i></span> <app-title [title]="title"/>
+</div>
+
+<div class="bg-white p-4 rounded shadow mt-6">
+  <app-button-link [link]="link" [label]="label" />
+  <form [formGroup]="frmArticle" (ngSubmit)="onSubmit()">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="mb-4">
+        <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Auteur</label>
+        <input type="text" formControlName="auteur" class="w-full border px-3 py-2 rounded  {{ auteur?.invalid && (auteur?.touched || auteur?.dirty)? 'border-2 border-rose-600 rounded':'' }}">
+        <span *ngIf="auteur?.invalid && (auteur?.touched || auteur?.dirty)" class="text-red-800">* L'auteur est requis</span>
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>source</label>
+        <input type="text" formControlName="source" class="w-full border px-3 py-2 rounded  {{ source?.invalid && (source?.touched || source?.dirty)? 'border-2 border-rose-600 rounded':'' }}">
+        <span *ngIf="source?.invalid && (source?.touched || source?.dirty)" class="text-red-800">* La source est requise</span>
+     </div>
+      <div class="mb-4">
+          <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Date Parution</label>
+          <input type="datetime-local" formControlName="date_parution" class="w-full border px-3 py-2 rounded  {{ date_parution?.invalid && (date_parution?.touched || date_parution?.dirty)? 'border-2 border-rose-600 rounded':'' }}">
+          <span *ngIf="date_parution?.invalid && (date_parution?.touched || date_parution?.dirty)" class="text-red-800">* Le date_parution est requis</span>
+      </div>
+
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="mb-4">
+        <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Categorie </label>
+        <select (change)="onChange($event)" formControlName="categorie_id " class="w-full border px-3 py-2 rounded  {{ (selectedCategorieId===0) || categorie_id ?.invalid && (categorie_id ?.touched || categorie_id ?.dirty)? 'border-2 border-rose-600 rounded':'' }}">
+          <option value="0" selected>Votre Choix</option>
+          @for(categorie of categories; track $index) {
+            <option value="categorie.id" [selected]="categorie.id==selectedCategorieId">{{categorie.categorie}}</option>
+          }
+          </select>
+        <span *ngIf="selectedCategorieId===0 || categorie_id ?.invalid && (categorie_id ?.touched || categorie_id ?.dirty)" class="text-red-800">* La categorie  est requise</span>
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Pays </label>
+        <select (change)="onChangePays($event)" formControlName="pays_code " class="w-full border px-3 py-2 rounded  {{(selectedPaysCode=='0') || pays_code ?.invalid && (pays_code ?.touched || pays_code ?.dirty)? 'border-2 border-rose-600 rounded':'' }}">
+          <option value="0" selected>Votre Choix</option>
+          @for(pays of countries; track $index) {
+            <option value="pays.code" [selected]="pays.code===selectedPaysCode">{{pays.pays}}</option>
+          }
+          </select>
+        <span *ngIf="(selectedPaysCode==='0') || pays_code ?.invalid && (pays_code ?.touched || pays_code ?.dirty)" class="text-red-800">* Le pays  est requis</span>
+      </div>
+
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
+      <div class="mb-4">
+        <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Titre</label>
+        <input type="text" formControlName="titre" class="w-full border px-3 py-2 rounded  {{ titre?.invalid && (titre?.touched || titre?.dirty)? 'border-2 border-rose-600 rounded':'' }}">
+        <span *ngIf="titre?.invalid && (titre?.touched || titre?.dirty)" class="text-red-800">* Le titre est requis</span>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
+      <div class="mb-4">
+        <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Article</label>
+        <editor [init]="init" formControlName="article" aria-placeholder="Article Article Article"/>
+        <span *ngIf="article?.invalid && (article?.touched || article?.dirty)" class="text-red-800">* L'article est requis</span>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="mb-4">
+        <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Mots Clés</label>
+        <input type="text" formControlName="motclef" class="w-full border px-3 py-2 rounded  {{ motclef?.invalid && (motclef?.touched || motclef?.dirty)? 'border-2 border-rose-600 rounded':'' }}">
+        <span *ngIf="motclef?.invalid && (motclef?.touched || motclef?.dirty)" class="text-red-800">* Les mots clés sont requis</span>
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Hashtag</label>
+        <input type="text" formControlName="hashtag" class="w-full border px-3 py-2 rounded  {{ hashtag?.invalid && (hashtag?.touched || hashtag?.dirty)? 'border-2 border-rose-600 rounded':'' }}">
+
+        <span *ngIf="hashtag?.invalid && (hashtag?.touched || hashtag?.dirty)" class="text-red-800">* Les hashtags sont requis</span>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
+      <div class="mb-4">
+        <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Image</label>
+        <editor [init]="initImage" formControlName="image" aria-placeholder="Image Image Image"/>
+        <span *ngIf="image?.invalid && (image?.touched || image?.dirty)" class="text-red-800">* L'image est requise</span>
+      </div>
+    </div>
+      <button *ngIf="isAddMode"  [disabled]="!frmArticle.valid" class="bg-indigo-600 text-white px-4 py-2 rounded">Ajouter</button>
+      <button *ngIf="!isAddMode" [disabled]="!frmArticle.valid" class="bg-indigo-600 text-white px-4 py-2 rounded">Mettre à jour</button>
+  </form>
+</div>
+

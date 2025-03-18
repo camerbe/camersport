@@ -44,11 +44,14 @@ export class LoginComponent {
           localStorage.setItem('token',this.token.token);
           localStorage.setItem('expiredAt', decodedToken.expires_in);
           localStorage.setItem('fullname',decodedToken.fullName);
+          localStorage.setItem('userId',decodedToken.userId.toString());
           switch(decodedToken.role){
               case "Admin" :
+              case "Redac" :
                 this.router.navigate(['/dashboard']);
                 break;
-
+            default :
+              this.router.navigate(['login']);
           }
 
         },

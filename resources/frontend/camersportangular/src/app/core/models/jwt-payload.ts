@@ -9,4 +9,5 @@ export interface JwtPayload {
   role:string;
   fullName:string;
   expires_in:string;
+  userId:number;
 }

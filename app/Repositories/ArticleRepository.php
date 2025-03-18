@@ -139,5 +139,12 @@ class ArticleRepository extends BaseRepository
         $articles=  Article::where("user_id",$userid)->orderByDesc('date_parution')->paginate();
         return ArticleResource::collection($articles);
     }
+    public function getScheduledArticle(){
+        $articles=  Article::where("date_parution",">=",now())->orderByDesc('date_parution')->paginate();
+        return ArticleResource::collection($articles);
+    }
+    public function getPays(){
+        return Pays::orderBy('pays','asc')->get();
+    }
 
 }

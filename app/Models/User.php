@@ -74,7 +74,8 @@ class User extends Authenticatable implements MustVerifyEmail,JWTSubject
         return [
             'role' => $this->role,
             'fullName' => $this->nom . ' ' . $this->prenom,
-            'expires_in' => Carbon::now()->addMinutes(30)->format('d/m/Y H:i:s')
+            'expires_in' => Carbon::now()->addMinutes(15)->format('d/m/Y H:i:s'),
+            'userId'=>$this->id
 
         ];
     }
