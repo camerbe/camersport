@@ -19,7 +19,11 @@ import { ButtonLinkComponent } from './components/button-link/button-link.compon
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { ArticleComponent } from './article/article.component';
 import { ArticleListComponent } from './article/article-list/article-list.component';
-
+import { SelectModule } from 'primeng/select';
+import { TableModule } from 'primeng/table';
+import { ToolbarModule } from 'primeng/toolbar';
+import { ButtonModule } from 'primeng/button';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @NgModule({
   declarations: [
@@ -42,9 +46,14 @@ import { ArticleListComponent } from './article/article-list/article-list.compon
   ],
   imports: [
     CommonModule,
+    ButtonModule ,
     DashboardRoutingModule,
     ReactiveFormsModule,
-    EditorModule
+    EditorModule,
+    SelectModule,
+    TableModule,
+    ToolbarModule,
+    CheckboxModule
   ],
   providers: [
     { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }

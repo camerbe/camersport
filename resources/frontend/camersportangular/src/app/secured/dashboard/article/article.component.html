@@ -4,7 +4,11 @@
 
 <div class="bg-white p-4 rounded shadow mt-6">
   <app-button-link [link]="link" [label]="label" />
+  <div *ngIf="(erreur.length > 1 )" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <span class="text-red-500">{{ erreur }}</span>
+  </div>
   <form [formGroup]="frmArticle" (ngSubmit)="onSubmit()">
+
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div class="mb-4">
         <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Auteur</label>
@@ -23,26 +27,49 @@
       </div>
 
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div class="mb-4">
         <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Categorie </label>
-        <select (change)="onChange($event)" formControlName="categorie_id " class="w-full border px-3 py-2 rounded  {{ (selectedCategorieId===0) || categorie_id ?.invalid && (categorie_id ?.touched || categorie_id ?.dirty)? 'border-2 border-rose-600 rounded':'' }}">
+        <select
+          (change)="onChange($event)"
+          formControlName="categorie_id"
+          class="w-full border px-3 py-2 rounded  {{ (selectedCategorieId===0) || categorie_id ?.invalid && (categorie_id ?.touched || categorie_id ?.dirty)? 'border-2 border-rose-600 rounded':'' }}"
+        >
           <option value="0" selected>Votre Choix</option>
           @for(categorie of categories; track $index) {
-            <option value="categorie.id" [selected]="categorie.id==selectedCategorieId">{{categorie.categorie}}</option>
+            <option value="{{categorie.id}}">{{categorie.categorie}}</option>
           }
-          </select>
+        </select>
+
+
         <span *ngIf="selectedCategorieId===0 || categorie_id ?.invalid && (categorie_id ?.touched || categorie_id ?.dirty)" class="text-red-800">* La categorie  est requise</span>
       </div>
       <div class="mb-4">
+        <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Compétition </label>
+        <select
+          (change)="onChangeCompetition($event)"
+          formControlName="competition_id"
+          class="w-full border px-3 py-2 rounded  {{ (selectedCompetitionId===0) || competition_id ?.invalid && (competition_id?.touched || competition_id ?.dirty)? 'border-2 border-rose-600 rounded':'' }}"
+          >
+          <option value="0">Votre Choix</option>
+          @for(competition of competitions; track $index) {
+            <option value="{{competition.id}}" >{{competition.competition}}</option>
+          }
+        </select>
+        <span
+          *ngIf="selectedCompetitionId===0 || competition_id ?.invalid && (competition_id ?.touched || competition_id ?.dirty)" class="text-red-800">* La compétition  est requise
+        </span>
+      </div>
+      <div class="mb-4">
         <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Pays </label>
-        <select (change)="onChangePays($event)" formControlName="pays_code " class="w-full border px-3 py-2 rounded  {{(selectedPaysCode=='0') || pays_code ?.invalid && (pays_code ?.touched || pays_code ?.dirty)? 'border-2 border-rose-600 rounded':'' }}">
-          <option value="0" selected>Votre Choix</option>
-          @for(pays of countries; track $index) {
-            <option value="pays.code" [selected]="pays.code===selectedPaysCode">{{pays.pays}}</option>
+        <select (change)="onChangePays($event)" formControlName="pays_code" class="w-full border px-3 py-2 rounded  {{(selectedPaysCode==='0') || pays_code ?.invalid && (pays_code ?.touched || pays_code ?.dirty)? 'border-2 border-rose-600 rounded':'' }}">
+          <option value="0">Votre Choix</option>
+          @for (bled of countries; track $index) {
+            <option value="{{bled.code3}}">{{ bled.pays}}</option>
+
           }
           </select>
-        <span *ngIf="(selectedPaysCode==='0') || pays_code ?.invalid && (pays_code ?.touched || pays_code ?.dirty)" class="text-red-800">* Le pays  est requis</span>
+        <span *ngIf="(selectedPaysCode=='0') || pays_code ?.invalid && (pays_code ?.touched || pays_code ?.dirty)" class="text-red-800">* Le pays  est requis</span>
       </div>
 
     </div>
@@ -63,14 +90,14 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="mb-4">
         <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Mots Clés</label>
-        <input type="text" formControlName="motclef" class="w-full border px-3 py-2 rounded  {{ motclef?.invalid && (motclef?.touched || motclef?.dirty)? 'border-2 border-rose-600 rounded':'' }}">
-        <span *ngIf="motclef?.invalid && (motclef?.touched || motclef?.dirty)" class="text-red-800">* Les mots clés sont requis</span>
+        <input type="text" formControlName="motclef" class="w-full border px-3 py-2 rounded  {{ motclef?.invalid && (motclef?.touched || motclef?.dirty)? 'border-2 border-rose-600 rounded':'' }}" placeholder="Entrez des mots-clés : politique, sport, culture">
+        <span *ngIf="motclef?.invalid && (motclef?.touched || motclef?.dirty)" class="text-red-800">* Les mots clés valides sont requis</span>
       </div>
       <div class="mb-4">
         <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Hashtag</label>
-        <input type="text" formControlName="hashtag" class="w-full border px-3 py-2 rounded  {{ hashtag?.invalid && (hashtag?.touched || hashtag?.dirty)? 'border-2 border-rose-600 rounded':'' }}">
+        <input type="text" formControlName="hashtag" class="w-full border px-3 py-2 rounded  {{ hashtag?.invalid && (hashtag?.touched || hashtag?.dirty)? 'border-2 border-rose-600 rounded':'' }}" placeholder="Entrez des hashtags : #politique, #sport, #culture">
 
-        <span *ngIf="hashtag?.invalid && (hashtag?.touched || hashtag?.dirty)" class="text-red-800">* Les hashtags sont requis</span>
+        <span *ngIf="hashtag?.invalid && (hashtag?.touched || hashtag?.dirty)" class="text-red-800">* Les hashtags valides sont requis </span>
       </div>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
@@ -80,7 +107,7 @@
         <span *ngIf="image?.invalid && (image?.touched || image?.dirty)" class="text-red-800">* L'image est requise</span>
       </div>
     </div>
-      <button *ngIf="isAddMode"  [disabled]="!frmArticle.valid" class="bg-indigo-600 text-white px-4 py-2 rounded">Ajouter</button>
+      <button *ngIf="isAddMode" [disabled]="!frmArticle.valid" class="bg-indigo-600 text-white px-4 py-2 rounded">Ajouter</button>
       <button *ngIf="!isAddMode" [disabled]="!frmArticle.valid" class="bg-indigo-600 text-white px-4 py-2 rounded">Mettre à jour</button>
   </form>
 </div>

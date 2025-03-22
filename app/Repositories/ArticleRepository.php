@@ -58,6 +58,8 @@ class ArticleRepository extends BaseRepository
         $currentArticle=parent::findById($id);
         $input['titre']=isset($input['titre'])? Str::title($input['titre']):$currentArticle->titre;
         $input['titre']=Str::slug($input['titre']);
+        $input["motclef"]=trim($input["motclef"]).",".$input["hashtag"];
+        unset($input["competition_id"]);
         return parent::update($input, $id);
     }
 
@@ -75,15 +77,19 @@ class ArticleRepository extends BaseRepository
         $input['source']=Str::title($input['source']);
         $input['chapeau']=Str::of($html->getText())->limit(157);
         $input["date_parution"]=Carbon::parse($input["date_parution"])->format('Y-m-d H:i:s');
+        $input["motclef"]=trim($input["motclef"]).",".$input["hashtag"];
 
         $competition=Competition::find($input["competition_id"]);
-        $categorie=$competition->categories()
-            ->wherePivot('categorie_id',$input["categorie_id"])
-            ->first();
-        if(is_null($categorie)){
+
+        if(is_null($competition->categories())){
             $competition->categories()->attach($input["categorie_id"]);
         }
+        else{
+            $competition->categories()->wherePivot('categorie_id',$input["categorie_id"])
+                ->first() ?? $competition->categories()->attach($input["categorie_id"]);;
+        }
 
+        unset($input["competition_id"]);
         return new ArticleResource(parent::create($input));
     }
 
@@ -92,7 +98,7 @@ class ArticleRepository extends BaseRepository
      */
     public function findAll(){
         $articles=Article::where('date_parution','<=',now())
-            ->get();
+            ->paginate();
        return ArticleResource::collection($articles);
     }
 
@@ -121,8 +127,9 @@ class ArticleRepository extends BaseRepository
         );
     }*/
 
-    private function addSlug($code,$title){
-        $bled=Pays::find($code);
+    private function addSlug($code3,$title){
+        //dd($code3);
+        $bled=Pays::where('code3',$code3)->first();
         $titre=Str::contains($title,$bled->pays,ignoreCase: true)? $title: $bled->pays."-".$title;
         $titre=Str::contains($titre,$bled->country,ignoreCase: true)? $titre: $titre."-".$bled->country;
         return Str::slug($titre);

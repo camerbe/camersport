@@ -30,18 +30,20 @@ class UserRepository extends BaseRepository
         $input['nom']=isset($input['nom'])? Str::upper($input['nom']):$currentUser->nom;
         $input['prenom']=isset($input['prenom'])? Str::title($input['prenom']):$currentUser->prenom;
         $input['email']= $input['email'] ?? $currentUser->email;
-        $input['role']= isset($input['role']) ? $input['role'] : $currentUser->role;
+        $input['role']= $input['role'] ?? $currentUser->role;
         return parent::update($input, $id);
     }
 
     public function create(array $input)
     {
+
         $input['nom']=Str::upper($input['nom']);
         $input['prenom']=Str::title($input['prenom']);
         $password=$input['password'] ?? '123456';
         $input['password']=bcrypt($password);
-        //dd($input);
-        return new UserResource(parent::create($input));
+        $userCreated=parent::create($input);
+        $userCreated->sendApiEmailVerificationNotification();
+        return new UserResource($userCreated);
     }
 
     public function findAll(){

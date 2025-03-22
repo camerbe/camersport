@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\ImageHelper;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\RequestArticle;
+use App\Models\Article;
 use App\Repositories\ArticleRepository;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,12 +48,18 @@ class ArticleController extends Controller
     {
 
         //
-        $categorie=$this->articleRepository->create($request->all());
+        $article=$this->articleRepository->create($request->all());
+        $image=ImageHelper::extractImgSrc($request->image);
+        //dd($image);
+        if ($article){
+            $parsedUrl = parse_url($image);
+            $path = $parsedUrl['path'];
+            $filePath = str_replace(url('/storage'), 'storage', $path);
+            $article->addMedia(public_path($filePath))->preservingOriginal()->toMediaCollection('article');
 
-        if ($categorie){
             return response()->json([
                 'success'=>true,
-                'data'=>$categorie,
+                'data'=>$article,
                 'message'=>"Article inséré",
             ],Response::HTTP_CREATED);
         }

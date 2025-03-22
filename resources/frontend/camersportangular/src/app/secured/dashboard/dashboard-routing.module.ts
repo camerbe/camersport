@@ -12,6 +12,7 @@ import { CompetitionListComponent } from './competition/competition-list/competi
 import { ArticleComponent } from './article/article.component';
 import { ArticleListComponent } from './article/article-list/article-list.component';
 import { articleResolver } from '../../shared/resolvers/article.resolver';
+import { userResolver } from '../../shared/resolvers/user.resolver';
 
 const routes: Routes = [
   {
@@ -19,6 +20,9 @@ const routes: Routes = [
     children:[
       {path:'register',component:RegisterComponent},
       {path:'register/list',component:RegisterListComponent},
+      { path : "register/show/:id",component:RegisterComponent,
+        resolve : { user: userResolver },
+      },
       {path:'categorie',component:CategorieComponent},
       {path:'categorie/list',component:CategorieListComponent},
       { path : "categorie/show/:id",component:CategorieComponent,

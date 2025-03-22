@@ -11,20 +11,23 @@ import { PaysDetail } from '../../../core/models/pays-detail';
 import { Pays } from '../../../core/models/pays';
 import { environment } from '../../../../environments/environment.development';
 import tinymce from 'tinymce';
+import { Competition } from '../../../core/models/competition';
+import { CompetitionDetail } from '../../../core/models/competition-detail';
+import { first } from 'rxjs';
+import { log } from 'console';
+import { HashtagExtractorService } from '../../../services/hashtag-extractor.service';
+
 @Component({
   selector: 'app-article',
   templateUrl: './article.component.html',
   styleUrl: './article.component.css'
 })
 export class ArticleComponent implements OnInit {
-addControl() {
-throw new Error('Method not implemented.');
-}
-removeMotClef(_t123: number) {
-throw new Error('Method not implemented.');
-}
-  motclefRegex :RegExp= /^\s*\b\w{4,}\b(?:\s*,\s*\b\w{4,}\b){2,}\s*$/;
-  hashtagRegex :RegExp= /^(#\w{4,})(?:,#\w{4,}){2,}$/;
+
+  motclefRegex :RegExp= /^([a-zA-ZÀ-ÿ0-9 ]{4,},\s*){2,}[a-zA-ZÀ-ÿ0-9 ]{4,}$/;
+  hashtagRegex :RegExp= /^(#[A-Za-z0-9_]{4,},){2,}#[A-Za-z0-9_]{4,}$/;
+
+
 
   frmArticle!:FormGroup;
   title:string="Ajout article";
@@ -37,7 +40,9 @@ throw new Error('Method not implemented.');
   articles:ArticleDetail[]=[];
   categories:CategorieDetail[]=[];
   countries:PaysDetail[]=[];
+  competitions:CompetitionDetail[]=[];
   selectedCategorieId!:Number;
+  selectedCompetitionId!:Number;
   selectedPaysCode!:string;
   initImage={
     path_absolute : "/",
@@ -146,6 +151,7 @@ throw new Error('Method not implemented.');
   articleService:ArticleService=inject(ArticleService);
   router:Router=inject(Router);
   activatedRoute:ActivatedRoute=inject(ActivatedRoute);
+  hashtagExtractorService:HashtagExtractorService=inject(HashtagExtractorService);
 
   constructor() {
     const now = new Date();
@@ -156,11 +162,12 @@ throw new Error('Method not implemented.');
       article:['',Validators.required],
       image:['',Validators.required],
       date_parution :[new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0,-1),Validators.required],
-      user_id :['',Validators.required],
+      user_id :[Number(localStorage.getItem("userId")),Validators.required],
       categorie_id :['',Validators.required],
+      competition_id :['',Validators.required],
       pays_code :['',Validators.required],
-      motclef:['',Validators.pattern(this.motclefRegex)],
-      hashtag:['',Validators.pattern(this.hashtagRegex)],
+      motclef:['',[Validators.pattern(this.motclefRegex)]],
+      hashtag:['',[Validators.pattern(this.hashtagRegex)]],
     });
   }
 
@@ -195,11 +202,17 @@ throw new Error('Method not implemented.');
   get categorie_id(){
     return this.frmArticle.get('categorie_id');
   }
+  get competition_id(){
+    return this.frmArticle.get('competition_id');
+  }
   get pays_code(){
     return this.frmArticle.get('pays_code');
   }
   onSubmit() {
+    ///console.log(this.frmArticle.valid);
     if(this.isAddMode){
+
+      //console.log(this.frmArticle.value);
       this.articleService.create(this.frmArticle.value)
       .subscribe({
         next:()=>this.router.navigate(['/dashboard/article/list']),
@@ -214,17 +227,26 @@ throw new Error('Method not implemented.');
       });
     }
   }
+
   onChange($event: Event) {
     const target = $event.target as HTMLSelectElement;
-    this.selectedCategorieId = Number(target.value);
-    this.frmArticle.patchValue({categorie_id:this.selectedCategorieId});
+    this.selectedCategorieId = +target.value;
+    this.frmArticle.patchValue({categorie_id:+target.value});
   }
+
   onChangePays($event: Event) {
     const target = $event.target as HTMLSelectElement;
     this.selectedPaysCode = target.value;
-    this.frmArticle.patchValue({pays_code:this.selectedPaysCode});
+    this.frmArticle.patchValue({pays_code:target.value});
+
   }
-  getCountries(){
+  onChangeCompetition($event: Event) {
+    const target = $event.target as HTMLSelectElement;
+    this.selectedCompetitionId = +target.value;
+    this.frmArticle.patchValue({competition_id:+target.value});
+
+  }
+  private getCountries(){
     return this.articleService.getCountries()
     .subscribe({
       next:(data) =>{
@@ -234,23 +256,70 @@ throw new Error('Method not implemented.');
       }
     });
   }
+  private getCompetition(){
+    return this.articleService.getCompetitions()
+    .subscribe({
+      next:(data) =>{
+        const tempData=data as unknown as Competition;
+        this.competitions=tempData["data"] as unknown as CompetitionDetail[];
+        return this.competitions;
+      }
+    });
+  }
+  private getCategories(){
+    return this.articleService.getCategories()
+    .subscribe({
+      next:(data) =>{
+        const tempData=data as unknown as Categorie;
+        this.categories=tempData["data"] as unknown as CategorieDetail[];
+        return this.categories;
+      }
+    });
+  }
   ngOnInit(): void {
     this.id=this.activatedRoute.snapshot.params['id'];
     this.isAddMode=!this.id;
     this.expiredAtService.updateState(this.authSevice.isExpired());
     this.expiredAtService.state$.subscribe(state=>this.isExpired=state);
     if(this.isExpired) this.authSevice.logout();
-    //this.selectedPaysCode="0";
-    //this.selectedCategorieId=0;
-    this.getCountries();
-    this.articleService.getCategories()
-    .subscribe({
-      next:(data) =>{
-        const tempData=data as unknown as Categorie;
-        this.categories=tempData["data"] as unknown as CategorieDetail[];
 
-      }
-    });
+    this.getCategories();
+    this.getCountries();
+    this.getCompetition();
+
+    if(!this.isAddMode){
+          this.title="mise à jour d'article";
+          this.erreur="";
+          this.articleService.show(this.id)
+            .pipe(first())
+            .subscribe({
+              next:data=>{
+                const resData=data["data"] as ArticleDetail
+                const hashtags=this.hashtagExtractorService.extractHashtags(resData.motclef);
+                const motscles=this.hashtagExtractorService.removeHashtags(resData.motclef);
+
+                this.frmArticle.patchValue(
+                  {
+                    categorie_id:resData.categorie.id,
+                    hashtag:hashtags.trim(),
+                    motclef:motscles.substring(0,motscles.length-1).replace(/, /g,','),
+                    competition_id:resData.categorie.competitions[0].id
+                  }
+                );
+
+                this.frmArticle.patchValue(resData);
+                console.log(this.frmArticle.value);
+
+              },
+              error:err=>
+                {
+                  this.erreur=err.error
+                  console.log(err.error);
+                  console.log(`erreur: ${this.erreur}`);
+                }
+            })
+
+    }
 
 
 

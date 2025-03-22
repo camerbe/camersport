@@ -45,10 +45,10 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(RequestUser $request)
+    public function store(Request $request)
     {
         //
-        dd($request);
+        //dd($request);
         $user=$this->userRepository->create($request->all());
 
         if ($user){

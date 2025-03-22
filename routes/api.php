@@ -42,4 +42,8 @@ use UniSharp\LaravelFilemanager\Lfm;
 
 
     } );
+    Route::get('email/verify/{id}', [VerificationApiController::class,'verify'])
+        ->name('verify');
+    Route::get('email/resend', [VerificationApiController::class,'resend'])
+    ->name('resend');
 

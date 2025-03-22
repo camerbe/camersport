@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\VerifyApiEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -74,9 +75,12 @@ class User extends Authenticatable implements MustVerifyEmail,JWTSubject
         return [
             'role' => $this->role,
             'fullName' => $this->nom . ' ' . $this->prenom,
-            'expires_in' => Carbon::now()->addMinutes(15)->format('d/m/Y H:i:s'),
+            'expires_in' => Carbon::now()->addMinutes(30)->format('d/m/Y H:i:s'),
             'userId'=>$this->id
 
         ];
+    }
+    public function sendApiEmailVerificationNotification():void{
+        $this->notify(new VerifyApiEmail());
     }
 }

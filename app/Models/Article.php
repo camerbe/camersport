@@ -27,6 +27,7 @@ class Article extends Model  implements HasMedia
         'date_parution',
         'user_id',
         'categorie_id',
+        'competition_id',
         'pays_code',
 
     ];
@@ -46,14 +47,29 @@ class Article extends Model  implements HasMedia
             Cache::forget('article-findBySlug');
         });
     }
-    public function registerMediaConversions(?Media $media = null): void
+    /*public function registerMediaConversions(?Media $media = null): void
     {
         $this
             ->addMediaConversion('preview')
             ->fit(Fit::Contain, 100, 100)
             ->nonQueued();
-    }
+    }*/
 
+    public function registerMediaCollections():void{
+        $this->addMediaCollection('article')
+            ->registerMediaConversions(function(Media $media){
+                $this
+                    ->addMediaConversion('thumb')
+                    ->width(100)
+                    ->height(100);
+            } );
+        $this
+            ->addMediaCollection('article')
+            ->withResponsiveImages();
+    }
+    public static function last(){
+        return static::all()->last();
+    }
     public function user():BelongsTo{
         return $this->belongsTo(User::class);
     }
