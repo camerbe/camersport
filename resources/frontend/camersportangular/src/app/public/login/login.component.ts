@@ -48,7 +48,7 @@ export class LoginComponent {
           switch(decodedToken.role){
               case "Admin" :
               case "Redac" :
-                this.router.navigate(['/dashboard']);
+                this.router.navigate(['/secured/dashboard']);
                 break;
             default :
               this.router.navigate(['login']);

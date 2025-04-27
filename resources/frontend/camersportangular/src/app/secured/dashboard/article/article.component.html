@@ -4,103 +4,147 @@
 
 <div class="bg-white p-4 rounded shadow mt-6">
   <app-button-link [link]="link" [label]="label" />
-  <div *ngIf="(erreur.length > 1 )" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <span class="text-red-500">{{ erreur }}</span>
-  </div>
+
   <form [formGroup]="frmArticle" (ngSubmit)="onSubmit()">
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="mb-4">
-        <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Auteur</label>
-        <input type="text" formControlName="auteur" class="w-full border px-3 py-2 rounded  {{ auteur?.invalid && (auteur?.touched || auteur?.dirty)? 'border-2 border-rose-600 rounded':'' }}">
-        <span *ngIf="auteur?.invalid && (auteur?.touched || auteur?.dirty)" class="text-red-800">* L'auteur est requis</span>
-      </div>
-      <div class="mb-4">
-        <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>source</label>
-        <input type="text" formControlName="source" class="w-full border px-3 py-2 rounded  {{ source?.invalid && (source?.touched || source?.dirty)? 'border-2 border-rose-600 rounded':'' }}">
-        <span *ngIf="source?.invalid && (source?.touched || source?.dirty)" class="text-red-800">* La source est requise</span>
-     </div>
-      <div class="mb-4">
-          <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Date Parution</label>
-          <input type="datetime-local" formControlName="date_parution" class="w-full border px-3 py-2 rounded  {{ date_parution?.invalid && (date_parution?.touched || date_parution?.dirty)? 'border-2 border-rose-600 rounded':'' }}">
-          <span *ngIf="date_parution?.invalid && (date_parution?.touched || date_parution?.dirty)" class="text-red-800">* Le date_parution est requis</span>
+    <div class="grid mb-4">
+      <!-- Auteur -->
+      <div class="col-12 md:col-4">
+        <label class="block text-gray-700 mb-1">
+          <span class="text-red-500 mr-1">*</span>Auteur
+        </label>
+        <input
+          pInputText
+          type="text"
+          formControlName="auteur"
+          class="w-full"
+          [ngClass]="{
+            'border-2 border-rose-600': auteur?.invalid && (auteur?.touched || auteur?.dirty)
+          }"
+        />
+        <div *ngIf="auteur?.invalid && (auteur?.touched || auteur?.dirty)" class="text-red-800 text-sm">
+          * L'auteur est requis
+        </div>
       </div>
 
+      <!-- Source -->
+      <div class="col-12 md:col-4">
+        <label class="block text-gray-700 mb-1">
+          <span class="text-red-500 mr-1">*</span>Source
+        </label>
+        <input
+          pInputText
+          type="text"
+          formControlName="source"
+          class="w-full"
+          [ngClass]="{
+            'border-2 border-rose-600': source?.invalid && (source?.touched || source?.dirty)
+          }"
+        />
+        <div *ngIf="source?.invalid && (source?.touched || source?.dirty)" class="text-red-800 text-sm">
+          * La source est requise
+        </div>
+      </div>
+
+      <!-- Date Parution -->
+      <div class="col-12 md:col-4">
+        <label class="block text-gray-700 mb-1">
+          <span class="text-red-500 mr-1">*</span>Date Parution
+        </label>
+        <p-calendar
+          formControlName="date_parution"
+          class="w-full"
+          [hourFormat]="'24'"
+          [showTime]="true"
+          [locale]="fr"
+          [showIcon]="true"
+          [ngClass]="{
+            'border-2 border-rose-600 rounded': date_parution?.invalid && (date_parution?.touched || date_parution?.dirty)
+          }"
+          dateFormat="dd/mm/yy"
+          showIcon="true"
+        ></p-calendar>
+        <div *ngIf="date_parution?.invalid && (date_parution?.touched || date_parution?.dirty)" class="text-red-800 text-sm">
+          * La date est requise
+        </div>
+      </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="mb-4">
+
+    <div class="grid mb-4">
+      <div class="col-12 md:col-4">
         <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Categorie </label>
-        <select
-          (change)="onChange($event)"
-          formControlName="categorie_id"
-          class="w-full border px-3 py-2 rounded  {{ (selectedCategorieId===0) || categorie_id ?.invalid && (categorie_id ?.touched || categorie_id ?.dirty)? 'border-2 border-rose-600 rounded':'' }}"
-        >
-          <option value="0" selected>Votre Choix</option>
-          @for(categorie of categories; track $index) {
-            <option value="{{categorie.id}}">{{categorie.categorie}}</option>
-          }
-        </select>
+        <p-dropdown
+        formControlName="categorie_id"
+        [options]="categories"
+        optionLabel="categorie"
+        optionValue="id"
+        (onChange)="onChange($event)"
+        [(ngModel)]="selectedCategorieId"
 
+        placeholder="Choix de la Catégorie" />
 
-        <span *ngIf="selectedCategorieId===0 || categorie_id ?.invalid && (categorie_id ?.touched || categorie_id ?.dirty)" class="text-red-800">* La categorie  est requise</span>
+        <div *ngIf="selectedCategorieId===0 || categorie_id ?.invalid && (categorie_id ?.touched || categorie_id ?.dirty)" class="text-red-800">* La categorie  est requise</div>
       </div>
-      <div class="mb-4">
+      <div class="col-12 md:col-4 gap-2">
         <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Compétition </label>
-        <select
-          (change)="onChangeCompetition($event)"
+        <p-dropdown
+          [options]="competitions"
+          optionLabel="competition"
+          optionValue="id"
+          (onChange)="onChangeCompetition($event)"
+          placeholder="Choix de la Compétition"
           formControlName="competition_id"
-          class="w-full border px-3 py-2 rounded  {{ (selectedCompetitionId===0) || competition_id ?.invalid && (competition_id?.touched || competition_id ?.dirty)? 'border-2 border-rose-600 rounded':'' }}"
-          >
-          <option value="0">Votre Choix</option>
-          @for(competition of competitions; track $index) {
-            <option value="{{competition.id}}" >{{competition.competition}}</option>
-          }
-        </select>
-        <span
-          *ngIf="selectedCompetitionId===0 || competition_id ?.invalid && (competition_id ?.touched || competition_id ?.dirty)" class="text-red-800">* La compétition  est requise
-        </span>
-      </div>
-      <div class="mb-4">
-        <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Pays </label>
-        <select (change)="onChangePays($event)" formControlName="pays_code" class="w-full border px-3 py-2 rounded  {{(selectedPaysCode==='0') || pays_code ?.invalid && (pays_code ?.touched || pays_code ?.dirty)? 'border-2 border-rose-600 rounded':'' }}">
-          <option value="0">Votre Choix</option>
-          @for (bled of countries; track $index) {
-            <option value="{{bled.code3}}">{{ bled.pays}}</option>
 
-          }
-          </select>
-        <span *ngIf="(selectedPaysCode=='0') || pays_code ?.invalid && (pays_code ?.touched || pays_code ?.dirty)" class="text-red-800">* Le pays  est requis</span>
+          />
+
+        <div
+          *ngIf="selectedCompetitionId===0 || competition_id ?.invalid && (competition_id ?.touched || competition_id ?.dirty)" class="text-red-800">* La compétition  est requise
+        </div>
+      </div>
+      <div class="col-12 md:col-4">
+        <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Pays </label>
+        <p-dropdown
+        (onChange)="onChangePays($event)"
+        formControlName="pays_code"
+        [options]="countries"
+        optionLabel="pays"
+        optionValue="code3"
+        placeholder="Choix du pays"
+        [showClear]="true"
+        />
+
+        <div *ngIf="pays_code ?.invalid && (pays_code ?.touched || pays_code ?.dirty)" class="text-red-800">* Le pays  est requis</div>
       </div>
 
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
-      <div class="mb-4">
+    <div class="grid mb-4">
+      <div class="col-12">
         <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Titre</label>
-        <input type="text" formControlName="titre" class="w-full border px-3 py-2 rounded  {{ titre?.invalid && (titre?.touched || titre?.dirty)? 'border-2 border-rose-600 rounded':'' }}">
+        <input pInputText type="text" formControlName="titre" class="w-full border px-3 py-2 rounded  {{ titre?.invalid && (titre?.touched || titre?.dirty)? 'border-2 border-rose-600 rounded':'' }}">
         <span *ngIf="titre?.invalid && (titre?.touched || titre?.dirty)" class="text-red-800">* Le titre est requis</span>
       </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
-      <div class="mb-4">
+    <div class="grid mb-4">
+      <div class="col-12">
         <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Article</label>
         <editor [init]="init" formControlName="article" aria-placeholder="Article Article Article"/>
         <span *ngIf="article?.invalid && (article?.touched || article?.dirty)" class="text-red-800">* L'article est requis</span>
       </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="mb-4">
+    <div class="grid mb-4">
+      <div class="col-12 md:col-6">
         <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Mots Clés</label>
-        <input type="text" formControlName="motclef" class="w-full border px-3 py-2 rounded  {{ motclef?.invalid && (motclef?.touched || motclef?.dirty)? 'border-2 border-rose-600 rounded':'' }}" placeholder="Entrez des mots-clés : politique, sport, culture">
+        <input pInputText type="text" formControlName="motclef" class="w-full border px-3 py-2 rounded  {{ motclef?.invalid && (motclef?.touched || motclef?.dirty)? 'border-2 border-rose-600 rounded':'' }}" placeholder="Entrez des mots-clés : politique, sport, culture">
         <span *ngIf="motclef?.invalid && (motclef?.touched || motclef?.dirty)" class="text-red-800">* Les mots clés valides sont requis</span>
       </div>
-      <div class="mb-4">
+      <div class="col-12 md:col-6">
         <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Hashtag</label>
-        <input type="text" formControlName="hashtag" class="w-full border px-3 py-2 rounded  {{ hashtag?.invalid && (hashtag?.touched || hashtag?.dirty)? 'border-2 border-rose-600 rounded':'' }}" placeholder="Entrez des hashtags : #politique, #sport, #culture">
+        <input pInputText type="text" formControlName="hashtag" class="w-full border px-3 py-2 rounded  {{ hashtag?.invalid && (hashtag?.touched || hashtag?.dirty)? 'border-2 border-rose-600 rounded':'' }}" placeholder="Entrez des hashtags : #politique, #sport, #culture">
 
         <span *ngIf="hashtag?.invalid && (hashtag?.touched || hashtag?.dirty)" class="text-red-800">* Les hashtags valides sont requis </span>
       </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
+    <div class="field col-12">
       <div class="mb-4">
         <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Image</label>
         <editor [init]="initImage" formControlName="image" aria-placeholder="Image Image Image"/>

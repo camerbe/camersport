@@ -5,13 +5,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './shared/interceptors/auth.interceptor';
-import { CompetitionComponent } from './shared/dashboard/competition/competition.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+import { LOCALE_ID } from '@angular/core';
+
+registerLocaleData(localeFr);
 
 @NgModule({
   declarations: [
-    AppComponent,
-    CompetitionComponent
+    AppComponent
+
   ],
   imports: [
     BrowserModule,
@@ -19,11 +23,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule
   ],
   providers: [
+    { provide: LOCALE_ID, useValue: 'fr-FR' },
+    provideAnimations(),
     provideClientHydration(),
     provideHttpClient(),
     provideHttpClient(withInterceptors([
         authInterceptor
-    ]), withFetch())
+    ]), withFetch()),
+
+
   ],
   bootstrap: [AppComponent]
 })

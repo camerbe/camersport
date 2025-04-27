@@ -14,8 +14,9 @@ import tinymce from 'tinymce';
 import { Competition } from '../../../core/models/competition';
 import { CompetitionDetail } from '../../../core/models/competition-detail';
 import { first } from 'rxjs';
-import { log } from 'console';
 import { HashtagExtractorService } from '../../../services/hashtag-extractor.service';
+import { LocaleSettings } from 'primeng/calendar';
+import { DropdownChangeEvent } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-article',
@@ -27,11 +28,23 @@ export class ArticleComponent implements OnInit {
   motclefRegex :RegExp= /^([a-zA-ZÀ-ÿ0-9 ]{4,},\s*){2,}[a-zA-ZÀ-ÿ0-9 ]{4,}$/;
   hashtagRegex :RegExp= /^(#[A-Za-z0-9_]{4,},){2,}#[A-Za-z0-9_]{4,}$/;
 
+  fr: LocaleSettings = {
+    firstDayOfWeek: 1,
+    dayNames: ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
+    dayNamesShort: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
+    dayNamesMin: ["Di", "Lu", "Ma", "Me", "Je", "Ve", "Sa"],
+    monthNames: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
+    monthNamesShort: ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"],
+    today: "Aujourd'hui",
+    clear: "Effacer",
+    dateFormat: "dd/mm/yy",
+    weekHeader: "Sem"
+  };
 
 
   frmArticle!:FormGroup;
   title:string="Ajout article";
-  link:string="/dashboard/article/list";
+  link:string="/secured/dashboard/article/list";
   label:string="Liste";
   isExpired!:boolean;
   isAddMode!:boolean;
@@ -139,7 +152,7 @@ export class ArticleComponent implements OnInit {
     },
     plugins: [
       'image', 'media', 'tools', 'link', 'advlist',
-      'autolink', 'lists', 'table', 'wordcount','code'
+      'autolink', 'lists', 'table', 'wordcount','code','searchreplace'
     ],
     toolbar:'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media table mergetags  blockquote'
 
@@ -215,7 +228,7 @@ export class ArticleComponent implements OnInit {
       //console.log(this.frmArticle.value);
       this.articleService.create(this.frmArticle.value)
       .subscribe({
-        next:()=>this.router.navigate(['/dashboard/article/list']),
+        next:()=>this.router.navigate(['/secured/dashboard/article/list']),
         error:(error)=>console.log(error)
       });
     }
@@ -223,27 +236,27 @@ export class ArticleComponent implements OnInit {
 
       this.articleService.patch(this.id,this.frmArticle.value)
       .subscribe({
-        next:()=>this.router.navigate(['/dashboard/article/list'])
+        next:()=>this.router.navigate(['/secured/dashboard/article/list'])
       });
     }
   }
 
-  onChange($event: Event) {
-    const target = $event.target as HTMLSelectElement;
-    this.selectedCategorieId = +target.value;
-    this.frmArticle.patchValue({categorie_id:+target.value});
+  onChange($event: DropdownChangeEvent) {
+
+    this.selectedCategorieId = +$event.value;
+    this.frmArticle.patchValue({categorie_id: this.selectedCategorieId});
   }
 
-  onChangePays($event: Event) {
-    const target = $event.target as HTMLSelectElement;
-    this.selectedPaysCode = target.value;
-    this.frmArticle.patchValue({pays_code:target.value});
+  onChangePays($event: DropdownChangeEvent) {
+
+    this.selectedPaysCode =  $event.value;
+    this.frmArticle.patchValue({pays_code:this.selectedPaysCode});
 
   }
-  onChangeCompetition($event: Event) {
-    const target = $event.target as HTMLSelectElement;
-    this.selectedCompetitionId = +target.value;
-    this.frmArticle.patchValue({competition_id:+target.value});
+  onChangeCompetition($event: DropdownChangeEvent) {
+
+    this.selectedCompetitionId = +$event.value;
+    this.frmArticle.patchValue({competition_id: this.selectedCompetitionId});
 
   }
   private getCountries(){
@@ -303,12 +316,13 @@ export class ArticleComponent implements OnInit {
                     categorie_id:resData.categorie.id,
                     hashtag:hashtags.trim(),
                     motclef:motscles.substring(0,motscles.length-1).replace(/, /g,','),
-                    competition_id:resData.categorie.competitions[0].id
+                    competition_id:resData.categorie.competitions[0].id,
+                    
                   }
                 );
 
                 this.frmArticle.patchValue(resData);
-                console.log(this.frmArticle.value);
+
 
               },
               error:err=>

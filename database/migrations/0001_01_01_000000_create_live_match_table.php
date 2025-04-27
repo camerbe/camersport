@@ -13,9 +13,21 @@ return new class extends Migration
     {
         Schema::create('livematchs', function (Blueprint $table) {
             $table->id();
-            $table->string('team1');
-            $table->string('team2');
-            $table->json('event_type');
+            $table->foreignId('matchsheetid')->constrained()->onDelete('cascade');
+            $table->string('team_name');
+            //$table->json('player')->nullable();// { "name": "Jean Toko", "number": 9, "position": "ST" }
+            $table->enum('type', [
+                'But', 'But sur penalty', 'Contre son camp', 'Remplacement',
+                'Carton jaune', 'Carton rouge', "Coup d'envoi", 'Mi-temps',
+                'Seconde mi-temps', 'Fin du match', 'Commentaire', 'Blessure',
+                'Vérification VAR', 'Penalty manqué', 'Prolongations', 'Séance de tirs au but'
+            ]);
+            // Description de l’événement
+            $table->string('description')->nullable();
+            // Minute ou horodatage de l’événement
+            $table->string('event_minute'); // ex : "17", "90+2", "PEN-3"
+            // Statut (permet d’annuler, modifier, confirmer un événement)
+            $table->enum('status', ['pending', 'confirmed', 'cancelled'])->default('confirmed');
             $table->timestamps();
         });
 

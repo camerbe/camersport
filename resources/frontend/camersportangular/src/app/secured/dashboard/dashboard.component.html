@@ -1,74 +1,57 @@
 <div class="flex h-screen">
 
   <!-- Sidebar -->
-  <aside class="w-64 bg-indigo-800 text-white flex flex-col">
-      <div class="p-5 text-xl font-bold flex items-center gap-2">
-          <svg class="w-6 h-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h11M9 21V3m5 3l6 6-6 6"></path>
-          </svg>
-          Tableau de Bord
-      </div>
-      <nav class="flex-1">
-          <ul class="space-y-2 p-3">
-              <li class="flex items-center gap-3 p-2 rounded hover:bg-indigo-700 cursor-pointer">
-                  <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A3 3 0 013 15V9a3 3 0 012.121-2.804m0 0A3 3 0 019 3h6a3 3 0 013 3m0 0A3 3 0 0118.879 6.196M5 15h14M12 9v6"></path>
-                  </svg>
-                 <a routerLink="/dashboard/register/list">Administrateur</a>
-              </li>
-              <li class="flex items-center gap-3 p-2 rounded hover:bg-indigo-700 cursor-pointer">
-                  <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
-                  </svg>
-                  <a routerLink="/dashboard/article/list">Articles</a>
-              </li>
-              <li class="flex items-center gap-3 p-2 rounded hover:bg-indigo-700 cursor-pointer">
-                  <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-4.586 2.664A1 1 0 019 12.83V6.168a1 1 0 011.586-.832l4.586 2.664a1 1 0 010 1.664z"></path>
-                  </svg>
-                  Vidéos
-              </li>
-              <li class="flex items-center gap-3 p-2 rounded hover:bg-indigo-700 cursor-pointer">
-                  <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h11M9 21V3m5 3l6 6-6 6"></path>
-                  </svg>
-                  <a routerLink="/dashboard/categorie/list">Catégories</a>
-              </li>
-              <li class="flex items-center gap-3 p-2 rounded hover:bg-indigo-700 cursor-pointer">
-                  <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a7 7 0 110 14M5 12a7 7 0 100-14"></path>
-                  </svg>
-                  <a routerLink="/dashboard/competition/list">Compétitions</a>
-              </li>
-              <li class="flex items-center gap-3 p-2 rounded hover:bg-indigo-700 cursor-pointer">
-                  <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 3h4m-2 12v9m-7-6h14"></path>
-                  </svg>
-                  Live
-              </li>
-              <li class="flex items-center gap-3 p-2 rounded hover:bg-indigo-700 cursor-pointer">
-                  <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12V9m0 0V6m0 3h-3m3 0h3"></path>
-                  </svg>
-                  Instantané
-              </li>
-          </ul>
-      </nav>
+  <aside class="w-64 bg-indigo-800 text-white flex flex-column">
+    <div class="p-3 text-xl font-bold flex align-items-center gap-2">
+      <i class="pi pi-th-large text-white text-2xl"></i>
+      Tableau de Bord
+    </div>
+    <nav class="flex-1">
+      <ul class="p-3 list-none m-0">
+        <li class="flex align-items-center gap-3 p-2 border-round hover:bg-indigo-700 cursor-pointer">
+          <i class="pi pi-users text-lg"></i>
+          <a routerLink="/secured/dashboard/register/list" class="text-white no-underline">Administrateur</a>
+        </li>
+        <li class="flex align-items-center gap-3 p-2 border-round hover:bg-indigo-700 cursor-pointer">
+          <i class="pi pi-file text-lg"></i>
+          <a routerLink="/secured/dashboard/article/list" class="text-white no-underline">Articles</a>
+        </li>
+        <li class="flex align-items-center gap-3 p-2 border-round hover:bg-indigo-700 cursor-pointer">
+          <i class="pi pi-video text-lg"></i>
+          <span>Vidéos</span>
+        </li>
+        <li class="flex align-items-center gap-3 p-2 border-round hover:bg-indigo-700 cursor-pointer">
+          <i class="pi pi-tags text-lg"></i>
+          <a routerLink="/secured/dashboard/categorie/list" class="text-white no-underline">Catégories</a>
+        </li>
+        <li class="flex align-items-center gap-3 p-2 border-round hover:bg-indigo-700 cursor-pointer">
+          <i class="pi pi-calendar text-lg"></i>
+          <a routerLink="/secured/dashboard/competition/list" class="text-white no-underline">Compétitions</a>
+        </li>
+        <li class="flex align-items-center gap-3 p-2 border-round hover:bg-indigo-700 cursor-pointer">
+          <i class="pi pi-bolt text-lg"></i>
+          <a routerLink="/secured/dashboard/live" class="text-white no-underline">Live</a>
+        </li>
+        <li class="flex align-items-center gap-3 p-2 border-round hover:bg-indigo-700 cursor-pointer">
+          <i class="pi pi-clock text-lg"></i>
+          <span>Instantané</span>
+        </li>
+      </ul>
+    </nav>
   </aside>
 
-  <!-- Contenu Principal -->
-  <main class="flex-1 flex flex-col  bg-gray-100">
-      <header class="bg-white shadow-md flex justify-between items-center p-4">
-          <span class="text-lg font-semibold">Tableau de Bord</span>
-          <div class="flex items-center gap-4">
-              <span class="text-gray-700 font-medium">👤 {{ fullName }}</span>
-              <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700" (click)="onLougout()">Déconnexion</button>
-          </div>
-      </header>
+  <!-- Main Content -->
+  <main class="flex-1 flex flex-column bg-gray-100">
+    <header class="bg-white shadow-2 flex justify-content-between align-items-center p-2">
+      <span class="text-lg font-semibold">Tableau de Bord</span>
+      <div class="flex align-items-center gap-2">
+        <span class="text-gray-700 font-medium">👤 {{ fullName }}</span>
+        <button pButton type="button" class="p-button-danger" label="Déconnexion" (click)="onLougout()"></button>
+      </div>
+    </header>
 
-      <section class="p-6  overflow-auto">
-
-          <router-outlet/>
-      </section>
+    <section class="p-4 overflow-auto">
+      <router-outlet></router-outlet>
+    </section>
   </main>
 </div>

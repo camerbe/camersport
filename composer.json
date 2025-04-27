@@ -11,8 +11,8 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "php-open-source-saver/jwt-auth": "^2.8",
-        "spatie/laravel-medialibrary": "^11.9",
-        "unisharp/laravel-filemanager": "^2.9"
+        "spatie/laravel-medialibrary": "^11.9"
+
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

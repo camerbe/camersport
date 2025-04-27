@@ -13,6 +13,7 @@ import { ArticleComponent } from './article/article.component';
 import { ArticleListComponent } from './article/article-list/article-list.component';
 import { articleResolver } from '../../shared/resolvers/article.resolver';
 import { userResolver } from '../../shared/resolvers/user.resolver';
+import { LiveComponent } from './live/live.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,7 @@ const routes: Routes = [
       { path : "article/show/:id",component:ArticleComponent,
         resolve : { articla : articleResolver },
       },
+      {path:'live',component:LiveComponent},
     ]
   }
 ];

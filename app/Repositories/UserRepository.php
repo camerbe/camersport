@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Support\Str;
+use Illuminate\Auth\Events\Registered;
 
 class UserRepository extends BaseRepository
 {
@@ -42,7 +43,10 @@ class UserRepository extends BaseRepository
         $password=$input['password'] ?? '123456';
         $input['password']=bcrypt($password);
         $userCreated=parent::create($input);
-        $userCreated->sendApiEmailVerificationNotification();
+        //$userCreated->sendApiEmailVerificationNotification();
+
+
+        event(new Registered($userCreated));
         return new UserResource($userCreated);
     }
 

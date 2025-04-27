@@ -68,7 +68,7 @@ class Article extends Model  implements HasMedia
             ->withResponsiveImages();
     }
     public static function last(){
-        return static::all()->last();
+        return static::latest()->first();
     }
     public function user():BelongsTo{
         return $this->belongsTo(User::class);

@@ -57,7 +57,7 @@ class ArticleRepository extends BaseRepository
     {
         $currentArticle=parent::findById($id);
         $input['titre']=isset($input['titre'])? Str::title($input['titre']):$currentArticle->titre;
-        $input['titre']=Str::slug($input['titre']);
+        $input['slug']=$this->addSlug($input['pays_code'],$input['titre']);
         $input["motclef"]=trim($input["motclef"]).",".$input["hashtag"];
         unset($input["competition_id"]);
         return parent::update($input, $id);

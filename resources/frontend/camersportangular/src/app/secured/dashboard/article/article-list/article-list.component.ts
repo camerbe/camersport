@@ -23,7 +23,7 @@ export class ArticleListComponent implements OnInit {
 
   title:string="Liste des articles";
   isExpired!:boolean;
-  link:string="/dashboard/article";
+  link:string="/secured/dashboard/article";
   label:string="+ Créer";
   articles:ArticleDetail[]=[];
   art:Article[]=[];
@@ -46,12 +46,15 @@ export class ArticleListComponent implements OnInit {
     this.expiredAtService.updateState(this.authService.isExpired());
     this.expiredAtService.state$.subscribe(state=>this.isExpired=state);
     if(this.isExpired) this.authService.logout();
+
     this.articleService.getAll()
     .subscribe({
       next:(data) =>{
         const userId=Number(localStorage.getItem('userId'));
+
         const tempData=data as unknown as Article;
         this.articles=tempData["data"] as unknown as ArticleDetail[];
+        console.log(this.articles);
         this.articles=this.articles.filter(article=>article.user.id==userId);
       },
       error:(error)=>console.log(error)

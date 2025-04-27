@@ -19,11 +19,19 @@ import { ButtonLinkComponent } from './components/button-link/button-link.compon
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { ArticleComponent } from './article/article.component';
 import { ArticleListComponent } from './article/article-list/article-list.component';
-import { SelectModule } from 'primeng/select';
+import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
+import { TooltipModule } from 'primeng/tooltip';
+import { InputTextModule } from 'primeng/inputtext';
+import { CalendarModule } from 'primeng/calendar';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { SplitterModule } from 'primeng/splitter';
+import { DividerModule } from 'primeng/divider';
+import { AvatarModule } from 'primeng/avatar';
+import { FieldsetModule } from 'primeng/fieldset';
 
 @NgModule({
   declarations: [
@@ -42,21 +50,30 @@ import { CheckboxModule } from 'primeng/checkbox';
     ButtonLinkComponent,
     ArticleComponent,
     ArticleListComponent,
-
   ],
   imports: [
     CommonModule,
-    ButtonModule ,
+    ButtonModule,
+    InputTextModule,
     DashboardRoutingModule,
     ReactiveFormsModule,
     EditorModule,
-    SelectModule,
+    DropdownModule,
     TableModule,
     ToolbarModule,
-    CheckboxModule
+    CheckboxModule,
+    TooltipModule,
+    CalendarModule,
+    InputNumberModule,
+    SplitterModule,
+    DividerModule,
+    AvatarModule,
+    FieldsetModule
+
   ],
   providers: [
-    { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }
+    { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
+
   ],
 })
 export class DashboardModule { }

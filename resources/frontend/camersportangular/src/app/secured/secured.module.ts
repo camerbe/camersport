@@ -8,7 +8,7 @@ import { TitleComponent } from './dashboard/components/title/title.component';
 
 @NgModule({
   declarations: [
-    
+
   ],
   imports: [
     CommonModule,

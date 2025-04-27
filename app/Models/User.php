@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+//use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Notifications\VerifyApiEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -80,7 +80,10 @@ class User extends Authenticatable implements MustVerifyEmail,JWTSubject
 
         ];
     }
-    public function sendApiEmailVerificationNotification():void{
+   /* public function sendApiEmailVerificationNotification():void{
         $this->notify(new VerifyApiEmail());
-    }
+    }*/
+
+
+
 }

@@ -1,0 +1,3 @@
+p-splitter {
+  box-sizing: border-box; /* Include padding in height calculation */
+}
