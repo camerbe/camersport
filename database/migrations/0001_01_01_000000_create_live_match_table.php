@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('matchsheetid')->constrained()->onDelete('cascade');
             $table->string('team_name');
-            //$table->json('player')->nullable();// { "name": "Jean Toko", "number": 9, "position": "ST" }
+            $table->string('player')->nullable();// { "name": "Jean Toko", "number": 9, "position": "ST" }
             $table->enum('type', [
                 'But', 'But sur penalty', 'Contre son camp', 'Remplacement',
                 'Carton jaune', 'Carton rouge', "Coup d'envoi", 'Mi-temps',

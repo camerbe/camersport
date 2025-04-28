@@ -11,7 +11,12 @@ class ImageHelper
      * @return string|null The src value or null if not found
      */
     public static function extractImgSrc($html){
-        preg_match('/<img[^>]+src=["\'](.*?)["\']/', $html, $matches);
-        return isset($matches[1]) ? $matches[1] : null;
+        if(strpos($html, '<img') !== false){
+            preg_match('/<img[^>]+src=["\'](.*?)["\']/', $html, $matches);
+            return $matches[1] ?? null;
+        }
+        return $html;
     }
+
+
 }

@@ -38,7 +38,7 @@ class MatchSheetController extends Controller
         }
         return response()->json([
             "success"=>false,
-            "message"=>"Pas de centre trouvé"
+            "message"=>"Pas de MatchSheets trouvé"
         ],Response::HTTP_NOT_FOUND);
     }
 

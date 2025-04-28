@@ -12,9 +12,11 @@ class Matchsheet extends Model
     protected $fillable = [
         'match_date',
         'location',
-        'team_a_name',
-        'team_b_name',
+        'team_a_id',
+        'team_b_id',
         'formation',
+        'referee',
+
     ];
 
     protected $casts = [
@@ -22,6 +24,15 @@ class Matchsheet extends Model
         'team_b_data' => 'array',
         'coaching_staff' => 'array',
     ];
+    public function teamA()
+    {
+        return $this->belongsTo(Team::class, 'team_a_id');
+    }
+
+    public function teamB()
+    {
+        return $this->belongsTo(Team::class, 'team_b_id');
+    }
     public static function last(){
         return static::latest()->first();
     }

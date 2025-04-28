@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\MatchSheetController;
+use App\Http\Controllers\Api\TeamController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\AuthController;
@@ -39,6 +40,7 @@ use UniSharp\LaravelFilemanager\Lfm;
             "lives"=>LiveMatchController::class,
             "articles"=>ArticleController::class,
             "matchs"=>MatchSheetController::class,
+            "teams"=>TeamController::class,
 
 
         ]);

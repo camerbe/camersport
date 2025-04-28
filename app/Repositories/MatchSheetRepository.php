@@ -33,6 +33,13 @@ class MatchSheetRepository extends Repository
     public function update($id, array $data)
     {
         $currentMatchSheet=parent::find($id);
+        $data['team_a_id']= $data['team_a_id'] ?? $currentMatchSheet->team_a_id;
+        $data['team_b_id']= $data['team_b_id'] ?? $currentMatchSheet->team_b_id;
+        $data['formation']= $data['formation'] ?? $currentMatchSheet->formation;
+        $data['match_date']= $data['match_date'] ?? $currentMatchSheet->match_date;
+        $data['location']= $data['location'] ?? $currentMatchSheet->location;
+        $data['referee']= $data['referee'] ?? $currentMatchSheet->referee;
+
         $data['team_a_data']=isset($data['team_a_data'])?
             json_encode($data['team_a_data']):$currentMatchSheet->team_a_data;
         $data['team_b_data']=isset($data['team_b_data'])?

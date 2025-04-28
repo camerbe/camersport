@@ -13,14 +13,15 @@ return new class extends Migration
     {
         Schema::create('matchsheets', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('team_a_id')->constrained('teams')->onDelete('cascade');
+            $table->foreignId('team_b_id')->constrained('teams')->onDelete('cascade');
             $table->dateTime('match_date');
+            $table->string('formation')->nullable();
+            $table->string('referee')->nullable();
             $table->string('location')->nullable();
-            $table->string('team_a_name');
-            $table->string('team_b_name');
             $table->json('team_a_data')->nullable();
             $table->json('team_b_data')->nullable();
             $table->json('coaching_staff')->nullable();
-            $table->string('formation')->nullable();
             $table->timestamps();
         });
     }
