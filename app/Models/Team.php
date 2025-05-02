@@ -26,4 +26,7 @@ class Team extends Model implements HasMedia
             ->addMediaCollection('team')
             ->withResponsiveImages();
     }
+    public static function last(){
+        return static::latest()->first();
+    }
 }

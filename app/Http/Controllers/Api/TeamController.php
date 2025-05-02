@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Helpers\ImageHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Team;
 use App\Services\TeamService;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,9 +30,11 @@ class TeamController extends Controller
         //
         $teams=$this->teamService->all();
         if ($teams){
+
             return response()->json([
                 'success'=>true,
                 'data'=>$teams,
+                //'photo'=>$photos,
                 'message'=>"Liste des Teams"
             ],Response::HTTP_OK);
         }

@@ -16,12 +16,16 @@ return new class extends Migration
             $table->foreignId('team_a_id')->constrained('teams')->onDelete('cascade');
             $table->foreignId('team_b_id')->constrained('teams')->onDelete('cascade');
             $table->dateTime('match_date');
-            $table->string('formation')->nullable();
+            $table->string('formation_a')->nullable();
+            $table->string('formation_b')->nullable();
+            $table->string('color_a')->nullable();
+            $table->string('color_b')->nullable();
+            $table->string('coach_a')->nullable();
+            $table->string('coach_b')->nullable();
             $table->string('referee')->nullable();
             $table->string('location')->nullable();
             $table->json('team_a_data')->nullable();
             $table->json('team_b_data')->nullable();
-            $table->json('coaching_staff')->nullable();
             $table->timestamps();
         });
     }

@@ -5,34 +5,40 @@
     </h2>
 
     <form [formGroup]="frmLogin" (ngSubmit)="onSubmit()">
-      <div class="mb-4">
-        <label for="email" class="block text-indigo-700 mb-2">Email</label>
-        <span class="p-input-icon-left w-full">
-          <i class="pi pi-envelope"></i>
-          <input
-            pInputText
-            id="email"
-            type="email"
-            formControlName="email"
-            class="w-full"
-            placeholder="votre@email.com"
-          />
-        </span>
-      </div>
-
-      <div class="mb-4">
-        <label for="password" class="block text-indigo-700 mb-2">Mot de passe</label>
+      <div class="mb-4 grid">
+        <div class="col-12">
+          <label for="email" class="block text-indigo-700 mb-2">Email</label>
+          <span class="p-input-icon-left w-full">
+            <i class="pi pi-envelope"></i>
+            <input
+              pInputText
+              id="email"
+              type="email"
+              formControlName="email"
+              class="w-full"
+              placeholder="votre@email.com"
+            />
+          </span>
+        </div>
+        <div class="col-12">
+          <label for="password" class="block text-indigo-700 mb-2">Mot de passe</label>
         <span class="p-input-icon-left w-full">
           <i class="pi pi-lock"></i>
           <input
+            type="password"
             pPassword
-            id="password"
             formControlName="password"
             feedback="false"
             class="w-full"
-            placeholder="••••••••"
+            placeholder="Mot de passe"
           />
         </span>
+        </div>
+
+      </div>
+
+      <div class="mb-4">
+
       </div>
 
       <div class="flex items-center justify-between mb-4">

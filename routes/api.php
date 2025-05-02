@@ -32,6 +32,7 @@ use UniSharp\LaravelFilemanager\Lfm;
         Route::get('articles/user/{articles}', [ArticleController::class, 'getArticleByUserId']);
         Route::post('auth/logout', [AuthController::class, 'logout']);
         Route::get('matchs/last', [MatchSheetController::class, 'getLastMatchSheet']);
+        Route::get('matchs/teams', [MatchSheetController::class, 'getTeams']);
         Route::apiResources([
             "users"=>UserController::class,
             "countries"=>PaysController::class,

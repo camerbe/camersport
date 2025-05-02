@@ -2,12 +2,13 @@
 
 namespace App\Services;
 
+use App\Repositories\IMatchSheetRepository;
 use App\Repositories\IRepository;
 
 class MatchSheetService
 {
 
-    public function __construct(protected IRepository $matchSheetRepository)
+    public function __construct(protected IMatchSheetRepository  $matchSheetRepository)
     {
     }
 
@@ -15,7 +16,7 @@ class MatchSheetService
         return $this->matchSheetRepository->create($data);
     }
     public function update(array $data,int $id){
-        $this->matchSheetRepository->update($id,$data);
+        return $this->matchSheetRepository->update($id,$data);
     }
     public function delete(int $id){
         return $this->matchSheetRepository->delete($id);
@@ -26,5 +27,7 @@ class MatchSheetService
     public function all(){
         return $this->matchSheetRepository->all(['created_at'=>'desc']);
     }
-
+    public function getTeams(){
+        return $this->matchSheetRepository->getTeams();
+    }
 }

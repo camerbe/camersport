@@ -52,11 +52,16 @@ class ArticleController extends Controller
         $image=ImageHelper::extractImgSrc($request->image);
         //dd($image);
         if ($article){
-            $parsedUrl = parse_url($image);
-            $path = $parsedUrl['path'];
-            $filePath = str_replace(url('/storage'), 'storage', $path);
-            $article->addMedia(public_path($filePath))->preservingOriginal()->toMediaCollection('article');
-
+            if($image){
+                $parsedUrl = parse_url($image);
+                $path = $parsedUrl['path'];
+                $filePath = str_replace(url('/storage'), 'storage', $path);
+                $article->addMedia(public_path($filePath))
+                    ->preservingOriginal()
+                    ->withResponsiveImages()
+                    ->usingName($article->slug)
+                    ->toMediaCollection('article');
+            }
             return response()->json([
                 'success'=>true,
                 'data'=>$article,
@@ -97,8 +102,20 @@ class ArticleController extends Controller
         //
 
         $article=$this->articleRepository->update($request->all(),$id);
-
+        $image=ImageHelper::extractImgSrc($request->image);
         if ($article){
+            $media =$article->getMedia('article')->firstWhere('name',$article->slug);
+            if($media){
+                $media->delete();
+                $parsedUrl = parse_url($image);
+                $path = $parsedUrl['path'];
+                $filePath = str_replace(url('/storage'), 'storage', $path);
+                $article->addMedia(public_path($filePath))
+                    ->preservingOriginal()
+                    ->withResponsiveImages()
+                    ->usingName($article->slug)
+                    ->toMediaCollection('article');
+            }
             return response()->json([
                 'success'=>true,
                 'data'=>$article,

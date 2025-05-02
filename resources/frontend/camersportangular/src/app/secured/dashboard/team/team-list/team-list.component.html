@@ -1,0 +1,55 @@
+<div class="flex">
+  <span class="mr-2 text-indigo-800 text-xl"><i class="fa-solid fa-table-list"></i></span> <app-title [title]="title"/>
+</div>
+
+<div class="bg-white rounded-lg shadow-md p-6 mt-6">
+  <app-button-link [link]="link" [label]="label"/>
+@if(teams.length>0){
+  <p-table [value]="teams"
+  #dt
+  [value]="teams"
+  [rows]="10"
+  [rowsPerPageOptions]="[5, 10, 20]"
+  stripedRows="true"
+  [responsive]="true"
+  [paginator]="true"
+  [class.p-datatable-striped]="true"
+
+  [rowHover]="true"
+  dataKey="id"
+  currentPageReportTemplate="Affichage des entrées {first} à {last} sur {totalRecords}"
+  [showCurrentPageReport]="true"
+   >
+
+
+
+    <ng-template pTemplate="header">
+        <tr>
+            <th>#</th>
+            <th>Nom</th>
+            <th>Slug</th>
+            <th>Action</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-team let-i="rowIndex">
+        <tr>
+            <td>{{ i + 1 }}</td>
+            <td>{{ team.name}}</td>
+            <td>{{ team.slugname }}</td>
+
+            <td>
+              <a [routerLink]="['/secured/dashboard/team/show',team.id]" class="text-blue-500 hover:text-blue-700" pTooltip="Mise à jour" tooltipPosition="top">
+                <i class="pi pi-pencil"></i>
+            </a>
+            <a class="text-red-500 hover:text-red-700 ml-2" (click)="onDelete(team.id)" pTooltip="Suppression" tooltipPosition="top">
+                <i class="pi pi-trash"></i>
+            </a>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+}
+@else {
+  <p class="border-b border-indigo-100">Pas d'équipe</p>
+}
+</div>

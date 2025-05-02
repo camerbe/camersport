@@ -14,6 +14,12 @@ import { ArticleListComponent } from './article/article-list/article-list.compon
 import { articleResolver } from '../../shared/resolvers/article.resolver';
 import { userResolver } from '../../shared/resolvers/user.resolver';
 import { LiveComponent } from './live/live.component';
+import { TeamComponent } from './team/team.component';
+import { TeamListComponent } from './team/team-list/team-list.component';
+import { teamResolver } from '../../shared/resolvers/team.resolver';
+import { MatchSheetComponent } from './match-sheet/match-sheet.component';
+import { matchSheetResolver } from '../../shared/resolvers/match-sheet.resolver';
+import { MatchSheetListComponent } from './match-sheet/match-sheet-list/match-sheet-list.component';
 
 const routes: Routes = [
   {
@@ -37,7 +43,17 @@ const routes: Routes = [
       {path:'article',component:ArticleComponent},
       {path:'article/list',component:ArticleListComponent},
       { path : "article/show/:id",component:ArticleComponent,
-        resolve : { articla : articleResolver },
+        resolve : { article : articleResolver },
+      },
+      {path:'team',component:TeamComponent},
+      {path:'team/list',component:TeamListComponent},
+      { path : "team/show/:id",component:TeamComponent,
+        resolve : { team : teamResolver },
+      },
+      {path:'matchsheet',component:MatchSheetComponent},
+      {path:'matchsheet/list',component:MatchSheetListComponent},
+      { path : "matchsheet/show/:id",component:TeamComponent,
+        resolve : { matchsheet : matchSheetResolver },
       },
       {path:'live',component:LiveComponent},
     ]

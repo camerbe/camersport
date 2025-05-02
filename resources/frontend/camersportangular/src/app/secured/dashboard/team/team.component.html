@@ -1,0 +1,32 @@
+<div class="flex">
+  <span class="mr-2 text-indigo-800"><i class="fa-solid fa-plus"></i></span> <app-title [title]="title"/>
+</div>
+
+<div class="bg-white p-4 rounded shadow mt-6">
+  <app-button-link [link]="link" [label]="label" />
+  <form [formGroup]="frmTeam" (ngSubmit)="onSubmit()">
+    <div class="grid mb-4">
+      <div class="col-12">
+        <label class="block text-gray-700 capitalize"><span class="text-red-500 mr-1">*</span>Nom de l'équipe</label>
+        <input type="text" pInputText formControlName="name" class="w-full border px-3 py-2 rounded  {{ name?.invalid && (name?.touched || name?.dirty)? 'border-2 border-rose-600 rounded':'' }}">
+        <span *ngIf="name?.invalid && (name?.touched || name?.dirty)" class="text-red-800">* Le nom est requis</span>
+      </div>
+
+    </div>
+    <div class="grid mb-4">
+      <div class="col-12">
+        <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Logo</label>
+        <editor
+          [init]="initImage"
+          formControlName="logo"
+          aria-placeholder="Image Image Image"
+
+        />
+        <span *ngIf="logo?.invalid && (logo?.touched || logo?.dirty)" class="text-red-800">* L'image est requise</span>
+      </div>
+    </div>
+      <button *ngIf="isAddMode"  [disabled]="!frmTeam.valid" class="bg-indigo-600 text-white px-4 py-2 rounded-md">Ajouter</button>
+      <button *ngIf="!isAddMode" [disabled]="!frmTeam.valid" class="bg-indigo-600 text-white px-4 py-2 rounded-md">Mettre à jour</button>
+  </form>
+</div>
+

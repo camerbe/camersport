@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Repositories\BaseRepository;
 use App\Repositories\CategorieRepository;
 use App\Repositories\CompetitionRepository;
+use App\Repositories\IMatchSheetRepository;
 use App\Repositories\IRepository;
 use App\Repositories\LiveMatchRepository;
 use App\Repositories\MatchSheetRepository;
@@ -30,7 +31,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(BaseRepository::class,PaysRepository::class);
 
         $this->app->when(MatchSheetService::class)
-            ->needs(IRepository::class)
+            ->needs(IMatchSheetRepository::class)
             ->give(MatchSheetRepository::class);
 
         $this->app->when(TeamService::class)

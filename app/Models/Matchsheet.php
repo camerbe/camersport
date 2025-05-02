@@ -14,7 +14,12 @@ class Matchsheet extends Model
         'location',
         'team_a_id',
         'team_b_id',
-        'formation',
+        'formation_a',
+        'formation_b',
+        'coach_a',
+        'coach_b',
+        'color_a',
+        'color_b',
         'referee',
 
     ];
@@ -22,7 +27,7 @@ class Matchsheet extends Model
     protected $casts = [
         'team_a_data' => 'array',
         'team_b_data' => 'array',
-        'coaching_staff' => 'array',
+
     ];
     public function teamA()
     {

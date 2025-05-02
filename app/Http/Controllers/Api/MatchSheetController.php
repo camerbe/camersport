@@ -136,4 +136,19 @@ class MatchSheetController extends Controller
             "message"=>"MatchSheet non trouvé"
         ],Response::HTTP_NOT_FOUND);
     }
+
+    public function getTeams(){
+        $teams=$this->matchSheetService->getTeams();
+        if ($teams){
+            return response()->json([
+                'success'=>true,
+                'data'=>$teams,
+                'message'=>"Teams trouvé"
+            ],Response::HTTP_OK);
+        }
+        return response()->json([
+            "success"=>false,
+            "message"=>"Teams non trouvé"
+        ],Response::HTTP_NOT_FOUND);
+    }
 }

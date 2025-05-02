@@ -32,6 +32,11 @@ import { SplitterModule } from 'primeng/splitter';
 import { DividerModule } from 'primeng/divider';
 import { AvatarModule } from 'primeng/avatar';
 import { FieldsetModule } from 'primeng/fieldset';
+import { TeamComponent } from './team/team.component';
+import { TeamListComponent } from './team/team-list/team-list.component';
+import { MatchSheetComponent } from './match-sheet/match-sheet.component';
+import { MatchSheetListComponent } from './match-sheet/match-sheet-list/match-sheet-list.component';
+import { ColorPickerModule } from 'primeng/colorpicker';
 
 @NgModule({
   declarations: [
@@ -50,6 +55,10 @@ import { FieldsetModule } from 'primeng/fieldset';
     ButtonLinkComponent,
     ArticleComponent,
     ArticleListComponent,
+    TeamComponent,
+    TeamListComponent,
+    MatchSheetComponent,
+    MatchSheetListComponent,
   ],
   imports: [
     CommonModule,
@@ -68,7 +77,8 @@ import { FieldsetModule } from 'primeng/fieldset';
     SplitterModule,
     DividerModule,
     AvatarModule,
-    FieldsetModule
+    FieldsetModule,
+    ColorPickerModule
 
   ],
   providers: [
