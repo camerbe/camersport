@@ -61,26 +61,43 @@ export class MatchSheetComponent implements OnInit {
       match_date: ['', Validators.required],
       location: ['', Validators.required],
       referee: ['', Validators.required],
-
-      teamA: this.createTeamFormGroup(),
-      teamB: this.createTeamFormGroup()
-    });
-  }
-
-  private createTeamFormGroup(): FormGroup {
-      return this.fb.group({
+      teamA:this.fb.group({
         team_a_id : ['', Validators.required],
-        team_b_id : ['', Validators.required],
         color_a : ['', Validators.required],
-        color_b : ['', Validators.required],
         coach_a: ['', Validators.required],
-        coach_b: ['', Validators.required],
         formation_a: ['', Validators.required],
+        startingXI: this.fb.array(this.createPlayersArray(11)),
+        substitutes: this.fb.array(this.createPlayersArray(5))
+      }),
+      //teamA: this.createTeamFormGroup(),
+      teamB:this.fb.group({
+        team_b_id : ['', Validators.required],
+        color_b : ['', Validators.required],
+        coach_b: ['', Validators.required],
         formation_b: ['', Validators.required],
         startingXI: this.fb.array(this.createPlayersArray(11)),
         substitutes: this.fb.array(this.createPlayersArray(5))
-      });
+      }),
+      team_a_data: (teamA: any) => teamA,
+      team_b_data: (teamB: any) => teamB
+
+    });
   }
+
+  // private createTeamFormGroup(): FormGroup {
+  //     return this.fb.group({
+  //       team_a_id : ['', Validators.required],
+  //       team_b_id : ['', Validators.required],
+  //       color_a : ['', Validators.required],
+  //       color_b : ['', Validators.required],
+  //       coach_a: ['', Validators.required],
+  //       coach_b: ['', Validators.required],
+  //       formation_a: ['', Validators.required],
+  //       formation_b: ['', Validators.required],
+  //       startingXI: this.fb.array(this.createPlayersArray(11)),
+  //       substitutes: this.fb.array(this.createPlayersArray(5))
+  //     });
+  // }
   get match_date(){
     return this.matchForm.get('match_date');
   }
@@ -115,14 +132,25 @@ export class MatchSheetComponent implements OnInit {
   get location(){
     return this.matchForm.get('location');
   }
-
+  get teamAStartingXI(): FormArray {
+    return this.matchForm.get('teamA.startingXI') as FormArray;
+  }
+  get teamBStartingXI(): FormArray {
+    return this.matchForm.get('teamB.startingXI') as FormArray;
+  }
+  // get teamASubstitutes(): FormArray {
+  //   return this.matchForm.get('teamA.substitutes') as FormArray;
+  // }
+  // get teamBSubstitutes(): FormArray {
+  //   return this.matchForm.get('teamB.substitutes') as FormArray;
+  // }
   private createPlayersArray(count: number): FormGroup[] {
     return Array(count).fill(null).map(() => this.createPlayerFormGroup());
   }
 
   private createPlayerFormGroup(): FormGroup {
     return this.fb.group({
-      number: [null, [Validators.required, Validators.min(1), Validators.max(99)]], // Changé à null
+      number: [null, [Validators.required, Validators.min(1), Validators.max(99)]],
       name: ['', Validators.required],
       position: ['', Validators.required],
 
@@ -182,9 +210,55 @@ export class MatchSheetComponent implements OnInit {
   }
 
   submit() {
-    console.log('Form submitted:', this.matchForm.value);
+    //console.log('Form submitted:', this.matchForm.value);
+    if(this.matchForm.invalid) {
+      this.matchForm.markAllAsTouched();
+      Object.entries(this.matchForm.controls).forEach(([key, control]) => {
+        if (control.invalid) {
+          console.warn(`Champ "${key}" est invalide :`, control.errors);
+        }
+      });
+      //console.log('Form errors:', this.matchForm.errors);
+      //console.log('Form invalid!', this.matchForm);
+      return;
+    }
     if (this.matchForm.valid) {
-      console.log('Form submitted:', this.matchForm.value);
+      this.matchForm.patchValue({
+        team_a_data: {
+          ...this.matchForm.value.teamA,
+          startingXI: this.matchForm.value.teamA.startingXI.map((player: any) => ({
+            ...player,
+            position: player.position
+          })),
+          substitutes: this.matchForm.value.teamA.substitutes.map((player: any) => ({
+            ...player,
+            position: player.position
+          }))
+        },
+        team_b_data: {
+          ...this.matchForm.value.teamB,
+          startingXI: this.matchForm.value.teamB.startingXI.map((player: any) => ({
+            ...player,
+            position: player.position
+          })),
+          substitutes: this.matchForm.value.teamB.substitutes.map((player: any) => ({
+            ...player,
+            position: player.position
+          }))
+        }
+      });
+      this.matchSheetService.create(this.matchForm.value).subscribe(
+        (response) => {
+          console.log('Match sheet created successfully:', response);
+          this.router.navigate(['/secured/dashboard/matchsheet/list']);
+        },
+        (error) => {
+          console.error('Error creating match sheet:', error);
+          // Gérer l'erreur ici (afficher un message d'erreur, etc.)
+        }
+      );
+      console.log('Form valid:', this.matchForm.value);
+      //console.log('Form submitted:', this.matchForm.value);
       // Ajoutez ici votre logique de soumission
     }
   }
