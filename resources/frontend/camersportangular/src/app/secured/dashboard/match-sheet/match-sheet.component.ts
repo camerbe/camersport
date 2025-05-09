@@ -1,3 +1,4 @@
+import { TeamData } from './../../../core/models/team-data';
 import { Component, inject, OnInit } from '@angular/core';
 import { Team } from '../../../core/models/team';
 import { MatchSheetDetail } from '../../../core/models/match-sheet-detail';
@@ -7,11 +8,16 @@ import { AuthService } from '../../../services/auth.service';
 import { ExpiredAtService } from '../../../services/expired-at.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TeamDetail } from '../../../core/models/team-detail';
+import { DatePipe } from '@angular/common';
+import { Player } from '../../../core/models/player';
+import { TeamAData } from '../../../core/models/team-a-data';
+import { TeamBData } from '../../../core/models/team-b-data';
 
 @Component({
   selector: 'app-match-sheet',
   templateUrl: './match-sheet.component.html',
-  styleUrl: './match-sheet.component.css'
+  styleUrl: './match-sheet.component.css',
+  providers: [DatePipe]
 })
 export class MatchSheetComponent implements OnInit {
   matchSheet: any;
@@ -21,6 +27,7 @@ export class MatchSheetComponent implements OnInit {
   title:string="Ajout feuille de match";
   link:string="/secured/dashboard/matchsheet/list";
   label:string="Liste";
+  msg!:string;
   isExpired!:boolean;
   lastMatchSheet!: MatchSheetDetail;
   matchForm!: FormGroup;
@@ -54,6 +61,7 @@ export class MatchSheetComponent implements OnInit {
   expiredAtService:ExpiredAtService=inject(ExpiredAtService);
   router:Router=inject(Router);
   activatedRoute:ActivatedRoute=inject(ActivatedRoute);
+  datePipe:DatePipe=inject(DatePipe);
 
   constructor() {
     this.matchForm = this.fb.group({
@@ -61,43 +69,22 @@ export class MatchSheetComponent implements OnInit {
       match_date: ['', Validators.required],
       location: ['', Validators.required],
       referee: ['', Validators.required],
-      teamA:this.fb.group({
-        team_a_id : ['', Validators.required],
-        color_a : ['', Validators.required],
-        coach_a: ['', Validators.required],
-        formation_a: ['', Validators.required],
-        startingXI: this.fb.array(this.createPlayersArray(11)),
-        substitutes: this.fb.array(this.createPlayersArray(5))
-      }),
-      //teamA: this.createTeamFormGroup(),
-      teamB:this.fb.group({
-        team_b_id : ['', Validators.required],
-        color_b : ['', Validators.required],
-        coach_b: ['', Validators.required],
-        formation_b: ['', Validators.required],
-        startingXI: this.fb.array(this.createPlayersArray(11)),
-        substitutes: this.fb.array(this.createPlayersArray(5))
-      }),
-      team_a_data: (teamA: any) => teamA,
-      team_b_data: (teamB: any) => teamB
+      teamA: this.createTeamFormGroup('A'),
+      teamB: this.createTeamFormGroup('B')
 
     });
   }
 
-  // private createTeamFormGroup(): FormGroup {
-  //     return this.fb.group({
-  //       team_a_id : ['', Validators.required],
-  //       team_b_id : ['', Validators.required],
-  //       color_a : ['', Validators.required],
-  //       color_b : ['', Validators.required],
-  //       coach_a: ['', Validators.required],
-  //       coach_b: ['', Validators.required],
-  //       formation_a: ['', Validators.required],
-  //       formation_b: ['', Validators.required],
-  //       startingXI: this.fb.array(this.createPlayersArray(11)),
-  //       substitutes: this.fb.array(this.createPlayersArray(5))
-  //     });
-  // }
+  private createTeamFormGroup(teamPrefix: 'A' | 'B'): FormGroup {
+    return this.fb.group({
+      [`team_${teamPrefix.toLowerCase()}_id`]: ['', Validators.required],
+      [`color_${teamPrefix.toLowerCase()}`]: ['', Validators.required],
+      [`coach_${teamPrefix.toLowerCase()}`]: ['', Validators.required],
+      [`formation_${teamPrefix.toLowerCase()}`]: ['', Validators.required],
+      startingXI: this.fb.array(this.createPlayersArray(11)),
+      substitutes: this.fb.array(this.createPlayersArray(5)),
+    });
+  }
   get match_date(){
     return this.matchForm.get('match_date');
   }
@@ -138,6 +125,13 @@ export class MatchSheetComponent implements OnInit {
   get teamBStartingXI(): FormArray {
     return this.matchForm.get('teamB.startingXI') as FormArray;
   }
+
+  get teamASubs(): FormArray {
+    return this.matchForm.get('teamA.substitutes') as FormArray;
+  }
+  get teamBSubs(): FormArray {
+    return this.matchForm.get('teamB.substitutes') as FormArray;
+  }
   // get teamASubstitutes(): FormArray {
   //   return this.matchForm.get('teamA.substitutes') as FormArray;
   // }
@@ -165,7 +159,84 @@ export class MatchSheetComponent implements OnInit {
     if(this.isExpired) this.authSevice.logout();
     this.getTeams();
     //this.getLastMatchSheet();
+    if (!this.isAddMode) {
+      this.title="Mise à jour de la feuille de match";
+      this.matchSheetService.show(this.id).subscribe({
+        next: (data) => {
+          const resData = data["data"] as MatchSheetDetail;
+          const teamAData:TeamAData = resData.team_a_data ;
+          const teamBData:TeamBData = resData.team_b_data ;
+          const playerAData: Player[] = teamAData.startingXI;
+          const playerBData: Player[] = teamBData.startingXI;
+          const substitutesA: Player[] = teamAData.substitutes;
+          const substitutesB: Player[] = teamBData.substitutes;
+
+
+          //console.log(teamBData);
+          this.setPlayersArray(this.teamAStartingXI, playerAData);
+          this.setSubstitutesArray(this.teamASubs, substitutesA);
+          this.setPlayersArray(this.teamBStartingXI, playerBData);
+          this.setSubstitutesArray(this.teamBSubs, substitutesB);
+
+          //console.log(`resData.team_a_data=${resData.team_a_data}`);
+          this.matchForm.patchValue({
+            match_date:  this.datePipe.transform(resData.match_date,'dd/MM/yyyy HH:mm') ,
+            location: resData.location,
+            referee: resData.referee,
+
+            teamB: {
+              coach_b: resData.coach_b,
+              formation_b:resData.formation_b,
+              team_b_id: resData.team_b_id,
+              color_b: resData.color_b,
+
+
+            },
+            teamA: {
+              coach_a: resData.coach_a,
+              formation_a:resData.formation_a,
+              team_a_id: resData.team_a_id,
+              color_a: resData.color_a,
+
+            },
+
+
+          });
+          console.log(`${resData.formation_a}`);
+        },
+        error: (err) => console.log(err.error)
+      });
+      this
+    }
+
   }
+
+  setPlayersArray(array: FormArray, players: Player[] | undefined): void {
+    array.clear();
+    if (!players || !Array.isArray(players)) return; // ✅ protection anti-erreur
+
+    players.forEach(player => {
+      array.push(this.fb.group({
+        number: [player.number],
+        name: [player.name],
+        position: [player.position]
+      }));
+    });
+  }
+  setSubstitutesArray(array: FormArray, players: Player[] | undefined): void {
+    array.clear();
+    if (!players || !Array.isArray(players)) return; // ✅ protection anti-erreur
+
+    players.forEach(player => {
+      array.push(this.fb.group({
+        number: [player.number],
+        name: [player.name],
+        position: [player.position]
+      }));
+    });
+  }
+
+
 
   get teamAControls(): FormGroup[] {
     return (this.matchForm.get('teamA.startingXI') as FormArray).controls as FormGroup[];
@@ -211,56 +282,87 @@ export class MatchSheetComponent implements OnInit {
 
   submit() {
     //console.log('Form submitted:', this.matchForm.value);
-    if(this.matchForm.invalid) {
-      this.matchForm.markAllAsTouched();
-      Object.entries(this.matchForm.controls).forEach(([key, control]) => {
-        if (control.invalid) {
-          console.warn(`Champ "${key}" est invalide :`, control.errors);
-        }
-      });
-      //console.log('Form errors:', this.matchForm.errors);
-      //console.log('Form invalid!', this.matchForm);
-      return;
+    if(this.isAddMode){
+      if(this.matchForm.invalid) {
+        this.matchForm.markAllAsTouched();
+        Object.entries(this.matchForm.controls).forEach(([key, control]) => {
+          if (control.invalid) {
+            console.warn(`Champ "${key}" est invalide :`, control.errors);
+          }
+        });
+        //console.log('Form errors:', this.matchForm.errors);
+        //console.log('Form invalid!', this.matchForm);
+        return;
+      }
+      if (this.matchForm.valid) {
+        this.matchForm.patchValue({
+          team_a_data: {
+            ...this.matchForm.value.teamA,
+            startingXI: this.matchForm.value.teamA.startingXI.map((player: any) => ({
+              ...player,
+              position: player.position
+            })),
+            substitutes: this.matchForm.value.teamA.substitutes.map((player: any) => ({
+              ...player,
+              position: player.position
+            }))
+          },
+          team_b_data: {
+            ...this.matchForm.value.teamB,
+            startingXI: this.matchForm.value.teamB.startingXI.map((player: any) => ({
+              ...player,
+              position: player.position
+            })),
+            substitutes: this.matchForm.value.teamB.substitutes.map((player: any) => ({
+              ...player,
+              position: player.position
+            }))
+          }
+        });
+        this.matchSheetService.create(this.matchForm.value)
+          .subscribe({
+            next: (response) => {
+              this.msg=response.message;
+              this.router.navigate(['/secured/dashboard/matchsheet/list']);
+            },
+            error: (error) => {
+              this.msg=error.error.message;
+              console.error('Error creating match sheet:', error);
+              // Gérer l'erreur ici (afficher un message d'erreur, etc.)
+            }
+          });
+        console.log('Form valid:', this.matchForm.value);
+        //console.log('Form submitted:', this.matchForm.value);
+        // Ajoutez ici votre logique de soumission
+      }
     }
-    if (this.matchForm.valid) {
-      this.matchForm.patchValue({
-        team_a_data: {
-          ...this.matchForm.value.teamA,
-          startingXI: this.matchForm.value.teamA.startingXI.map((player: any) => ({
-            ...player,
-            position: player.position
-          })),
-          substitutes: this.matchForm.value.teamA.substitutes.map((player: any) => ({
-            ...player,
-            position: player.position
-          }))
-        },
-        team_b_data: {
-          ...this.matchForm.value.teamB,
-          startingXI: this.matchForm.value.teamB.startingXI.map((player: any) => ({
-            ...player,
-            position: player.position
-          })),
-          substitutes: this.matchForm.value.teamB.substitutes.map((player: any) => ({
-            ...player,
-            position: player.position
-          }))
-        }
-      });
-      this.matchSheetService.create(this.matchForm.value).subscribe(
-        (response) => {
-          console.log('Match sheet created successfully:', response);
-          this.router.navigate(['/secured/dashboard/matchsheet/list']);
-        },
-        (error) => {
-          console.error('Error creating match sheet:', error);
-          // Gérer l'erreur ici (afficher un message d'erreur, etc.)
-        }
-      );
-      console.log('Form valid:', this.matchForm.value);
-      //console.log('Form submitted:', this.matchForm.value);
-      // Ajoutez ici votre logique de soumission
+    else{
+      if(this.matchForm.invalid) {
+        this.matchForm.markAllAsTouched();
+        Object.entries(this.matchForm.controls).forEach(([key, control]) => {
+          if (control.invalid) {
+            console.warn(`Champ "${key}" est invalide :`, control.errors);
+          }
+        });
+        //console.log('Form errors:', this.matchForm.errors);
+        //console.log('Form invalid!', this.matchForm);
+        return;
+      }
+      if (this.matchForm.valid) {
+        this.matchSheetService.patch(this.id,this.matchForm.value).subscribe({
+          next: (response) => {
+            this.msg=response.message;
+            //console.log('Match sheet updated successfully:', response);
+            this.router.navigate(['/secured/dashboard/matchsheet/list']);
+          },
+          error: (error) => {
+            console.error('Error updating match sheet:', error);
+            // Gérer l'erreur ici (afficher un message d'erreur, etc.)
+          }
+        })
+      }
     }
+
   }
 
 }

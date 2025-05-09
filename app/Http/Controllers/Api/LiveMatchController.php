@@ -5,19 +5,20 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RequestLiveMatch;
 use App\Repositories\LiveMatchRepository;
+use App\Services\LiveMatchService;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class LiveMatchController extends Controller
 {
-    protected $livematchRepository;
+    protected $livematchService;
 
     /**
      * @param $livematchRepository
      */
-    public function __construct(LiveMatchRepository $livematchRepository)
+    public function __construct(LiveMatchService $livematchService)
     {
-        $this->livematchRepository = $livematchRepository;
+        $this->livematchService = $livematchService;
     }
 
     /**
@@ -26,7 +27,7 @@ class LiveMatchController extends Controller
     public function index()
     {
         //
-        $livematchs=$this->livematchRepository->findAll();
+        $livematchs=$this->livematchService->all();
         if ($livematchs){
             return response()->json([
                 'success'=>true,
@@ -46,7 +47,7 @@ class LiveMatchController extends Controller
     public function store(RequestLiveMatch $request)
     {
         //
-        $livematch=$this->livematchRepository->create($request->all());
+        $livematch=$this->livematchService->create($request->all());
 
         if ($livematch){
             return response()->json([
@@ -64,10 +65,10 @@ class LiveMatchController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(int $id)
     {
         //
-        $livematch=$this->livematchRepository->findById($id);
+        $livematch=$this->livematchService->find($id);
         if($livematch){
             return response()->json([
                 "success"=>true,
@@ -88,7 +89,7 @@ class LiveMatchController extends Controller
     {
         //
 
-        $livematch=$this->livematchRepository->update($request->all(),$id);
+        $livematch=$this->livematchService->update($request->all(),$id);
 
         if ($livematch){
             return response()->json([
@@ -109,7 +110,7 @@ class LiveMatchController extends Controller
     public function destroy(int $id)
     {
         //
-        $livematch=$this->livematchRepository->delete($id);
+        $livematch=$this->livematchService->delete($id);
         if($livematch>0){
             return response()->json([
                 "success"=>true,
@@ -125,6 +126,19 @@ class LiveMatchController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-
+    public function getLiveMatch(int $matchSheet_id)
+    {
+        $livematch=$this->livematchService->getLiveMatch($matchSheet_id);
+        if($livematch>0){
+            return response()->json([
+                "success"=>true,
+                "message"=>"LiveMatch trouvé"
+            ],Response::HTTP_OK);
+        }
+        return response()->json([
+            "success"=>false,
+            "message"=>"Une erreur s'est produite..."
+        ],Response::HTTP_NOT_FOUND);
+    }
 
 }

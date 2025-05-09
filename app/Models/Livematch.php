@@ -12,11 +12,19 @@ class Livematch extends Model
     protected $table = 'livematchs';
 
     protected $fillable = [
-        'team1',
-        'team2',
-        'event_type'
+        'matchsheet_id', 'team_id', 'player', 'type',
+        'description', 'event_minute', 'status','player'
     ];
     protected $casts = [
-        'event_type' => 'json',
+        'player' => 'array',
     ];
+    public function matchsheet()
+    {
+        return $this->belongsTo(MatchSheet::class);
+    }
+
+    public function team()
+    {
+        return $this->belongsTo(Team::class);
+    }
 }

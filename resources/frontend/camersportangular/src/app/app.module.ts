@@ -9,12 +9,14 @@ import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-br
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { LOCALE_ID } from '@angular/core';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 registerLocaleData(localeFr);
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PageNotFoundComponent
 
   ],
   imports: [

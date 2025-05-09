@@ -52,7 +52,7 @@ const routes: Routes = [
       },
       {path:'matchsheet',component:MatchSheetComponent},
       {path:'matchsheet/list',component:MatchSheetListComponent},
-      { path : "matchsheet/show/:id",component:TeamComponent,
+      { path : "matchsheet/show/:id",component:MatchSheetComponent,
         resolve : { matchsheet : matchSheetResolver },
       },
       {path:'live',component:LiveComponent},

@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Repositories\BaseRepository;
 use App\Repositories\CategorieRepository;
 use App\Repositories\CompetitionRepository;
+use App\Repositories\ILiveMatchRrepository;
 use App\Repositories\IMatchSheetRepository;
 use App\Repositories\IRepository;
 use App\Repositories\LiveMatchRepository;
@@ -12,6 +13,7 @@ use App\Repositories\MatchSheetRepository;
 use App\Repositories\PaysRepository;
 use App\Repositories\TeamRepository;
 use App\Repositories\UserRepository;
+use App\Services\LiveMatchService;
 use App\Services\MatchSheetService;
 use App\Services\TeamService;
 use Illuminate\Support\ServiceProvider;
@@ -25,10 +27,13 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         //
         $this->app->bind(BaseRepository::class,UserRepository::class);
-        $this->app->bind(BaseRepository::class,LiveMatchRepository::class);
         $this->app->bind(BaseRepository::class,CompetitionRepository::class);
         $this->app->bind(BaseRepository::class,CategorieRepository::class);
         $this->app->bind(BaseRepository::class,PaysRepository::class);
+
+        $this->app->when(LiveMatchService::class)
+                ->needs(ILiveMatchRrepository::class)
+                ->give(LiveMatchRepository::class);
 
         $this->app->when(MatchSheetService::class)
             ->needs(IMatchSheetRepository::class)

@@ -21,6 +21,8 @@ class Matchsheet extends Model
         'color_a',
         'color_b',
         'referee',
+        'team_a_data',
+        'team_b_data',
 
     ];
 
@@ -40,5 +42,9 @@ class Matchsheet extends Model
     }
     public static function last(){
         return static::latest()->first();
+    }
+    public function liveEvents()
+    {
+        return $this->hasMany(Livematch::class);
     }
 }

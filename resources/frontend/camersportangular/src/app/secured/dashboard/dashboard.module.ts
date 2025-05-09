@@ -37,6 +37,7 @@ import { TeamListComponent } from './team/team-list/team-list.component';
 import { MatchSheetComponent } from './match-sheet/match-sheet.component';
 import { MatchSheetListComponent } from './match-sheet/match-sheet-list/match-sheet-list.component';
 import { ColorPickerModule } from 'primeng/colorpicker';
+import { MessageModule } from 'primeng/message';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,8 @@ import { ColorPickerModule } from 'primeng/colorpicker';
     DividerModule,
     AvatarModule,
     FieldsetModule,
-    ColorPickerModule
+    ColorPickerModule,
+    MessageModule,
 
   ],
   providers: [

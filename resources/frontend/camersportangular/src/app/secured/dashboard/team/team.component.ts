@@ -119,7 +119,7 @@ export class TeamComponent implements OnInit {
     this.expiredAtService.state$.subscribe(state=>this.isExpired=state);
     if(this.isExpired) this.authSevice.logout();
     if(!this.isAddMode){
-          this.title="mise à jour de catégorie";
+          this.title="mise à jour de Team";
 
           this.teamService.show(this.id)
             .pipe(first())
