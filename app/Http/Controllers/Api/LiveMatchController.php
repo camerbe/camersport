@@ -44,7 +44,7 @@ class LiveMatchController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(RequestLiveMatch $request)
+    public function store(Request $request)
     {
         //
         $livematch=$this->livematchService->create($request->all());
@@ -69,6 +69,7 @@ class LiveMatchController extends Controller
     {
         //
         $livematch=$this->livematchService->find($id);
+        //dd($livematch);
         if($livematch){
             return response()->json([
                 "success"=>true,
@@ -126,13 +127,43 @@ class LiveMatchController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getLiveMatch(int $matchSheet_id)
+    public function getLiveMatch($matchSheet_id)
     {
+
         $livematch=$this->livematchService->getLiveMatch($matchSheet_id);
-        if($livematch>0){
+        if($livematch){
             return response()->json([
                 "success"=>true,
+                'data'=>$livematch,
                 "message"=>"LiveMatch trouvé"
+            ],Response::HTTP_OK);
+        }
+        return response()->json([
+            "success"=>false,
+            "message"=>"Une erreur s'est produite..."
+        ],Response::HTTP_NOT_FOUND);
+    }
+    public function getTeams(){
+        $teams=$this->livematchService->getTeams();
+        if($teams){
+            return response()->json([
+                "success"=>true,
+                'data'=>$teams,
+                "message"=>"Team trouvé"
+            ],Response::HTTP_OK);
+        }
+        return response()->json([
+            "success"=>false,
+            "message"=>"Une erreur s'est produite..."
+        ],Response::HTTP_NOT_FOUND);
+    }
+    public function getLastMatchSheet(){
+        $matchSheet=$this->livematchService->getLastMatchSheet();
+        if($matchSheet){
+            return response()->json([
+                "success"=>true,
+                'data'=>$matchSheet,
+                "message"=>"MatchSheet trouvé"
             ],Response::HTTP_OK);
         }
         return response()->json([

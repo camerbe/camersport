@@ -6,19 +6,20 @@ use App\Helpers\ImageHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Repositories\ArticleRepository;
+use App\Services\ArticleService;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ArticleController extends Controller
 {
-    protected $articleRepository;
+    protected $articleService;
 
     /**
      * @param $articleRepository
      */
-    public function __construct(ArticleRepository $articleRepository)
+    public function __construct(ArticleService $articleService)
     {
-        $this->articleRepository = $articleRepository;
+        $this->articleService = $articleService;
     }
 
     /**
@@ -27,7 +28,7 @@ class ArticleController extends Controller
     public function index()
     {
         //
-        $articles=$this->articleRepository->findAll();
+        $articles=$this->articleService->all();
         if ($articles){
             return response()->json([
                 'success'=>true,
@@ -48,7 +49,7 @@ class ArticleController extends Controller
     {
 
         //
-        $article=$this->articleRepository->create($request->all());
+        $article=$this->articleService->create($request->all());
         $image=ImageHelper::extractImgSrc($request->image);
         //dd($image);
         if ($article){
@@ -80,7 +81,7 @@ class ArticleController extends Controller
     public function show(string $id)
     {
         //
-        $article=$this->articleRepository->findById($id);
+        $article=$this->articleService->find($id);
         if($article){
             return response()->json([
                 "success"=>true,
@@ -101,21 +102,24 @@ class ArticleController extends Controller
     {
         //
 
-        $article=$this->articleRepository->update($request->all(),$id);
+        $article=$this->articleService->update($request->all(),$id);
         $image=ImageHelper::extractImgSrc($request->image);
         if ($article){
-            $media =$article->getMedia('article')->firstWhere('name',$article->slug);
-            if($media){
+
+            $media =$article->getMedia('article')->where('name',$article->slug)->first();
+
+            if($media) {
+                //dd($media);
                 $media->delete();
-                $parsedUrl = parse_url($image);
-                $path = $parsedUrl['path'];
-                $filePath = str_replace(url('/storage'), 'storage', $path);
-                $article->addMedia(public_path($filePath))
-                    ->preservingOriginal()
-                    ->withResponsiveImages()
-                    ->usingName($article->slug)
-                    ->toMediaCollection('article');
             }
+            $parsedUrl = parse_url($image);
+            $path = $parsedUrl['path'];
+            $filePath = str_replace(url('/storage'), 'storage', $path);
+            $article->addMedia(public_path($filePath))
+                ->preservingOriginal()
+                ->withResponsiveImages()
+                ->usingName($article->slug)
+                ->toMediaCollection('article');
             return response()->json([
                 'success'=>true,
                 'data'=>$article,
@@ -134,7 +138,7 @@ class ArticleController extends Controller
     public function destroy(int $id)
     {
         //
-        $article=$this->articleRepository->delete($id);
+        $article=$this->articleService->delete($id);
         if($article>0){
             return response()->json([
                 "success"=>true,
@@ -152,8 +156,10 @@ class ArticleController extends Controller
      */
 
     public function getArticleBySlug($slug){
-        $article=$this->articleRepository->getArticleBySlug($slug);
+        $article=$this->articleService->getArticleBySlug($slug);
         if($article){
+            //$mediaUrl = $article->getFirstMedia('article');
+
             return response()->json([
                 "success"=>true,
                 "data"=>$article,
@@ -171,7 +177,7 @@ class ArticleController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function getArticleByUserId($user_id){
-        $articles=$this->articleRepository->getArticleByUserId($user_id);
+        $articles=$this->articleService->getArticleByUserId($user_id);
         if($articles){
             return response()->json([
                 "success"=>true,
@@ -189,7 +195,7 @@ class ArticleController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function getCategories(){
-        $categories=$this->articleRepository->getCategories();
+        $categories=$this->articleService->getCategories();
         if ($categories){
             return response()->json([
                 'success'=>true,
@@ -207,7 +213,7 @@ class ArticleController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function getCompetitions(){
-        $competitions=$this->articleRepository->getCompetitions();
+        $competitions=$this->articleService->getCompetitions();
         if ($competitions){
             return response()->json([
                 'success'=>true,
@@ -221,7 +227,7 @@ class ArticleController extends Controller
         ],Response::HTTP_NOT_FOUND);
     }
     public function getCountries(){
-        $countries=$this->articleRepository->getPays();
+        $countries=$this->articleService->getPays();
         if ($countries){
             return response()->json([
                 'success'=>true,
@@ -232,6 +238,35 @@ class ArticleController extends Controller
         return response()->json([
             "success"=>false,
             "message"=>"Pas de pays trouvé"
+        ],Response::HTTP_NOT_FOUND);
+    }
+
+    public function publicIndex(){
+        $articles=$this->articleService->publicIndex();
+        if ($articles){
+            return response()->json([
+                'success'=>true,
+                'data'=>$articles,
+                'message'=>"Liste des articles"
+            ],Response::HTTP_OK);
+        }
+        return response()->json([
+            "success"=>false,
+            "message"=>"Pas d'article trouvé"
+        ],Response::HTTP_NOT_FOUND);
+    }
+    public function getArticleByCompetition($competitionId){
+        $articles=$this->articleService->getArticleByCompetition($competitionId);
+        if ($articles){
+            return response()->json([
+                'success'=>true,
+                'data'=>$articles,
+                'message'=>"Liste des articles"
+            ],Response::HTTP_OK);
+        }
+        return response()->json([
+            "success"=>false,
+            "message"=>"Pas d'article trouvé"
         ],Response::HTTP_NOT_FOUND);
     }
 

@@ -13,9 +13,9 @@ import Swal from 'sweetalert2';
   styleUrl: './categorie-list.component.css'
 })
 export class CategorieListComponent implements OnInit {
-  title:string="Liste des compétitions";
+  title:string="Liste des categories";
   isExpired!:boolean;
-  link:string="/dashboard/competition";
+  link:string="/secured/dashboard/categorie";
   label:string="+ Créer";
   categories:CategorieDetail[]=[];
   category:Categorie[]=[];

@@ -18,7 +18,7 @@ class PaysResource extends JsonResource
             'code'=>$this->code,
             'pays'=>$this->pays,
             'country'=>$this->country,
-            'code3'=>$this->code2,
+            'code3'=>$this->code3,
 
         ];
     }

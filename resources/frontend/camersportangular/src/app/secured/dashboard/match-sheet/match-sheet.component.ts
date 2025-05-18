@@ -65,7 +65,6 @@ export class MatchSheetComponent implements OnInit {
 
   constructor() {
     this.matchForm = this.fb.group({
-
       match_date: ['', Validators.required],
       location: ['', Validators.required],
       referee: ['', Validators.required],
@@ -206,7 +205,7 @@ export class MatchSheetComponent implements OnInit {
         },
         error: (err) => console.log(err.error)
       });
-      this
+
     }
 
   }

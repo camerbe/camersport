@@ -31,6 +31,8 @@ class Article extends Model  implements HasMedia
         'pays_code',
 
     ];
+    protected $with = ['media'];
+
 
     protected static function boot(){
         parent::boot();
@@ -54,7 +56,6 @@ class Article extends Model  implements HasMedia
             ->fit(Fit::Contain, 100, 100)
             ->nonQueued();
     }*/
-
     public function registerMediaCollections():void{
         $this->addMediaCollection('article')
             ->registerMediaConversions(function(Media $media){
@@ -67,6 +68,18 @@ class Article extends Model  implements HasMedia
             ->addMediaCollection('article')
             ->withResponsiveImages();
     }
+
+    public function getImagesAttribute()
+    {
+        return $this->getMedia('article')->map(function ($media) {
+            return [
+                'original' => $media->getUrl(),
+                'thumb' => $media->getUrl('thumb'), // Conversion
+                'properties' => $media->custom_properties,
+                'width' => $media->getCustomProperty('width'),
+            ];
+        });
+    }
     public static function last(){
         return static::latest()->first();
     }
@@ -74,7 +87,7 @@ class Article extends Model  implements HasMedia
         return $this->belongsTo(User::class);
     }
     public function bled():BelongsTo{
-        return $this->belongsTo(Pays::class,'pays_code','code' );
+        return $this->belongsTo(Pays::class,'pays_code','code3' );
     }
     public function categorie():BelongsTo{
         return $this->belongsTo(Categorie::class);

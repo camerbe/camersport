@@ -2,6 +2,7 @@ import { CategorieDetail } from "./categorie-detail";
 import { PaysDetail } from "./pays-detail";
 import { User } from "./user";
 import { UserDetails } from "./user-details";
+import { ImageDetail } from "./image-detail"; // Ensure this file exists and defines ImageDetail
 
 export interface ArticleDetail {
   id:number;
@@ -14,9 +15,11 @@ export interface ArticleDetail {
   chapeau:string;
   article:string;
   image:string;
-  date_parution:string;
+  date_parution:Date;
   pays_code:string;
   user:UserDetails;
   pays:PaysDetail;
-  categorie:CategorieDetail;
+  images: ImageDetail[];
+  categorie: CategorieDetail;
+
 }

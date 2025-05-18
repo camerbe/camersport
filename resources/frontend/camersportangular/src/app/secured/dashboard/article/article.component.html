@@ -54,15 +54,14 @@
         <p-calendar
           formControlName="date_parution"
           class="w-full"
+          dateFormat="dd/mm/yy"
           [hourFormat]="'24'"
           [showTime]="true"
-          [locale]="fr"
           [showIcon]="true"
-          [ngClass]="{
-            'border-2 border-rose-600 rounded': date_parution?.invalid && (date_parution?.touched || date_parution?.dirty)
-          }"
-          dateFormat="dd/mm/yy"
-          showIcon="true"
+          [placeholder]="'Choix d\'une date'"
+          [showButtonBar]="true"
+          [showIcon]="true"
+          [showTime]="true"
         ></p-calendar>
         <div *ngIf="date_parution?.invalid && (date_parution?.touched || date_parution?.dirty)" class="text-red-800 text-sm">
           * La date est requise
@@ -151,8 +150,8 @@
         <span *ngIf="image?.invalid && (image?.touched || image?.dirty)" class="text-red-800">* L'image est requise</span>
       </div>
     </div>
-      <button *ngIf="isAddMode" [disabled]="!frmArticle.valid" class="bg-indigo-600 text-white px-4 py-2 rounded">Ajouter</button>
-      <button *ngIf="!isAddMode" [disabled]="!frmArticle.valid" class="bg-indigo-600 text-white px-4 py-2 rounded">Mettre à jour</button>
+      <button pButton *ngIf="isAddMode" [disabled]="!frmArticle.valid" class="bg-indigo-600 text-white px-4 py-2 rounded">Ajouter</button>
+      <button pButton *ngIf="!isAddMode" [disabled]="!frmArticle.valid" class="bg-indigo-600 text-white px-4 py-2 rounded">Mettre à jour</button>
   </form>
 </div>
 

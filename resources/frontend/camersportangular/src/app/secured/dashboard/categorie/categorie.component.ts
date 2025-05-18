@@ -25,7 +25,7 @@ export class CategorieComponent implements OnInit{
 
 
   title:string="ajout catégorie";
-  link:string="/dashboard/categorie/list";
+  link:string="/secured/dashboard/categorie/list";
   label:string="Liste";
   isExpired!:boolean;
   frmCategorie!:FormGroup;
@@ -51,7 +51,7 @@ export class CategorieComponent implements OnInit{
     if(this.isAddMode){
       this.categorieService.create(this.frmCategorie.value)
         .subscribe({
-          next:()=>this.router.navigate(['/dashboard/categorie/list']),
+          next:()=>this.router.navigate(['/secured/dashboard/categorie/list']),
           error:(error)=>console.log(error)
         });
     }
@@ -59,7 +59,7 @@ export class CategorieComponent implements OnInit{
 
       this.categorieService.patch(this.id,this.frmCategorie.value)
         .subscribe({
-          next:()=>this.router.navigate(['/dashboard/categorie/list'])
+          next:()=>this.router.navigate(['/secured/dashboard/categorie/list'])
         });
     }
 

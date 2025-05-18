@@ -15,7 +15,7 @@ import { first } from 'rxjs';
 })
 export class CompetitionComponent implements OnInit {
   title:string="Ajout competition";
-  link:string="/dashboard/competition/list";
+  link:string="/secured/dashboard/competition/list";
   label:string="Liste";
   isExpired!:boolean;
   isAddMode!:boolean;
@@ -45,7 +45,7 @@ export class CompetitionComponent implements OnInit {
     if(this.isAddMode){
       this.competitionService.create(this.frmCompetition.value)
         .subscribe({
-          next:()=>this.router.navigate(['/dashboard/competition/list']),
+          next:()=>this.router.navigate(['/secured/dashboard/competition/list']),
           error:(error)=>console.log(error)
         });
     }
@@ -53,7 +53,7 @@ export class CompetitionComponent implements OnInit {
 
       this.competitionService.patch(this.id,this.frmCompetition.value)
         .subscribe({
-          next:()=>this.router.navigate(['/dashboard/competition/list'])
+          next:()=>this.router.navigate(['/secured/dashboard/competition/list'])
         });
     }
   }

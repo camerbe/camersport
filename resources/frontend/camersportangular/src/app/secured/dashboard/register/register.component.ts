@@ -15,7 +15,7 @@ import { UserDetails } from '../../../core/models/user-details';
 export class RegisterComponent implements OnInit {
   frmRegister!:FormGroup;
   title:string="ajout d'administrateur";
-  link:string="/dashboard/register/list";
+  link:string="/secured/dashboard/register/list";
   label:string="Liste";
   isExpired!:boolean;
   isAddMode!:boolean;

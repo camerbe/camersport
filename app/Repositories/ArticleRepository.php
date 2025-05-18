@@ -11,33 +11,41 @@ use App\Models\Competition;
 use App\Models\Pays;
 use Html2Text\Html2Text;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use function PHPUnit\Framework\isNull;
 
-class ArticleRepository extends BaseRepository
+class ArticleRepository extends Repository implements IArticleRepository
 {
 
     public function __construct(Article $article)
     {
-        $this->model=$article;
+        parent::__construct($article);
     }
 
     /**
      * @param $id
      * @return ArticleResource
      */
-    public function findById($id)
+    public function find($id)
     {
-        return new ArticleResource(parent::findById($id)) ;
+        return new ArticleResource(parent::find($id)) ;
     }
 
-    /**
-     * @param $slug
-     * @return ArticleResource
-     */
-    public function findBySlug($slug)
+    public function all($orderBy = ['date_parution' => 'desc'])
     {
-        return new ArticleResource(Article::find($slug)) ;
+        $cacheKey='article-list';
+        $duration=now()->addMonth(1);
+        $articles = Cache::remember($cacheKey, $duration, function () {
+            return Article::with(['media'])->where('date_parution', '<=', now())
+                ->take(100)
+                ->get();
+        });
+        return ArticleResource::collection($articles);
+
+
     }
+
 
     /**
      * @param $id
@@ -49,58 +57,62 @@ class ArticleRepository extends BaseRepository
     }
 
     /**
-     * @param array $input
+     * @param array $data
      * @param $id
      * @return mixed
      */
-    public function update(array $input, $id)
+    public function update($id,array $data)
     {
-        $currentArticle=parent::findById($id);
-        $input['titre']=isset($input['titre'])? Str::title($input['titre']):$currentArticle->titre;
-        $input['slug']=$this->addSlug($input['pays_code'],$input['titre']);
-        $input["motclef"]=trim($input["motclef"]).",".$input["hashtag"];
-        unset($input["competition_id"]);
-        return parent::update($input, $id);
+        $currentArticle=parent::find($id);
+        $data['titre']=isset($data['titre'])? Str::title($data['titre']):$currentArticle->titre;
+        $data['slug']=$this->addSlug($data['pays_code'],$data['titre']);
+        $data["motclef"]=trim($data["motclef"]).",".$data["hashtag"];
+        $data["date_parution"]=isset($data['date_parution']) ?
+            Carbon::parse($data["date_parution"])->format('Y-m-d H:i:s')
+            :$currentArticle->date_parution;
+        unset($data["competition_id"]);
+        unset($data["hashtag"]);
+        return parent::update($id, $data);
     }
 
     /**
-     * @param array $input
+     * @param array $data
      * @return ArticleResource
      */
-    public function create(array $input)
+    public function create(array $data)
     {
 
-        $html=new Html2Text($input['article']);
-        $input['titre']=Str::title($input['titre']);
-        $input['slug']=$this->addSlug($input['pays_code'],$input['titre']);
-        $input['auteur']=Str::title($input['auteur']);
-        $input['source']=Str::title($input['source']);
-        $input['chapeau']=Str::of($html->getText())->limit(157);
-        $input["date_parution"]=Carbon::parse($input["date_parution"])->format('Y-m-d H:i:s');
-        $input["motclef"]=trim($input["motclef"]).",".$input["hashtag"];
+        $html=new Html2Text($data['article']);
+        $data['titre']=Str::title($data['titre']);
+        $data['slug']=$this->addSlug($data['pays_code'],$data['titre']);
+        $data['auteur']=Str::title($data['auteur']);
+        $data['source']=Str::title($data['source']);
+        $data['chapeau']=Str::of($html->getText())->limit(157);
+        $data["date_parution"]=Carbon::parse($data["date_parution"])->format('Y-m-d H:i:s');
+        $data["motclef"]=trim($data["motclef"]).",".$data["hashtag"];
 
-        $competition=Competition::find($input["competition_id"]);
+        $competition=Competition::find($data["competition_id"]);
 
         if(is_null($competition->categories())){
-            $competition->categories()->attach($input["categorie_id"]);
+            $competition->categories()->attach($data["categorie_id"]);
         }
         else{
-            $competition->categories()->wherePivot('categorie_id',$input["categorie_id"])
-                ->first() ?? $competition->categories()->attach($input["categorie_id"]);;
+            $competition->categories()->wherePivot('categorie_id',$data["categorie_id"])
+                ->first() ?? $competition->categories()->attach($data["categorie_id"]);;
         }
 
-        unset($input["competition_id"]);
-        return new ArticleResource(parent::create($input));
+        unset($data["competition_id"]);
+        return new ArticleResource(parent::create($data));
     }
 
     /**
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function findAll(){
+    /*public function findAll(){
         $articles=Article::where('date_parution','<=',now())
             ->paginate();
        return ArticleResource::collection($articles);
-    }
+    }*/
 
 
     public function getCategories(){
@@ -136,14 +148,15 @@ class ArticleRepository extends BaseRepository
 
     }
     public function getArticleBySlug($slug){
-        $article= Article::where('slug',$slug)->first();
-        //dd($article);
-        $article->hit++;
-        $article->save();
+        $article= Article::with(['bled','categorie'])->where('slug', $slug)->first();
+        if($article){
+            $article->hit++;
+            $article->save();
+        }
         return new  ArticleResource($article);
     }
-    public function getArticleByUserId($userid){
-        $articles=  Article::where("user_id",$userid)->orderByDesc('date_parution')->paginate();
+    public function getArticleByUserId($userId){
+        $articles=  Article::where("user_id",$userId)->orderByDesc('date_parution')->paginate();
         return ArticleResource::collection($articles);
     }
     public function getScheduledArticle(){
@@ -154,4 +167,45 @@ class ArticleRepository extends BaseRepository
         return Pays::orderBy('pays','asc')->get();
     }
 
+    function publicIndex()
+    {
+        //Cache::forget('article-list');
+        $cacheKey = 'article-list';
+        $articles=Cache::get($cacheKey , collect());
+
+        if(!isNull($articles)){
+            //dd($articles);
+            return ArticleResource::collection($articles);
+        }
+        return ArticleResource::collection($this->all($orderBy = ['date_parution' => 'desc']));
+
+
+    }
+    function getArticleByCompetition(int $competitionId)
+    {
+        //\DB::enableQueryLog();
+        $articles = Article::where('date_parution', '<=', now())
+            ->orderByDesc('date_parution')
+            ->leftJoin('pays', 'articles.pays_code', '=', 'pays.code3')
+            ->leftJoin('users', 'articles.user_id', '=', 'users.id')
+            ->leftJoin('categories', 'articles.categorie_id', '=', 'categories.id')
+            ->leftJoin('categorie_competition', 'categories.id', '=', 'categorie_competition.categorie_id')
+            ->leftJoin('competitions', 'categorie_competition.competition_id', '=', 'competitions.id')
+            ->where('categorie_competition.competition_id', $competitionId)
+            ->select('articles.*')
+            ->take(6)
+            ->get();
+
+
+        /*$articles=Article::with(['user','bled','categorie.competitions'])
+                ->where('date_parution','<=',now())
+                ->whereHas('categorie.competitions',function ($query) use ($competitionId) {
+                    $query->where('competitions.id',$competitionId);
+                })
+                ->take(6)
+                ->get();*/
+
+        return ArticleResource::collection($articles);
+        //dd(\DB::getQueryLog());
+    }
 }

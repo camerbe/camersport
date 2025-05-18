@@ -12,7 +12,7 @@ class Livematch extends Model
     protected $table = 'livematchs';
 
     protected $fillable = [
-        'matchsheet_id', 'team_id', 'player', 'type',
+        'matchsheet_id', 'team_id', 'player', 'type','event_type',
         'description', 'event_minute', 'status','player'
     ];
     protected $casts = [
@@ -20,7 +20,7 @@ class Livematch extends Model
     ];
     public function matchsheet()
     {
-        return $this->belongsTo(MatchSheet::class);
+        return $this->belongsTo(Matchsheet::class);
     }
 
     public function team()

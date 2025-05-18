@@ -16,9 +16,15 @@ class LiveMatchResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'team1'=>$this->team1,
-            'team2'=>$this->team2,
+            'description'=>$this->description,
+            'event_minute'=>$this->event_minute,
             'event_type'=>$this->event_type,
+            'player'=>$this->player,
+            'matchsheet_id'=>$this->matchsheet_id,
+            'matchsheet'=>new MatchSheetResource($this->matchsheet),
+            'status'=>$this->status,
+            'team_id'=>$this->team_id,
+            'updated_at'=>$this->updated_at,
 
         ];
     }

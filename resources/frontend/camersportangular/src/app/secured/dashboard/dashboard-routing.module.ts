@@ -20,6 +20,9 @@ import { teamResolver } from '../../shared/resolvers/team.resolver';
 import { MatchSheetComponent } from './match-sheet/match-sheet.component';
 import { matchSheetResolver } from '../../shared/resolvers/match-sheet.resolver';
 import { MatchSheetListComponent } from './match-sheet/match-sheet-list/match-sheet-list.component';
+import { LiveMatchComponent } from './live-match/live-match.component';
+import { LiveMatchListComponent } from './live-match/live-match-list/live-match-list.component';
+import { liveMatchResolver } from '../../shared/resolvers/live-match.resolver';
 
 const routes: Routes = [
   {
@@ -55,7 +58,12 @@ const routes: Routes = [
       { path : "matchsheet/show/:id",component:MatchSheetComponent,
         resolve : { matchsheet : matchSheetResolver },
       },
-      {path:'live',component:LiveComponent},
+      {path:'live',component:LiveMatchComponent},
+      {path:'live/list',component:LiveMatchListComponent},
+      {path:'live/show/:id',component:LiveMatchComponent
+        ,resolve : { liveMatch : liveMatchResolver },
+      },
+      
     ]
   }
 ];

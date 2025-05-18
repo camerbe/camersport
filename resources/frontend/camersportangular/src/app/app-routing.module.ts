@@ -4,7 +4,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 
 const routes: Routes = [
   {
-    path:'',loadChildren:(()=>import('./public/public.module').then(m=>m.PublicModule))
+    path: '',
+    loadChildren:(()=>import('./public/public.module').then(m=>m.PublicModule))
   },
   {
     path:'secured',loadChildren:(()=>import('./secured/secured.module').then(m=>m.SecuredModule))

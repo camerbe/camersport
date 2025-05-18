@@ -1,0 +1,57 @@
+<p-carousel
+  [value]="carouselItems"
+  [numVisible]="1"
+  [numScroll]="1"
+  [circular]="carouselItems.length > 1"
+  [autoplayInterval]="5000"
+  [showIndicators]="true"
+  [showNavigators]="true"
+  containerClass="shadow-3 border-round"
+  contentClass="bg-white border-round"
+  indicatorStyleClass="bg-gray-300"
+  styleClass="bg-gray-100"
+>
+  <ng-template let-carouselItem pTemplate="carouselItem">
+    <div class="relative w-full h-[400px] md:h-[500px] border-round overflow-hidden group">
+      <p-image
+        [src]="carouselItem.images[0].url"
+        alt="{{ carouselItem.titre }}"
+        width="100%"
+        height="100%"
+        [preview]="true"
+        styleClass="w-full h-full object-cover pt-6"
+      >
+        <ng-template pTemplate="indicator">
+          <i class="pi pi-eye"></i>
+        </ng-template>
+      </p-image>
+      <div class="absolute top-16 right-4 z-10">
+        <p-chip styleClass="pl-0 pr-3">
+          <span class="bg-primary border-circle w-2rem h-2rem flex align-items-center justify-content-center">
+           <i class="pi pi-circle-on"></i>
+          </span>
+          <span class="ml-2  uppercase">
+            {{ carouselItem.categorie.competitions[0].competition }}
+          </span>
+        </p-chip>
+      </div>
+
+      <div
+        class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 transition-opacity duration-500 opacity-100 group-hover:opacity-100"
+      >
+        <h2 class="text-white text-xl md:text-2xl font-bold mb-4 uppercase">
+          {{ carouselItem.titre }}
+        </h2>
+        <a
+          [routerLink]="['/article',carouselItem.slug]">
+          <p-button
+            label="Lire l'article"
+            icon="pi pi-arrow-right"
+            styleClass="p-button-rounded p-button-outlined p-button-success"
+          ></p-button>
+        </a>
+      </div>
+    </div>
+  </ng-template>
+</p-carousel>
+

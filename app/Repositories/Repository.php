@@ -54,4 +54,6 @@ class Repository implements IRepository
         $model = $this->model->findOrFail($id);
         return $model->delete();
     }
+
+
 }

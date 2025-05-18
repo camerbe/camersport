@@ -1,0 +1,58 @@
+<div class="flex">
+  <span class="mr-2 text-indigo-800 text-xl"><i class="fa-solid fa-table-list"></i></span> <app-title [title]="title"/>
+
+</div>
+<div class="bg-white rounded-lg shadow-md p-6 mt-6">
+  <app-button-link [link]="link" [label]="label"/>
+@if(liveMatchs.length>0){
+  <p-table [value]="liveMatchs"
+  #dt
+  [value]="liveMatchs"
+  [rows]="10"
+  [rowsPerPageOptions]="[5, 10, 20]"
+  stripedRows="true"
+  [responsive]="true"
+  [paginator]="true"
+  [class.p-datatable-striped]="true"
+
+  [rowHover]="true"
+  dataKey="id"
+  currentPageReportTemplate="Affichage des entrées {first} à {last} sur {totalRecords}"
+  [showCurrentPageReport]="true"
+   >
+
+
+
+    <ng-template pTemplate="header">
+        <tr>
+            <th>#</th>
+            <th>Évènement</th>
+            <th>Date</th>
+            <th>Arbitre</th>
+            <th>Dern. MAJ</th>
+            <th>Action</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-liveMatch let-i="rowIndex">
+        <tr>
+            <td>{{ i+1}}</td>
+            <td>{{ liveMatch.event_type}}</td>
+            <td>{{ liveMatch.matchsheet.match_date | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ liveMatch.matchsheet.referee }}</td>
+            <td>{{ liveMatch.updated_at | date: 'dd/MM/yy H:m' }}</td>
+            <td>
+              <a [routerLink]="['/secured/dashboard/live/show',liveMatch.id]" class="text-blue-500 hover:text-blue-700" pTooltip="Mise à jour" tooltipPosition="top">
+                <i class="pi pi-pencil"></i>
+            </a>
+            <a class="text-red-500 hover:text-red-700 ml-2" (click)="onDelete(liveMatch.id)" pTooltip="Suppression" tooltipPosition="top">
+                <i class="pi pi-trash"></i>
+            </a>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+}
+@else {
+  <p class="border-b border-indigo-100">Pas d'article</p>
+}
+</div>

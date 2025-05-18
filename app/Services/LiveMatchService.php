@@ -28,4 +28,12 @@ class LiveMatchService
     public function getLiveMatch(int $matchSheet_id){
         return $this->liveMatchRrepository->getLiveMatch($matchSheet_id);
     }
+    public function getLastMatchSheet(){
+        //dd($this->liveMatchRrepository->getLastMatchSheet());
+        return $this->liveMatchRrepository->getLastMatchSheet();
+    }
+    public function getTeams(){
+        //dd( $this->liveMatchRrepository->getTeams());
+        return $this->liveMatchRrepository->getTeams();
+    }
 }

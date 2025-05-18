@@ -37,7 +37,10 @@ import { TeamListComponent } from './team/team-list/team-list.component';
 import { MatchSheetComponent } from './match-sheet/match-sheet.component';
 import { MatchSheetListComponent } from './match-sheet/match-sheet-list/match-sheet-list.component';
 import { ColorPickerModule } from 'primeng/colorpicker';
+import { RadioButtonModule } from 'primeng/radiobutton';
 import { MessageModule } from 'primeng/message';
+import { LiveMatchComponent } from './live-match/live-match.component';
+import { LiveMatchListComponent } from './live-match/live-match-list/live-match-list.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +63,8 @@ import { MessageModule } from 'primeng/message';
     TeamListComponent,
     MatchSheetComponent,
     MatchSheetListComponent,
+    LiveMatchComponent,
+    LiveMatchListComponent,
   ],
   imports: [
     CommonModule,
@@ -81,6 +86,7 @@ import { MessageModule } from 'primeng/message';
     FieldsetModule,
     ColorPickerModule,
     MessageModule,
+    RadioButtonModule,
 
   ],
   providers: [

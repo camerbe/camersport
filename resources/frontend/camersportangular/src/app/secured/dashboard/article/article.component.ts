@@ -17,29 +17,31 @@ import { first } from 'rxjs';
 import { HashtagExtractorService } from '../../../services/hashtag-extractor.service';
 import { LocaleSettings } from 'primeng/calendar';
 import { DropdownChangeEvent } from 'primeng/dropdown';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-article',
   templateUrl: './article.component.html',
-  styleUrl: './article.component.css'
+  styleUrl: './article.component.css',
+  providers: [DatePipe]
 })
 export class ArticleComponent implements OnInit {
 
   motclefRegex :RegExp= /^([a-zA-ZÀ-ÿ0-9 ]{4,},\s*){2,}[a-zA-ZÀ-ÿ0-9 ]{4,}$/;
   hashtagRegex :RegExp= /^(#[A-Za-z0-9_]{4,},){2,}#[A-Za-z0-9_]{4,}$/;
 
-  fr: LocaleSettings = {
-    firstDayOfWeek: 1,
-    dayNames: ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
-    dayNamesShort: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
-    dayNamesMin: ["Di", "Lu", "Ma", "Me", "Je", "Ve", "Sa"],
-    monthNames: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
-    monthNamesShort: ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"],
-    today: "Aujourd'hui",
-    clear: "Effacer",
-    dateFormat: "dd/mm/yy",
-    weekHeader: "Sem"
-  };
+  // fr: LocaleSettings = {
+  //   firstDayOfWeek: 1,
+  //   dayNames: ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
+  //   dayNamesShort: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
+  //   dayNamesMin: ["Di", "Lu", "Ma", "Me", "Je", "Ve", "Sa"],
+  //   monthNames: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
+  //   monthNamesShort: ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"],
+  //   today: "Aujourd'hui",
+  //   clear: "Effacer",
+  //   dateFormat: "dd/mm/yy",
+  //   weekHeader: "Sem"
+  // };
 
 
   frmArticle!:FormGroup;
@@ -165,6 +167,7 @@ export class ArticleComponent implements OnInit {
   router:Router=inject(Router);
   activatedRoute:ActivatedRoute=inject(ActivatedRoute);
   hashtagExtractorService:HashtagExtractorService=inject(HashtagExtractorService);
+  datePipe:DatePipe=inject(DatePipe);
 
   constructor() {
     const now = new Date();
@@ -174,7 +177,7 @@ export class ArticleComponent implements OnInit {
       source:['',Validators.required],
       article:['',Validators.required],
       image:['',Validators.required],
-      date_parution :[new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0,-1),Validators.required],
+      date_parution :['',Validators.required],
       user_id :[Number(localStorage.getItem("userId")),Validators.required],
       categorie_id :['',Validators.required],
       competition_id :['',Validators.required],
@@ -222,7 +225,18 @@ export class ArticleComponent implements OnInit {
     return this.frmArticle.get('pays_code');
   }
   onSubmit() {
-    ///console.log(this.frmArticle.valid);
+    //console.log(this.frmArticle.valid);
+    if(this.frmArticle.invalid) {
+        this.frmArticle.markAllAsTouched();
+        Object.entries(this.frmArticle.controls).forEach(([key, control]) => {
+          if (control.invalid) {
+            console.warn(`Champ "${key}" est invalide :`, control.errors);
+          }
+        });
+        console.log('Form errors:', this.frmArticle.errors);
+        console.log('Form invalid!', this.frmArticle);
+        return;
+      }
     if(this.isAddMode){
 
       //console.log(this.frmArticle.value);
@@ -310,19 +324,23 @@ export class ArticleComponent implements OnInit {
                 const resData=data["data"] as ArticleDetail
                 const hashtags=this.hashtagExtractorService.extractHashtags(resData.motclef);
                 const motscles=this.hashtagExtractorService.removeHashtags(resData.motclef);
-
+                console.log(`motscles: ${motscles}`);
+                resData.date_parution=new Date(this.datePipe.transform(resData.date_parution,'yyyy-MM-ddTHH:mm:ss') || '');
+                resData.motclef=motscles.substring(0,motscles.length-1).replace(/, /g,',');
                 this.frmArticle.patchValue(
                   {
+
                     categorie_id:resData.categorie.id,
                     hashtag:hashtags.trim(),
-                    motclef:motscles.substring(0,motscles.length-1).replace(/, /g,','),
+                    //motclef:motscles.substring(0,motscles.length-1).replace(/, /g,','),
                     competition_id:resData.categorie.competitions[0].id,
-                    
+
                   }
                 );
 
                 this.frmArticle.patchValue(resData);
-
+                //console.log(`resData: ${resData}`);
+                 //console.log(`resData: ${this.datePipe.transform(resData.date_parution,'dd/MM/yyyy HH:mm:ss')}`);
 
               },
               error:err=>

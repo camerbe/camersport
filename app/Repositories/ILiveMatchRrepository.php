@@ -4,5 +4,7 @@ namespace App\Repositories;
 
 interface ILiveMatchRrepository
 {
-    function getLiveMatch($match_id);
+    function getLiveMatch(int $match_id);
+    function getLastMatchSheet();
+    function getTeams();
 }

@@ -54,7 +54,7 @@ export class ArticleListComponent implements OnInit {
 
         const tempData=data as unknown as Article;
         this.articles=tempData["data"] as unknown as ArticleDetail[];
-        console.log(this.articles);
+        //console.log(this.articles);
         this.articles=this.articles.filter(article=>article.user.id==userId);
       },
       error:(error)=>console.log(error)

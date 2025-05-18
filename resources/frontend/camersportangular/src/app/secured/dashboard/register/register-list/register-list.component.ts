@@ -19,7 +19,7 @@ export class RegisterListComponent implements OnInit{
   utilisateur:User[]=[];
   title:string="Liste des administrateurs";
   isExpired!:boolean;
-  link:string="/dashboard/register";
+  link:string="/secured/dashboard/register";
   label:string="+ Créer";
   id!:number;
   isAddMode!:boolean

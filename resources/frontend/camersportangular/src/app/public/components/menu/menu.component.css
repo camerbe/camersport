@@ -1,0 +1,14 @@
+::ng-deep .custom-menubar .p-menubar-root {
+  background-color: #166534 !important; /* équivalent bg-green-800 */
+}
+
+::ng-deep .custom-menubar .p-menuitem-link,
+::ng-deep .custom-menubar .p-menuitem-text,
+::ng-deep .custom-menubar .pi {
+  color: white !important;
+  fill: white !important;
+}
+
+::ng-deep .custom-menubar .p-menuitem-link:hover {
+  background-color: #14532d !important;
+}

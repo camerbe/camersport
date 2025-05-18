@@ -1,0 +1,161 @@
+<div class="flex">
+  <span class="mr-2 text-indigo-800"><i class="fa-solid fa-plus"></i></span> <app-title [title]="title"/>
+</div>
+<div class="bg-white p-4 rounded shadow mt-6">
+    <app-button-link [link]="link" [label]="label" />
+    <form [formGroup]="frmLiveMatch" (ngSubmit)="onSubmit()">
+      <div class="grid mb-4">
+        <!-- Match -->
+        <div class="col-12 md:col-6">
+          <label class="block text-gray-700 mb-1">
+            <span class="text-red-500 mr-1">*</span>Match
+          </label>
+          <p-inputNumber
+
+            formControlName="matchsheet_id"
+            inputId="integeronly"
+            class="w-full"
+            inputStyleClass="bg-gray-300 text-white cursor-not-allowed"
+            [readonly]="true"
+
+          ></p-inputNumber>
+        </div>
+        <div class="col-12 md:col-6">
+          <label class="block text-gray-700 mb-1">
+            <span class="text-red-500 mr-1">*</span>Équipe
+          </label>
+          <p-dropdown
+            formControlName="team_id"
+            [options]="teams"
+            [optionLabel]="'name'"
+            [optionValue]="'id'"
+            [placeholder]="'Sélectionner une équipe'"
+            (onChange)="onTeamChange($event)"
+            class="w-full"/>
+          <div *ngIf="team_id?.invalid && (team_id?.touched || team_id?.dirty)"      class="text-red-800 text-sm">
+              * L'équipe est requise
+            </div>
+
+        </div>
+        <!-- Source -->
+      </div>
+      <div class="grid mb-4">
+        <!-- Source -->
+        <div class="col-12 md:col-6">
+          <label class="block text-gray-700 mb-1">
+            <span class="text-red-500 mr-1 capitalize">*</span>Action
+          </label>
+          <p-dropdown
+            formControlName="event_type"
+            [options]="even_types"
+            optionLabel="label"
+            optionValue="value"
+            [showClear]="true"
+            (onChange)="onEventTypeChange($event)"
+            [placeholder]="'Sélectionner une action'"
+            class="w-full"/>
+             <div *ngIf="event_type?.invalid && (event_type?.touched || event_type?.dirty)"      class="text-red-800 text-sm">
+              * L'action est requise
+            </div>
+
+        </div>
+        <div class="col-12 md:col-6">
+          <label class="block text-gray-700 mb-1">
+            <span class="text-red-500 mr-1">*</span>Joueurs
+          </label>
+          <p-dropdown
+            formControlName="player"
+            [options]="players"
+            [optionLabel]="'name'"
+            [optionValue]="'name'"
+            (onChange)="onPlayerChange($event)"
+            [placeholder]="'Sélectionner une joueur'"
+            class="w-full"/>
+
+
+        </div>
+      </div>
+      <div class="grid mb-3">
+        <!-- Source -->
+        <div class="col-12 md:col-4">
+          <label class="block text-gray-700 mb-1">
+            <span class="text-red-500 mr-1">*</span>Minutes
+          </label>
+          <p-inputNumber
+            formControlName="event_minute"
+            inputId="integeronly"
+            class="w-full"
+            inputId="minmax-buttons"
+            [step]="1"
+            [min]="0"
+            [max]="150"
+            [showButtons]="true"
+          />
+        </div>
+        <div class="col-12 md:col-4">
+          <label class="block text-gray-700 mb-1">
+            <span class="text-red-500 mr-1"></span>Extra
+          </label>
+          <p-inputNumber
+            formControlName="event_second"
+            inputId="minmax-buttons"
+            class="w-full"
+
+            [step]="1"
+            [min]="0"
+            [max]="20"
+            [showButtons]="true"
+
+          />
+        </div>
+        <div class="col-12 md:col-4">
+          <label class="block text-gray-700 mb-1">
+            <span class="text-red-500 mr-1">*</span>Statut
+          </label>
+          <div class="flex flex-column gap-3">
+            <div class="flex align-items-center gap-2">
+              <p-radioButton
+                name="status"
+                formControlName="status"
+                inputId="pending"
+                value="pending"
+              ></p-radioButton>
+              <label for="pending">En attente</label>
+            </div>
+            <div class="flex align-items-center gap-2">
+              <p-radioButton
+                name="status"
+                formControlName="status"
+                inputId="confirmed"
+                value="confirmed"
+              ></p-radioButton>
+              <label for="confirmed">Confirmé</label>
+            </div>
+            <div class="flex align-items-center gap-2">
+              <p-radioButton
+                name="status"
+                formControlName="status"
+                inputId="cancelled"
+                value="cancelled"
+              ></p-radioButton>
+              <label for="cancelled">Annulé</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="grid mb-3">
+        <div class="col-12">
+          <label class="block text-gray-700 mb-1">
+            <span class="text-red-500 mr-1">*</span>Description
+          </label>
+          <editor [init]="init" formControlName="description" aria-placeholder="Description"/>
+
+        </div>
+      </div>
+      <!-- Submit Button at Bottom -->
+  <div class="mt-auto p-4">
+    <button pButton *ngIf="isAddMode" type="submit" [disabled]="frmLiveMatch.invalid" label="Enregistrer"  class="w-full"></button>
+    <button pButton *ngIf="!isAddMode" type="submit" [disabled]="frmLiveMatch.invalid" label="Mettre à jour"   class="w-full capitalize"></button>
+  </div>
+    </form>
+</div>

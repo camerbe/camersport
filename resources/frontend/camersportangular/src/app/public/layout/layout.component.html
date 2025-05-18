@@ -1,0 +1,81 @@
+ <!--<div class="min-h-screen flex flex-col">-->
+  <app-menu></app-menu>
+  <!-- Header-->
+
+
+  <!-- Main Content -->
+  <div class="px-4  bg-gray-100">
+    <!-- Carousel -->
+
+
+    <!-- Ad Banner-->
+     <div class="bg-amber-500">
+        <app-ads
+        [adClient]="'ca-pub-8638642715460968'"
+        [adFormat]="'auto'"
+        [adSlot]="'6927429462'"
+        fullWidthResponsive="true"
+        styleClass="bg-gray-500 mt-3 border-round mb-4 text-center"
+        [adStyle]="{ display: 'block' }"
+        data-adtest="on"
+      />
+     </div>
+
+
+    <!-- News Grid -->
+    <div class="grid p-fluid">
+      <div class="col-12 md:col-8 lg:col-9">
+        <router-outlet/>
+      </div>
+      <!-- Right Sidebar -->
+      <div class="col-12 md:col-4 lg:col-3">
+        <div class="p-4 surface-50 border-round">
+          <h3>Sidebar</h3>
+          <div id="taboola-below-article-thumbnails"></div>
+          <app-api-football/>
+          <p-divider></p-divider>
+          <div class="bg-amber-500">
+            <app-ads
+            [adClient]="'ca-pub-8638642715460968'"
+            [adFormat]="'auto'"
+            [adSlot]="'6927429462'"
+            fullWidthResponsive="true"
+            styleClass="bg-gray-500 mt-3 border-round mb-4 text-center"
+            [adStyle]="{ display: 'block' }"
+            data-adtest="on"
+          />
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Ad -->
+     <div class="bg-amber-500">
+        <app-ads
+        [adClient]="'ca-pub-8638642715460968'"
+        [adFormat]="'auto'"
+        [adSlot]="'6927429462'"
+        fullWidthResponsive="true"
+        styleClass="bg-gray-500 mt-3 border-round mb-4 text-center"
+        [adStyle]="{ display: 'block' }"
+        data-adtest="on"
+      />
+     </div>
+
+  </div>
+
+  <!-- Footer -->
+  <!-- Footer -->
+  <div class="bg-gray-700 text-white p-4 mt-4">
+    <div class="grid">
+      <div class="col-12 md:col-4 text-center md:text-left">
+        <h4 class="text-orange-500 mb-2"><span class="p-text-4xl p-font-bold p-mr-6 text-amber-100 uppercase">Camer-sp<i class="pi pi-bullseye"></i>rt</span></h4>
+        <p class="text-sm text-300">L'actualité footballistique 24h/24</p>
+      </div>
+      <div class="col-12 md:col-8 text-center md:text-right mt-3 md:mt-0">
+        <p class="text-sm text-300">© 2024 Tous droits réservés</p>
+      </div>
+    </div>
+  </div>
+ <!--</div>-->

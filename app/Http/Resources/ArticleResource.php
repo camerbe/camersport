@@ -30,6 +30,18 @@ class ArticleResource extends JsonResource
             'user'=>new UserResource($this->user),
             'pays'=>new PaysResource($this->bled),
             'categorie'=> new CategorieResource($this->categorie),
+            'images' => $this->whenLoaded('media', function () {
+                return $this->getMedia('article')->map(function ($media) {
+                    return [
+                        'url' => $media->getUrl(),
+                        //'thumbnail' => $media->getUrl('thumb'),
+                        'mime_type' => $media->mime_type,
+                        'extension' => $media->extension,
+
+                        'meta' => $media->custom_properties
+                    ];
+                });
+            }),
 
 
         ];

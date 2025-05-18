@@ -21,7 +21,9 @@ use UniSharp\LaravelFilemanager\Lfm;
         Lfm::routes();
     });
 
-    Route::get('articles/slug/{articles}', [ArticleController::class, 'getArticleBySlug']);
+    Route::get('articles/slug/{article}', [ArticleController::class, 'getArticleBySlug']);
+    Route::get('articles/categorie/competition/{article}', [ArticleController::class, 'getArticleByCompetition']);
+    Route::get('articles/public', [ArticleController::class, 'publicIndex']);
 
     Route::post('auth/login', [AuthController::class, 'login']);
     Route::post('auth/changepassword', [AuthController::class, 'changePassword']);
@@ -33,7 +35,9 @@ use UniSharp\LaravelFilemanager\Lfm;
         Route::post('auth/logout', [AuthController::class, 'logout']);
         Route::get('matchs/last', [MatchSheetController::class, 'getLastMatchSheet']);
         Route::get('matchs/teams', [MatchSheetController::class, 'getTeams']);
-        Route::get('lives/matchsheets/{id}', [LiveMatchController::class, 'getLiveMatch']);
+        Route::get('lives/{id}/matchsheets', [LiveMatchController::class, 'getLiveMatch']);
+        Route::get('lives/teams', [LiveMatchController::class, 'getTeams']);
+        Route::get('lives/matchsheets/last', [LiveMatchController::class, 'getLastMatchSheet']);
         Route::apiResources([
             "users"=>UserController::class,
             "countries"=>PaysController::class,

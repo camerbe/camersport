@@ -16,7 +16,7 @@ export class CompetitionListComponent implements OnInit {
 
   title:string="Liste des compétitions";
   isExpired!:boolean;
-  link:string="/dashboard/competition";
+  link:string="/secured/dashboard/competition";
   label:string="+ Créer";
   competitions:CompetitionDetail[]=[];
   competition!:CompetitionDetail;

@@ -28,7 +28,10 @@ export class ArticleService extends DataService<Article> {
       return this.httpClient.get<Article[]>(environment.baseUrl+`/articles/user/${id}`);
     }
     getArticlesBySlug(slug:string){
-      return this.httpClient.get<Article[]>(environment.baseUrl+`/articles/slug/${slug}`);
+      return this.httpClient.get<Article>(environment.baseUrl+`/articles/slug/${slug}`);
+    }
+    publicIndex(){
+      return this.httpClient.get<Article[]>(environment.baseUrl+`/articles/public`);
     }
 
 }
