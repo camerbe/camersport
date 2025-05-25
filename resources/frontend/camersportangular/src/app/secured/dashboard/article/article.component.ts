@@ -98,6 +98,7 @@ export class ArticleComponent implements OnInit {
         //close_previous : 'no',
         // @ts-ignore
         onMessage: (api, message) => {
+          console.log(`message de Camer-Sport: ${message}`);
           callback(message['content'])
         }
 
@@ -329,11 +330,11 @@ export class ArticleComponent implements OnInit {
                 resData.motclef=motscles.substring(0,motscles.length-1).replace(/, /g,',');
                 this.frmArticle.patchValue(
                   {
-
+                    competition_id:resData.competition_id,
                     categorie_id:resData.categorie.id,
                     hashtag:hashtags.trim(),
                     //motclef:motscles.substring(0,motscles.length-1).replace(/, /g,','),
-                    competition_id:resData.categorie.competitions[0].id,
+                    //competition_id:resData.categorie.competitions[0].id,
 
                   }
                 );

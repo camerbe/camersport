@@ -26,13 +26,16 @@
         </ng-template>
       </p-image>
       <div class="absolute top-16 right-4 z-10">
-        <p-chip styleClass="pl-0 pr-3">
-          <span class="bg-primary border-circle w-2rem h-2rem flex align-items-center justify-content-center">
+        <p-chip
+          [label]="carouselItem.competition.competition"
+          [image]="'https://flagcdn.com/w40/' + carouselItem.pays.code.toLowerCase() + '.png'"
+          styleClass="pl-0 pr-3 uppercase">
+          <!-- <span class="bg-primary border-circle w-2rem h-2rem flex align-items-center justify-content-center">
            <i class="pi pi-circle-on"></i>
-          </span>
-          <span class="ml-2  uppercase">
-            {{ carouselItem.categorie.competitions[0].competition }}
-          </span>
+          </span> -->
+          <!-- <span class="ml-2  uppercase">
+            {{ carouselItem.competition.competition }}
+          </span> -->
         </p-chip>
       </div>
 
@@ -46,6 +49,7 @@
           [routerLink]="['/article',carouselItem.slug]">
           <p-button
             label="Lire l'article"
+            title="Lire"
             icon="pi pi-arrow-right"
             styleClass="p-button-rounded p-button-outlined p-button-success"
           ></p-button>

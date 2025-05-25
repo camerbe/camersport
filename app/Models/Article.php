@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -35,17 +36,43 @@ class Article extends Model  implements HasMedia
 
 
     protected static function boot(){
+        $categories=Categorie::all();
+        $competitions=Competition::all();
         parent::boot();
-        Article::created(function($model){
+        Article::created(function($model) use($categories,$competitions){
             Cache::forget('article-list');
+            foreach ($categories as $categorie){
+                $cacheKey = 'article-list-'.Str::trim($categorie->categorie) ;
+                Cache::forget($cacheKey);
+            }
+            foreach ($competitions as $competition){
+                $cacheKey = 'article-list-'.Str::trim($competition->competition) ;
+                Cache::forget($cacheKey);
+            }
             Cache::forget('article-findBySlug');
         });
-        Article::deleted(function($model){
+        Article::deleted(function($model) use($categories,$competitions){
             Cache::forget('article-list');
+            foreach ($categories as $categorie){
+                $cacheKey = 'article-list-'.Str::trim($categorie->categorie) ;
+                Cache::forget($cacheKey);
+            }
+            foreach ($competitions as $competition){
+                $cacheKey = 'article-list-'.Str::trim($competition->competition) ;
+                Cache::forget($cacheKey);
+            }
             Cache::forget('article-findBySlug');
         });
-        Article::updated(function($model){
+        Article::updated(function($model) use($categories,$competitions){
             Cache::forget('article-list');
+            foreach ($categories as $categorie){
+                $cacheKey = 'article-list-'.Str::trim($categorie->categorie) ;
+                Cache::forget($cacheKey);
+            }
+            foreach ($competitions as $competition){
+                $cacheKey = 'article-list-'.Str::trim($competition->competition) ;
+                Cache::forget($cacheKey);
+            }
             Cache::forget('article-findBySlug');
         });
     }
@@ -87,9 +114,13 @@ class Article extends Model  implements HasMedia
         return $this->belongsTo(User::class);
     }
     public function bled():BelongsTo{
-        return $this->belongsTo(Pays::class,'pays_code','code3' );
+        return $this->belongsTo(Pays::class ,'pays_code','code3');
     }
     public function categorie():BelongsTo{
         return $this->belongsTo(Categorie::class);
+    }
+    public function competition()
+    {
+        return $this->belongsTo(Competition::class);
     }
 }

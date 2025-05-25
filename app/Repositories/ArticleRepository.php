@@ -38,7 +38,7 @@ class ArticleRepository extends Repository implements IArticleRepository
         $duration=now()->addMonth(1);
         $articles = Cache::remember($cacheKey, $duration, function () {
             return Article::with(['media'])->where('date_parution', '<=', now())
-                ->take(100)
+                ->take(200)
                 ->get();
         });
         return ArticleResource::collection($articles);
@@ -66,11 +66,12 @@ class ArticleRepository extends Repository implements IArticleRepository
         $currentArticle=parent::find($id);
         $data['titre']=isset($data['titre'])? Str::title($data['titre']):$currentArticle->titre;
         $data['slug']=$this->addSlug($data['pays_code'],$data['titre']);
+        $data['competition_id']= $data['competition_id'] ?? $currentArticle->competition_id;
         $data["motclef"]=trim($data["motclef"]).",".$data["hashtag"];
         $data["date_parution"]=isset($data['date_parution']) ?
             Carbon::parse($data["date_parution"])->format('Y-m-d H:i:s')
             :$currentArticle->date_parution;
-        unset($data["competition_id"]);
+        //unset($data["competition_id"]);
         unset($data["hashtag"]);
         return parent::update($id, $data);
     }
@@ -101,7 +102,7 @@ class ArticleRepository extends Repository implements IArticleRepository
                 ->first() ?? $competition->categories()->attach($data["categorie_id"]);;
         }
 
-        unset($data["competition_id"]);
+        //unset($data["competition_id"]);
         return new ArticleResource(parent::create($data));
     }
 
@@ -148,11 +149,19 @@ class ArticleRepository extends Repository implements IArticleRepository
 
     }
     public function getArticleBySlug($slug){
-        $article= Article::with(['bled','categorie'])->where('slug', $slug)->first();
+        //\DB::enableQueryLog();
+
+       $article= Article::with(['categorie','competition','bled'])
+            ->where('slug', $slug)->first();
+       //dd($article);
         if($article){
-            $article->hit++;
-            $article->save();
+            Article::withoutEvents(function () use ($article) {
+                $article->hit++;
+                $article->save();
+            });
+
         }
+        //dd(\DB::getQueryLog());
         return new  ArticleResource($article);
     }
     public function getArticleByUserId($userId){
@@ -169,15 +178,23 @@ class ArticleRepository extends Repository implements IArticleRepository
 
     function publicIndex()
     {
+
         //Cache::forget('article-list');
         $cacheKey = 'article-list';
         $articles=Cache::get($cacheKey , collect());
-
-        if(!isNull($articles)){
-            //dd($articles);
-            return ArticleResource::collection($articles);
+        //dd($articles->isEmpty());
+        if($articles->isEmpty()){
+            $duration=now()->addMonth(1);
+            $articles = Cache::remember($cacheKey, $duration, function () {
+                return Article::with(['media'])
+                    ->where('date_parution', '<=', now())
+                    ->orderByDesc('date_parution')
+                    ->take(200)
+                    ->get();
+            });
+            //return ArticleResource::collection($articles);
         }
-        return ArticleResource::collection($this->all($orderBy = ['date_parution' => 'desc']));
+        return ArticleResource::collection($articles);
 
 
     }
@@ -207,5 +224,33 @@ class ArticleRepository extends Repository implements IArticleRepository
 
         return ArticleResource::collection($articles);
         //dd(\DB::getQueryLog());
+    }
+    public function categorieMustReaded(int $categorieId){
+        $categogie=Categorie::find($categorieId);
+        $cacheKey = 'article-list-'.Str::trim($categogie->categorie) ;
+        $cacheDuration=now()->addDay(1);
+
+        $articles = Cache::remember($cacheKey, $cacheDuration, function () use($categorieId) {
+            return Article::with(['categorie','competition','bled'])
+                ->where('categorie_id', $categorieId)
+                ->orderByDesc('hit')
+                ->take(5)
+                ->get();
+        });
+        //dd($articles);
+        return ArticleResource::collection($articles);
+    }
+    public function competitionMustReaded(int $competitionId){
+
+        $cacheKey = 'article-list-competition-must-readed';
+        $cacheDuration=now()->addDay(1);
+        $articles = Cache::remember($cacheKey, $cacheDuration, function () use($competitionId) {
+            return Article::with(['categorie','competition','bled'])
+                ->where('competition_id', $competitionId)
+                ->orderByDesc('hit')
+                ->take(5)
+                ->get();
+        });
+        return ArticleResource::collection($articles);
     }
 }

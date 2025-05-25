@@ -6,7 +6,7 @@ use App\Http\Resources\PaysResource;
 use App\Models\Pays;
 use Illuminate\Support\Str;
 
-class PaysRepository extends BaseRepository
+class PaysRepository extends BaseRepository implements IPays
 {
 
     public function __construct(Pays $bled)
@@ -16,6 +16,7 @@ class PaysRepository extends BaseRepository
 
     public function findById($id)
     {
+
         return new PaysResource(parent::findById($id)) ;
     }
 
@@ -26,7 +27,7 @@ class PaysRepository extends BaseRepository
 
     public function update(array $input, $id)
     {
-        $currentPays=parent::findById($id);
+        $currentPays=$this->findByCode($id);
         $input['pays']=isset($input['pays'])? Str::upper($input['pays']):$currentPays->pays;
         $input['country']=isset($input['country'])? Str::upper($input['country']):$currentPays->country;
         $input['code']= Str::upper($input['code']) ?? $currentPays->code;
@@ -52,4 +53,8 @@ class PaysRepository extends BaseRepository
     }
 
 
+    function findByCode(string $code)
+    {
+       return new PaysResource(Pays::where('code3',$code)->get()) ;
+    }
 }

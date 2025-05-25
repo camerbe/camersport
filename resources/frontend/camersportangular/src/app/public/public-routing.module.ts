@@ -7,6 +7,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { HomeComponent } from './home/home.component';
 import { ArticleComponent } from './layout/article/article.component';
 import { RssComponent } from './layout/rss/rss.component';
+import { LionsIndomptablesComponent } from './layout/lions-indomptables/lions-indomptables.component';
 
 const routes: Routes = [
   {
@@ -28,8 +29,13 @@ const routes: Routes = [
       },
       {
         path:'article/:slug',component:ArticleComponent,
-        resolve: {slug:articleSlugResolver}
+        resolve: {slug:articleSlugResolver},
+        runGuardsAndResolvers: 'paramsChange'
       }
+      ,
+      { path:'article/categorie/:categorie_id',component:ArticleComponent},
+      { path:'article/competition/:competition_id',component:ArticleComponent},
+      { path:'lions-indomptables',component:LionsIndomptablesComponent},
 
 
     ]

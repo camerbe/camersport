@@ -50,6 +50,7 @@ class ArticleController extends Controller
 
         //
         $article=$this->articleService->create($request->all());
+
         $image=ImageHelper::extractImgSrc($request->image);
         //dd($image);
         if ($article){
@@ -63,6 +64,7 @@ class ArticleController extends Controller
                     ->usingName($article->slug)
                     ->toMediaCollection('article');
             }
+            $this->articleService->publicIndex();
             return response()->json([
                 'success'=>true,
                 'data'=>$article,
@@ -103,6 +105,7 @@ class ArticleController extends Controller
         //
 
         $article=$this->articleService->update($request->all(),$id);
+        $this->articleService->publicIndex();
         $image=ImageHelper::extractImgSrc($request->image);
         if ($article){
 
@@ -140,6 +143,7 @@ class ArticleController extends Controller
         //
         $article=$this->articleService->delete($id);
         if($article>0){
+            $this->articleService->publicIndex();
             return response()->json([
                 "success"=>true,
                 "message"=>"Suppression réussie"
@@ -157,6 +161,7 @@ class ArticleController extends Controller
 
     public function getArticleBySlug($slug){
         $article=$this->articleService->getArticleBySlug($slug);
+
         if($article){
             //$mediaUrl = $article->getFirstMedia('article');
 
@@ -257,6 +262,34 @@ class ArticleController extends Controller
     }
     public function getArticleByCompetition($competitionId){
         $articles=$this->articleService->getArticleByCompetition($competitionId);
+        if ($articles){
+            return response()->json([
+                'success'=>true,
+                'data'=>$articles,
+                'message'=>"Liste des articles"
+            ],Response::HTTP_OK);
+        }
+        return response()->json([
+            "success"=>false,
+            "message"=>"Pas d'article trouvé"
+        ],Response::HTTP_NOT_FOUND);
+    }
+    public function getCategorieMustReadedArticle($categorieId){
+        $articles=$this->articleService->categorieMustReaded($categorieId);
+        if ($articles){
+            return response()->json([
+                'success'=>true,
+                'data'=>$articles,
+                'message'=>"Liste des articles"
+            ],Response::HTTP_OK);
+        }
+        return response()->json([
+            "success"=>false,
+            "message"=>"Pas d'article trouvé"
+        ],Response::HTTP_NOT_FOUND);
+    }
+    public function getCompetitionMustReadedArticle($competitionId){
+        $articles=$this->articleService->competitionMustReaded($competitionId);
         if ($articles){
             return response()->json([
                 'success'=>true,

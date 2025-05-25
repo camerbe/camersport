@@ -12,4 +12,6 @@ interface IArticleRepository
     function publicIndex();
     function getArticleByUserId(int $userId);
     function getArticleByCompetition(int $competitionId);
+    function categorieMustReaded(int $categorieId);
+    function competitionMustReaded(int $competitionId);
 }

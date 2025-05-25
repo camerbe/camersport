@@ -1,14 +1,11 @@
  <!--<div class="min-h-screen flex flex-col">-->
   <app-menu></app-menu>
   <!-- Header-->
-
-
   <!-- Main Content -->
   <div class="px-4  bg-gray-100">
     <!-- Carousel -->
-
-
     <!-- Ad Banner-->
+
      <div class="bg-amber-500">
         <app-ads
         [adClient]="'ca-pub-8638642715460968'"
@@ -20,15 +17,13 @@
         data-adtest="on"
       />
      </div>
-
-
     <!-- News Grid -->
     <div class="grid p-fluid">
-      <div class="col-12 md:col-8 lg:col-9">
+      <!--<div class="col-12 md:col-8 lg:col-9">-->
         <router-outlet/>
-      </div>
+      <!--</div>-->
       <!-- Right Sidebar -->
-      <div class="col-12 md:col-4 lg:col-3">
+      <!--<div class="col-12 md:col-4 lg:col-3">
         <div class="p-4 surface-50 border-round">
           <h3>Sidebar</h3>
           <div id="taboola-below-article-thumbnails"></div>
@@ -47,7 +42,7 @@
           </div>
 
         </div>
-      </div>
+      </div>-->
     </div>
 
     <!-- Footer Ad -->
@@ -61,6 +56,8 @@
         [adStyle]="{ display: 'block' }"
         data-adtest="on"
       />
+      <!-- <app-taboola />-->
+
      </div>
 
   </div>
@@ -74,7 +71,7 @@
         <p class="text-sm text-300">L'actualité footballistique 24h/24</p>
       </div>
       <div class="col-12 md:col-8 text-center md:text-right mt-3 md:mt-0">
-        <p class="text-sm text-300">© 2024 Tous droits réservés</p>
+        <p class="text-sm text-300">© 2017 - {{ currentYear }} Tous droits réservés</p>
       </div>
     </div>
   </div>

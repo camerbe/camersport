@@ -1,21 +1,19 @@
-<p-card styleClass="h-full shadow-2 hover:shadow-4 transition-all px-3 py-4">
-          <ng-template pTemplate="header">
+<div class="flex flex-column md:flex-row gap-2">
+  <div class="col-12 md:col-8 my-3">
+    <div class="h-full">
+      <p-card styleClass="px-3 md:py-4">
+        <ng-template pTemplate="header">
             <!-- <div class="text-sm font-bold uppercase">{{ article.titre }}</div>
             <div class="text-right text-sm text-500 mt-1">
               {{ article.date_parution | date: 'dd MMM yyyy HH:mm:ss' }}
             </div> -->
-              <p-image
-                [src]="article.images[0].url || 'assets/placeholder.jpg'"
-                alt="{{ article.titre }}"
-                styleClass="w-full h-full object-cover"
-                [preview]="true"
-                >
-                <ng-template pTemplate="indicator">
-                  <i class="pi pi-search-plus"></i>
-                </ng-template>
-              </p-image>
+              <h2 class=" md:text-3xl font-bold  uppercase " style="line-height: 1.7;">
+                {{ article.titre }}
+              </h2>
+              <p-divider
 
-              <div class="flex flex-wrap md:flex-nowrap gap-3 text-sm font-bold text-gay-300 mt-2 capitalize">
+              ></p-divider>
+              <div class="flex flex-wrap md:flex-nowrap gap-3 text-sm  text-gay-200 md:mb-4 capitalize">
                 <div class="flex items-center gap-1">
                   <i class="pi pi-user"></i>
                   <span>{{ article.auteur }}</span>
@@ -28,36 +26,113 @@
                   <i class="pi pi-eye"></i>
                   <span>{{ article.hit }}</span>
                 </div>
-                <div class="flex items-center gap-1 text-green-500 font-bold uppercase">
-                  <i class="pi pi-tag"></i>
-                  <span class="">{{ article.categorie.competitions[0].competition }}</span>
+                <div class="flex items-center gap-1 text-green-700 font-bold uppercase">
+                  <a
+                    #competition
+                    ariaLabel="{{ article.competition.competition }}"
+                    [routerLink]="['/article',article.slug]">
+                    <i class="pi pi-tag mr-2"></i>
+                    <span>{{ article.competition.competition }}</span>
+                  </a>
+
                 </div>
-
-
               </div>
-              <p-divider
-                [type]="'dashed'"
-              ></p-divider>
 
+              <p-image
+                [src]="article.images[0].url || 'assets/placeholder.jpg'"
+                alt="{{ article.titre }}"
+                styleClass="w-full h-[500px] object-cover overflow-hidden rounded-md"
+                [preview]="true"
+                [style]="{ 'border-radius': '0.5rem' }"
 
-              <div class="border-r-8 border-green-800 p-3 md:text-2xl font-bold mt-3 uppercase" style="line-height: 1.7;">
-
-                {{ article.titre }}
-              </div>
+                >
+                <ng-template pTemplate="indicator">
+                  <i class="pi pi-search-plus"></i>
+                </ng-template>
+              </p-image>
 
           </ng-template>
+          <article style="line-height: 1.8;"
+            class="text-justify md:text-xl text-gray-500 prose md:prose-lg lg:prose-xl"
+            [innerHTML]="sanitizer.bypassSecurityTrustHtml(article.article)"
+            >
 
-
-          <div
+          </article>
+          <p-divider></p-divider>
+          <app-viralize [zId]="'AADZ292NV-IHr4M_'" class="bg-amber-700 py-4" ></app-viralize>
+          <!-- <div
             style="line-height: 1.8;"
             class="text-justify md:text-xl text-gray-500 prose md:prose-lg lg:prose-xl"
             [innerHTML]="sanitizer.bypassSecurityTrustHtml(article.article)"
             >
-          </div>
 
-          <ng-template pTemplate="footer">
-            <p-scrollTop />
-
+          </div> -->
+          <p-panel  [toggleable]="false" *ngIf="(filteredArticles?.length ?? 0) > 0">
+          <ng-template pTemplate="header">
+            <i class="pi pi-list mr-2"></i>
+            <span class="text-emerald-800 font-bold uppercase">{{ article.competition.competition }}<i class="pi pi-trophy ml-2"></i> Articles similaires</span>
           </ng-template>
-        </p-card>
-        <div id="taboola-below-article-thumbnails"></div>
+
+
+          <p-dataView
+            [value]="filteredArticles"
+            [paginator]="true"
+            [rows]="5"
+            [rowsPerPageOptions]="[3, 6, 9]"
+            [layout]="'grid'"
+            >
+            <ng-template pTemplate="grid" let-filteredArticles>
+              <div class="card p-2 text-white" >
+
+              <div class="flex flex-column gap-3">
+
+                <div *ngFor="let article of filteredArticles" class="flex align-items-center p-3 border-1 surface-border border-round mb-2 transition-all transition-duration-300 cursor-pointer uppercase hover:shadow-[0_0_25px_rgba(86,171,47,0.4)]" style="background: linear-gradient(135deg, #032e1e, #56ab2f);">
+
+                  <div class="mr-3">
+                    <p-avatar alt="article.titre" [image]="article.images[0]?.url" styleClass="mr-2" size="xlarge" shape="circle" [ariaLabel]="article.titre"></p-avatar>
+                  </div>
+
+                  <!-- Contenu avec titre cliquable -->
+                  <div class="flex-1">
+                    <div class="flex flex-column">
+                      <h3 class="text-sm text-gray-100 m-0 p-0  cursor-pointer" (click)="gotoArticle(article.slug)" pRipple>
+                        {{ article.titre }}
+                      </h3>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </ng-template>
+
+          </p-dataView>
+          <p-scrollTop />
+        </p-panel>
+      </p-card>
+      <app-taboola></app-taboola>
+
+    </div>
+  </div>
+  <div class="col-12 md:col-4 my-3">
+    <app-categorie-must-readed [mustReadedCategorie]="categorieMustReaded" [mustReadedLabel]="article.categorie.categorie"/>
+
+    <div class="bg-amber-500">
+          <app-ads
+          [adClient]="'ca-pub-8638642715460968'"
+          [adFormat]="'auto'"
+          [adSlot]="'6927429462'"
+          fullWidthResponsive="true"
+          styleClass="bg-gray-500 mt-3 border-round mb-4 text-center"
+          [adStyle]="{ display: 'block' }"
+          data-adtest="on"
+        />
+        <!-- <app-taboola />-->
+
+    </div>
+
+    <app-competition-must-readed [mustReadedCompetition]="competitionMustReaded" [mustReadedLabel]="article.competition.competition"/>
+  </div>
+
+
+</div>

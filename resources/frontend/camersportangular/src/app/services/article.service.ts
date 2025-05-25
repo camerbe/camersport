@@ -33,5 +33,11 @@ export class ArticleService extends DataService<Article> {
     publicIndex(){
       return this.httpClient.get<Article[]>(environment.baseUrl+`/articles/public`);
     }
+    categorieMustReaded(categorieId:number){
+      return this.httpClient.get<Article[]>(environment.baseUrl+`/articles/categorie/${categorieId}/mustreaded`);
+    }
+    competitionMustReaded(competitionId:number){
+      return this.httpClient.get<Article[]>(environment.baseUrl+`/articles/competition/${competitionId}/mustreaded`);
+    }
 
 }

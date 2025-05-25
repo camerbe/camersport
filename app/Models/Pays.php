@@ -10,7 +10,12 @@ class Pays extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'code';
+    protected $primaryKey = 'code3';
+    protected $keyType = 'string';
+    public $incrementing = false;
+    protected $casts = [
+        'code' => 'string',
+    ];
 
     protected $fillable = [
         'code',
@@ -19,6 +24,11 @@ class Pays extends Model
         'code3',
 
     ];
+    public static function findByCode(string $code): ?self
+    {
+        return self::where('code3', $code)->first();
+    }
+
     public function articles():HasMany{
         return $this->hasMany(Article::class);
     }

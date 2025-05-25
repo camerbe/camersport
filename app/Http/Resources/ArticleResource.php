@@ -14,6 +14,7 @@ class ArticleResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
         return [
             'id'=>$this->id,
             'hit'=>$this->hit,
@@ -27,9 +28,12 @@ class ArticleResource extends JsonResource
             'image'=>$this->image,
             'date_parution'=>$this->date_parution,
             'pays_code'=>$this->pays_code,
+            'categorie_id'=>$this->categorie_id,
+            'competition_id'=>$this->competition_id,
             'user'=>new UserResource($this->user),
             'pays'=>new PaysResource($this->bled),
             'categorie'=> new CategorieResource($this->categorie),
+            'competition'=> new CompetitionResource($this->competition),
             'images' => $this->whenLoaded('media', function () {
                 return $this->getMedia('article')->map(function ($media) {
                     return [
@@ -37,7 +41,6 @@ class ArticleResource extends JsonResource
                         //'thumbnail' => $media->getUrl('thumb'),
                         'mime_type' => $media->mime_type,
                         'extension' => $media->extension,
-
                         'meta' => $media->custom_properties
                     ];
                 });

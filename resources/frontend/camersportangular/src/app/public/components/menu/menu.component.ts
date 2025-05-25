@@ -26,8 +26,8 @@ items: MenuItem[]=[
       icon: 'pi pi-star'
     },
     {
-      label: 'Lions en club',
-      routerLink: ['/lions'],
+      label: 'Lions Indomptables',
+      routerLink: ['/lions-indomptables'],
       routerLinkActive: "text-rose-500 hover:text-rose-500",
       routerLinkActiveOptions: { exact: true },
       styleClass:"text-white hover:text-yellow-300 transition-colors uppercase",

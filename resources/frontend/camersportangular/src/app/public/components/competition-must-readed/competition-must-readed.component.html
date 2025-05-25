@@ -1,0 +1,45 @@
+<section class="my-3">
+  <p-dataView #dv
+    [value]="mustReadedCompetition"
+    [rows]="5"
+
+    [layout]="'list'"
+
+    >
+      <ng-template pTemplate="header" >
+          <div class="flex justify-between align-items-center mb-4">
+            <h5 class="m-0 uppercase md:text-2xl text-emerald-700">
+              <i class="pi pi-plus mr-2 text-xl"></i> {{ mustReadedLabel }}
+            </h5>
+          </div>
+      </ng-template>
+  <ng-template pTemplate="list">
+
+    <div class="grid grid-nogutter">
+      <div class="col-12" *ngFor="let competition of mustReadedCompetition; let i = index; let first = first">
+        <div class="flex flex-column sm:flex-row sm:align-items-center p-4 gap-3 relative" [ngClass]="{ 'border-top-1 surface-border': !first }"  >
+
+          <div class="flex flex-column md:flex-row justify-content-between align-items-start md:align-items-center flex-1 gap-2">
+
+            <div class="flex flex-nowrap align-items-center gap-2">
+              <p-chip class="flex-shrink-0 align-items-start" label="{{ i+1 }}" />
+              <a class="cursor-pointer text-sm uppercase hover:text-green-500 hover:text-green-700 transition-colors duration-200"
+
+               (click)="gotoArticle(competition.slug)" >
+                <small class=" uppercase">{{ competition.titre }}</small>
+              </a>
+
+
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+
+</p-dataView>
+
+</section>
+
+

@@ -17,6 +17,8 @@ export class LayoutComponent implements OnInit {
   carouselItems: any[] = [];
   articles:ArticleDetail[]=[];
   slicedNews:ArticleDetail[]=[];
+  randomNumber: number = 0;
+  currentYear: number = new Date().getFullYear();
 
   articleService: ArticleService = inject(ArticleService);
   articleItemsService:ArticleItemsService=inject(ArticleItemsService);
@@ -34,18 +36,11 @@ export class LayoutComponent implements OnInit {
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.isMobile = window.innerWidth < 768;
+      this.randomNumber = Math.floor(Math.random() * 1000001) / 1000000;
     }
     this.articleItemsService.updateState(this.route.snapshot.data['articleItems']);
-    //this.articleItems.state$.subscribe((data) => {;
-    // this.articleService.publicIndex()
-    //   .subscribe({
-    //     next:(data)=>{
-    //       const tempData=data as unknown as Article;
-    //       this.articles=tempData["data"] as unknown as ArticleDetail[];
-    //       this.slicedNews=this.articles.slice(3, 12);
-    //     },
-    //     error:(error)=>console.log(error)
-    //   })
+
+
 
   }
 }

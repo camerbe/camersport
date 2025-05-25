@@ -1,5 +1,5 @@
-import { DOCUMENT } from '@angular/common';
-import { Inject, inject, Injectable, Renderer2, RendererFactory2 } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { Inject, inject, Injectable, PLATFORM_ID, Renderer2, RendererFactory2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment.development';
 
@@ -15,7 +15,8 @@ export class CanonicalService {
   constructor(
     private rendererFactory: RendererFactory2,
     private router: Router,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(PLATFORM_ID) private platformId: Object,
   ) {
 
     this.createCanonicalLink();
@@ -23,12 +24,15 @@ export class CanonicalService {
 
   private createCanonicalLink(): void {
     this.canonicalLink = this.document.querySelector('link[rel="canonical"]');
-    if (!this.canonicalLink) {
+    if (isPlatformBrowser(this.platformId)){
+      if (!this.canonicalLink) {
       const renderer = this.rendererFactory.createRenderer(null, null);
       this.canonicalLink = renderer.createElement('link');
       renderer.setAttribute(this.canonicalLink, 'rel', 'canonical');
       renderer.appendChild(this.document.head, this.canonicalLink);
     }
+    }
+
 
   }
   updateCanonicalUrl(url: string): void {

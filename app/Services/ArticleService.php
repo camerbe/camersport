@@ -56,4 +56,10 @@ class ArticleService
     public function getArticleByCompetition(int $competitionId){
         return $this->articleRepository->getArticleByCompetition($competitionId);
     }
+    public function categorieMustReaded(int $categorieId){
+        return $this->articleRepository->categorieMustReaded($categorieId);
+    }
+    public function competitionMustReaded(int $competitionId){
+        return $this->articleRepository->competitionMustReaded($competitionId);
+    }
 }

@@ -25,6 +25,19 @@ import { ApiFootballComponent } from './components/api-football/api-football.com
 import { ArticleComponent } from './layout/article/article.component';
 import { ScrollTopModule } from 'primeng/scrolltop';
 import { RssComponent } from './layout/rss/rss.component';
+import { DataViewModule } from 'primeng/dataview';
+import { AvatarModule } from 'primeng/avatar';
+import { TaboolaComponent } from './components/taboola/taboola.component';
+import { NotCamerComponent } from './components/not-camer/not-camer.component';
+import { FieldsetModule } from 'primeng/fieldset';
+import { CategorieMustReadedComponent } from './components/categorie-must-readed/categorie-must-readed.component';
+import { CompetitionMustReadedComponent } from './components/competition-must-readed/competition-must-readed.component';
+import { TabMenuModule } from 'primeng/tabmenu';
+import { TimelineModule } from 'primeng/timeline';
+import { ThemoneytizerComponent } from './components/themoneytizer/themoneytizer.component';
+import { ViralizeComponent } from './components/viralize/viralize.component';
+import { LionsIndomptablesComponent } from './layout/lions-indomptables/lions-indomptables.component';
+import { PaginatorModule } from 'primeng/paginator';
 
 
 @NgModule({
@@ -37,7 +50,14 @@ import { RssComponent } from './layout/rss/rss.component';
     HomeComponent,
     ApiFootballComponent,
     ArticleComponent,
-    RssComponent
+    RssComponent,
+    TaboolaComponent,
+    NotCamerComponent,
+    CategorieMustReadedComponent,
+    CompetitionMustReadedComponent,
+    ThemoneytizerComponent,
+    ViralizeComponent,
+    LionsIndomptablesComponent
   ],
   imports: [
     CommonModule,
@@ -55,7 +75,13 @@ import { RssComponent } from './layout/rss/rss.component';
     ChipModule,
     StyleClassModule,
     DividerModule,
-    ScrollTopModule
+    ScrollTopModule,
+    DataViewModule,
+    AvatarModule,
+    FieldsetModule,
+    TabMenuModule,
+    TimelineModule,
+    PaginatorModule
 
   ],
   exports: [AdsComponent]

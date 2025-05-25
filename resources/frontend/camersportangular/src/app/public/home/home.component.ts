@@ -1,7 +1,7 @@
 import { ArticleDetail } from './../../core/models/article-detail';
 import { JsonLdService } from './../../services/json-ld.service';
 import { ArticleService } from './../../services/article.service';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
 
 
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { HashtagExtractorService } from '../../services/hashtag-extractor.servic
 import { Meta, Title } from '@angular/platform-browser';
 import { CanonicalService } from '../../services/canonical.service';
 import { ArticleItemsService } from '../../services/article-items.service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-home',
@@ -19,11 +20,20 @@ export class HomeComponent implements OnInit {
   //@Input() news:ArticleDetail[]=[];
   articles:ArticleDetail[]=[];
   article!:ArticleDetail;
+  otherNews:ArticleDetail[]=[];
   news:ArticleDetail[]=[];
+  mostReadedCats:ArticleDetail[]=[];
   slicedArticles:ArticleDetail[]=[];
   jsonLdArticles:ArticleDetail[]=[];
   jsonldArticle: any[] = [];
+  randomNumber!: number;
 
+  /**
+   *
+   */
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
   //articleService:ArticleService=inject(ArticleService)
   route:ActivatedRoute=inject(ActivatedRoute);
   router:Router=inject(Router);
@@ -35,17 +45,19 @@ export class HomeComponent implements OnInit {
   articleItemsService:ArticleItemsService=inject(ArticleItemsService);
 
   ngOnInit(): void {
-    //this.articles=this.route.snapshot.data['articleItems'] ;
+    this.randomNumber = Math.floor(Math.random() * 1000001) / 1000000;
     this.articleItemsService.updateState(this.route.snapshot.data['articleItems']);
     this.articleItemsService.state$.subscribe({
       next:(data:ArticleDetail[])=>{
-
         this.articles=data;
-        this.news=data.slice(3, 12);
-        this.slicedArticles=data.slice(0, 3);
+        this.news=data.slice(0, 25).filter((item:ArticleDetail) => item.pays_code === "CMR");
+        this.otherNews=data.slice(0, 25).filter((item:ArticleDetail) => item.pays_code !== "CMR");
+        //console.log(this.otherNews);
+        this.slicedArticles=data.slice(0, 10);
+        //console.log(this.slicedArticles)
         this.jsonLdArticles=data.slice(0, 20);
         this.article = this.jsonLdArticles[0];
-        //console.log(this.articles);
+        //console.log(this.article);
       },
       error:(error)=>console.log(error)
     });
@@ -85,8 +97,8 @@ export class HomeComponent implements OnInit {
     this.metaService.updateTag({ name: 'article:publisher', content: 'camer-sport.com' });
     this.titleService.setTitle(`Camer-sport.com : Football Camerounais et International,Cameroon Football News, Cameroon Football, Cameroon Sports News, Cameroon Sports`);
 
-
-    this.jsonLdArticles.forEach((article) => {
+    if (isPlatformBrowser(this.platformId)){
+      this.jsonLdArticles.forEach((article) => {
       const date =new Date(Date.now());
       const today=date.toISOString().slice(0, 19) + '+00:00'
       const articleDate = new Date(article.date_parution).toISOString().slice(0, 19) + '+00:00';
@@ -125,6 +137,8 @@ export class HomeComponent implements OnInit {
       };
       this.jsonldArticle.push(jsonLd);
     });
+    }
+
     this.jsonLdService.setJsonLd(this.jsonldArticle);
   }
 

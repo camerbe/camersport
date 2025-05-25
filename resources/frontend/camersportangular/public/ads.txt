@@ -1283,130 +1283,61 @@ improvedigital.com, 1577, RESELLER
 video.unrulymedia.com, 1166984029, RESELLER
 #End taboola
 #viralize
-appnexus.com, 8833, RESELLER, f5ab79cb980f11d1
-smartadserver.com, 2161, RESELLER
-smartadserver.com, 3668, RESELLER
-google.com, pub-7538555282033458, RESELLER, f08c47fec0942fa0
-google.com, pub-9829476400767085, RESELLER, f08c47fec0942fa0
-aps.amazon.com, 5044, RESELLER
-triplelift.com, 10521, RESELLER, 6c33edb13117fd86
-triplelift.com,13567,RESELLER, 6c33edb13117fd86
-improvedigital.com, 1057, RESELLER
-smartadserver.com, 2058, RESELLER
-pubmatic.com, 156695, DIRECT, 5d62403b186f2ace
-pubmatic.com, 160405, RESELLER, 5d62403b186f2ace
-freewheel.tv, 1007889, DIRECT
-freewheel.tv, 1007969, RESELLER
-rubiconproject.com, 18194, RESELLER, 0bfd66d529a55807
-openx.com, 540022851, RESELLER, 6a698e2ec38604c6
-rubiconproject.com, 23550, RESELLER, 0bfd66d529a55807
-indexexchange.com, 195921, RESELLER, 50b1c356f2c5c8fc
-adswizz.com, entravision, RESELLER
+smartadserver.com,2161,RESELLER
+google.com,pub-9829476400767085,RESELLER,f08c47fec0942fa0
+aps.amazon.com,5044,RESELLER
+rubiconproject.com,18194,RESELLER,0bfd66d529a55807
+appnexus.com,8833,RESELLER,f5ab79cb980f11d1
+rubiconproject.com,16568,RESELLER,0bfd66d529a55807
+smartadserver.com,2058,RESELLER
+indexexchange.com,195921,RESELLER,50b1c356f2c5c8fc
+redpineapplemedia.com,13206,RESELLER
+onetag.com,38980b46b0,RESELLER
+openx.com,540022851,RESELLER,6a698e2ec38604c6
+pubmatic.com,156695,RESELLER,5d62403b186f2ace
+google.com,pub-7538555282033458,RESELLER,f08c47fec0942fa0
+greedygame.com,2945322960280189,RESELLER
+appnexus.com,9986,RESELLER,f5ab79cb980f11d1
+freewheel.tv,1007889,RESELLER
+freewheel.tv,1007969,RESELLER
+improvedigital.com,1895,RESELLER
+pubmatic.com,156962,RESELLER,5d62403b186f2ace
+adform.com,1819,RESELLER,9f5210a2f0999e32
+openx.com,560841799,RESELLER,6a698e2ec38604c6
+richaudience.com,Ua8BIWjxkR,RESELLER
+improvedigital.com,907,RESELLER
+freewheel.tv,1003361,RESELLER
+freewheel.tv,1003377,RESELLER
+adform.com,2688,RESELLER,9f5210a2f0999e32
+smartadserver.com,3668,RESELLER
+freewheel.tv,13755,RESELLER
+freewheel.tv,13945,RESELLER
+freewheel.tv,328705,RESELLER
+smartadserver.com,2161-OB,RESELLER,060d053dcf45cbf3
+rubiconproject.com,23550,RESELLER,0bfd66d529a55807
+yieldlab.net,6378054,RESELLER
+goldbach-germany.de,Showheroes,RESELLER
+appnexus.com,15816,RESELLER,f5ab79cb980f11d1
+yoc.com,5903,RESELLER
+pubmatic.com,160405,RESELLER,5d62403b186f2ace
+e-planning.net,a57c4c4fa787d9b5,RESELLER,c1ba615865ed87b2
+pubmatic.com,164593,RESELLER,5d62403b186f2ace
+themediagrid.com,JDTGYN,RESELLER,35d5010d7789b49d
+soundcast.fm,5e3301babc6b5,RESELLER
+soundcast.fm,63038ce281dfc,RESELLER
+tritondigital.com,123193,RESELLER,19b4454d0b87b58b
+hcodemedia.com,653,RESELLER
 contextweb.com,562940,RESELLER,89ff185a4c4e857c
-tritondigital.com, 123193, DIRECT, 19b4454d0b87b58b
-appnexus.com, 956, RESELLER, f5ab79cb980f11d1
-forebase.com, 12938712824, DIRECT
-pubmatic.com, 139794, RESELLER, 5d62403b186f2ace
-pubmatic.com, 158068, RESELLER, 5d62403b186f2ace
-pubmatic.com, 160011, RESELLER, 5d62403b186f2ace
-smartadserver.com, 3064, RESELLER, 060d053dcf45cbf3
-smartadserver.com, 1444, RESELLER, 060d053dcf45cbf3
-instreamatic.com, 99, RESELLER
-admanmedia.com, 43, RESELLER
-adyoulike.com, b4bf4fdd9b0b915f746f6747ff432bde, RESELLER
-appnexus.com, 3703, RESELLER, f5ab79cb980f11d1
-axonix.com, 57264, RESELLER
-contextweb.com, 560288, RESELLER, 89ff185a4c4e857c
-loopme.com, 5679, RESELLER, 6c8d5f95897a5a3b
-openx.com, 537149888, RESELLER, 6a698e2ec38604c6
-pubmatic.com, 154037, RESELLER, 5d62403b186f2ace
-pubmatic.com, 156439, RESELLER, 5d62403b186f2ace
-pubnative.net, 1006576, RESELLER, d641df8625486a7b
-rubiconproject.com, 16114, RESELLER, 0bfd66d529a55807
-sharethrough.com, OAW69Fon, RESELLER, d53b998a7bd4ecd2
-smaato.com, 1100044045, RESELLER, 07bcf65f187117b4
-smartadserver.com, 4012, RESELLER
-smartadserver.com, 4016, RESELLER
-smartadserver.com, 4071, RESELLER
-smartadserver.com, 4073, RESELLER
-smartadserver.com, 4074, RESELLER
-verve.com, 15503, RESELLER, 0c8f5958fc2d6270
-video.unrulymedia.com, 2564526802, RESELLER
-xad.com, 958, RESELLER, 81cbf0a75a5e0e9a
-targetspot.com, 291, RESELLER, feb28ed826dcf532
-adswizz.com, targetspot, RESELLER
-appnexus.com, 1577, RESELLER, f5ab79cb980f11d1
-appnexus.com, 7265, RESELLER, f5ab79cb980f11d1
-rubiconproject.com, 16418, RESELLER, 0bfd66d529a55807
-rubiconproject.com, 22494, RESELLER, 0bfd66d529a55807
-rubiconproject.com, 9753, RESELLER, 0bfd66d529a55807
-rubiconproject.com, 9755, RESELLER, 0bfd66d529a55807
-soundcast.fm, 5e3301babc6b5, RESELLER
-soundcast.fm, 63038ce281dfc, DIRECT
-tritondigital.com, 44733, DIRECT, 19b4454d0b87b58b
-inmobi.com, 2c392c58f53745a39c3ba5e150476245, RESELLER, 83e75a7ae333ca9d
-rubiconproject.com, 15994, RESELLER, 0bfd66d529a55807
-smartadserver.com, 1408, RESELLER
-adcolony.com, 496220845654deec, RESELLER, 1ad675c9de6b5176
-adform.com, 2671, RESELLER
-adipolo.com, 22933556142, DIRECT
-adipolosolutions.com, 22933556142, DIRECT
-admanmedia.com, 2083, RESELLER
-adsyield.com, 1231, DIRECT
-appads.in, 107606, RESELLER
-appnexus.com, 11487, RESELLER, f5ab79cb980f11d1
-appnexus.com, 14077, RESELLER
-appnexus.com, 7556, RESELLER, f5ab79cb980f11d1
-axonix.com,59089, RESELLER,bc385f2b4a87b721
-consumable.com, 2001458, RESELLER, aefcd3d2f45b5070
-criteo.com, B-062285, RESELLER, 9fac4a4a87c2a44f
-eskimi.com,2020000026, RESELLER
-freewheel.tv, 1186415, DIRECT
-freewheel.tv, 1186575, DIRECT
-google.com, pub-2930805104418204, RESELLER, f08c47fec0942fa0
-google.com, pub-4903453974745530, RESELLER, f08c47fec0942fa0
-google.com, pub-9135355251665930, RESELLER, f08c47fec0942fa0
-improvedigital.com,2276,RESELLER
-loopme.com, 11569, RESELLER, 6c8d5f95897a5a3b
-openx.com, 540866936, RESELLER, 6a698e2ec38604c6
-opera.com,pub8115928507584,RESELLER,55a0c5fd61378de3
-opera.com,pub9443931419968,DIRECT,55a0c5fd61378de3
-pubmatic.com, 156319, RESELLER, 5d62403b186f2ace
-pubmatic.com, 158481, RESELLER, 5d62403b186f2ace
-pubmatic.com, 161546, RESELLER, 5d62403b186f2ace
-rubiconproject.com, 14558, RESELLER, 0bfd66d529a55807
-rubiconproject.com, 17328, RESELLER, 0bfd66d529a55807
-se7en.es, 212459, RESELLER, 064bc410192443d8
-smartadserver.com, 3713, RESELLER
-sonobi.com,a85c5f6129,RESELLER,d1a215d9eb5aee9e
-tritondigital.com, 106423, RESELLER, 19b4454d0b87b58b
-video.unrulymedia.com, 7491264956381456664, RESELLER
-yahoo.com, 59674, RESELLER, e1a5b5b6e3255540
-rhythmone.com, 609241817, DIRECT, a670c89d4a324e47
-video.unrulymedia.com, 609241817, DIRECT
-uis.mobfox.com, SM_828, DIRECT, 5529a3d1f59865be
-adform.com, 1819, RESELLER, 9f5210a2f0999e32
-appnexus.com, 14674, RESELLER, f5ab79cb980f11d1
-appnexus.com, 3480, DIRECT, f5ab79cb980f11d1
-appnexus.com, 3927, RESELLER, f5ab79cb980f11d1
-appnexus.com, 6924, RESELLER, f5ab79cb980f11d1
-appnexus.com, 7445, RESELLER, f5ab79cb980f11d1
-google.com, pub-2749054827332983, RESELLER, f08c47fec0942fa0
-google.com, pub-4770346047043508, RESELLER, f08c47fec0942fa0
-jfacassoc.com, 1630, DIRECT
-nobid.io, 22487092286, DIRECT
-onetag.com, 38980b46b0, RESELLER
-pubmatic.com,158858,RESELLER,5d62403b186f2ace
-rubiconproject.com, 25230, RESELLER, 0bfd66d529a55807
-smilewanted.com, 2825, RESELLER
-yieldlab.net, 227224, RESELLER
-yieldlab.net, 495507, RESELLER
-yieldlab.net, 506261, RESELLER
-yieldlab.net, 5494672, RESELLER
-yieldlab.net, 5798882, RESELLER
-yieldlab.net, 6374282, RESELLER
-loopme.com, 11343, RESELLER, 6c8d5f95897a5a3b
-loopme.com, 11423, RESELLER, 6c8d5f95897a5a3b
+hoopladigital.co.uk,21700180024,RESELLER
+pubmatic.com,161546,RESELLER,5d62403b186f2ace
+sharethrough.com,z4z8ek6m,DIRECT,d53b998a7bd4ecd2
+adform.com,3001,RESELLER
+appnexus.com,6924,RESELLER,f5ab79cb980f11d1
+google.com,pub-1386280613967939,RESELLER,f08c47fec0942fa0
+netpoint-media.de,np-6319,RESELLER
+pubmatic.com,163037,RESELLER,5d62403b186f2ace
+rubiconproject.com,25488,RESELLER,0bfd66d529a55807
+yieldlab.net,14540899,RESELLER
 viralize.com, 4826, DIRECT
 showheroes.com, 4826, DIRECT
 #End Viralize

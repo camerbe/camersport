@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\MatchSheetController;
+use App\Http\Controllers\Api\RssController;
 use App\Http\Controllers\Api\TeamController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\Api\ArticleController;
@@ -23,7 +24,12 @@ use UniSharp\LaravelFilemanager\Lfm;
 
     Route::get('articles/slug/{article}', [ArticleController::class, 'getArticleBySlug']);
     Route::get('articles/categorie/competition/{article}', [ArticleController::class, 'getArticleByCompetition']);
-    Route::get('articles/public', [ArticleController::class, 'publicIndex']);
+    Route::get('articles/categorie/{article}/mustreaded', [ArticleController::class, 'getCategorieMustReadedArticle']);
+    Route::get('articles/competition/{article}/mustreaded', [ArticleController::class, 'getCompetitionMustReadedArticle']);
+
+
+
+Route::get('articles/public', [ArticleController::class, 'publicIndex']);
 
     Route::post('auth/login', [AuthController::class, 'login']);
     Route::post('auth/changepassword', [AuthController::class, 'changePassword']);

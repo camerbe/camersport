@@ -67,7 +67,7 @@ class PaysController extends Controller
     public function show(string $id)
     {
         //
-        $bled=$this->paysRepository->findById($id);
+        $bled=$this->paysRepository->findByCode($id);
         if($bled){
             return response()->json([
                 "success"=>true,
@@ -106,7 +106,7 @@ class PaysController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $id)
+    public function destroy(sting $id)
     {
         //
         $bled=$this->paysRepository->delete($id);

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ArticleDetail } from '../../../core/models/article-detail';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Article } from '../../../core/models/article';
@@ -8,19 +8,25 @@ import { HashtagExtractorService } from '../../../services/hashtag-extractor.ser
 import { CanonicalService } from '../../../services/canonical.service';
 import { filter } from 'rxjs';
 import { ArticleItemsService } from '../../../services/article-items.service';
+import { ArticleService } from '../../../services/article.service';
 
 @Component({
   selector: 'app-article',
   templateUrl: './article.component.html',
   styleUrl: './article.component.css'
 })
-export class ArticleComponent implements OnInit {
+export class ArticleComponent implements OnInit,AfterViewInit  {
 
+  @ViewChild('competition') compet!: ElementRef;
   constructor() {
-     this.articles=this.route.snapshot.data['articleItems'] ;
+    this.articles=this.route.snapshot.data['articleItems'] ;
+  }
+  ngAfterViewInit(): void {
+    const label = this.compet.nativeElement.getAttribute('aria-label');
+    console.log('ARIA label (Renderer2):', label);
   }
 
-
+  renderer: Renderer2=inject(Renderer2);
   route:ActivatedRoute= inject(ActivatedRoute);
   router:Router= inject(Router);
   sanitizer:DomSanitizer= inject(DomSanitizer);
@@ -30,16 +36,19 @@ export class ArticleComponent implements OnInit {
   hashtagExtractorService:HashtagExtractorService=inject(HashtagExtractorService);
   canonicalService: CanonicalService= inject(CanonicalService);
   articleItemsService: ArticleItemsService = inject(ArticleItemsService);
+  articleService: ArticleService = inject(ArticleService);
 
   article!: ArticleDetail;
   articles:ArticleDetail[]=[];
   filteredArticles: ArticleDetail[] = [];
   news: any[] = [];
+  categorieMustReaded: ArticleDetail[] = [];
+  competitionMustReaded: ArticleDetail[] = [];
   isMobile: boolean = false;
 
   ngOnInit(): void {
     let currentArticle = this.route.snapshot.data['slug'] ;
-    //console.log(`art : ${art['data'] }`);
+    //console.log(currentArticle);
     this.articleItemsService.state$.subscribe({
       next:(data:ArticleDetail[])=>{
         if (!Array.isArray(data)) {
@@ -47,26 +56,44 @@ export class ArticleComponent implements OnInit {
           return;
         }
         this.article =currentArticle['data'] as ArticleDetail;
+
         if (this.article) {
           this.filteredArticles = data.filter(item =>
-            item.categorie?.id === this.article?.categorie?.id
+            (item.competition_id === this.article.competition.id) && (item.id !== this.article?.id)
           ).slice(0, 10);
-          console.log('Filtered:', this.filteredArticles);
+          //console.log('Filtered:', this.filteredArticles);
         }
-        // this.filteredArticles=data
-        // this.filteredArticles = this.filteredArticles.filter((item:ArticleDetail) => item.categorie.id == this.article.categorie.id);
-        //console.log(this.filteredArticles);
+
       },
       error:(error)=>console.log(error)
     });
     //this.article = art['data'] as ArticleDetail;
     if (this.article == null) {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/accueil']);
     }
+    this.articleService.categorieMustReaded(this.article.categorie.id)
+    .subscribe({
+      next:(data) =>{
+        const tempData=data as unknown as Article;
+        this.categorieMustReaded=tempData["data"] as unknown as ArticleDetail[];
+        //console.log(this.categorieMustReaded);
+      }
+      ,error:(error)=>console.log(error)
+    });
+    this.articleService.competitionMustReaded(this.article.competition.id)
+    .subscribe({
+      next:(data) =>{
+        const tempData=data as unknown as Article;
+        this.competitionMustReaded=tempData["data"] as unknown as ArticleDetail[];
+        //console.log(this.competitionMustReaded);
+      }
+      ,error:(error)=>console.log(error)
+    });
+
     this.canonicalService.updateCanonicalUrl(this.router.url);
 
 
-
+    //console.log('Article:', this.article);
     const date =new Date(Date.now());
     const today=date.toISOString().slice(0, 19) + '+00:00'
     const articleDate = new Date(this.article.date_parution).toISOString().slice(0, 19) + '+00:00';
@@ -103,51 +130,60 @@ export class ArticleComponent implements OnInit {
     this.metaService.updateTag({ name: 'article:author', content: this.article.auteur });
     this.metaService.updateTag({ name: 'article:publisher', content: 'camer-sport.com' });
     this.titleService.setTitle(title);
+
     const jsonLd={
       "@context": "https://schema.org",
       "@type": "NewsArticle",
       "url": `${window.location.protocol}//${window.location.host}${this.router.url}`,
-       "publisher":{
-          "@type":"Organization",
-           "name":"Camer-Sport",
-            "logo":`${window.location.protocol}//${window.location.host}/assets/camersport.png`,
-       },
-       "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": `${window.location.protocol}//${window.location.host}${this.router.url}`
-       },
-       "headline": this.article.titre,
-       "image": {
-          "@type": "ImageObject",
-          "url": this.article.images[0].url,
-          "width": 500,
-          "height": 500
-       },
-       "datePublished": articleDate,
-       "dateModified": today,
-       "author": {
-          "@type": "Person",
-          "name": this.article.auteur
-       },
-       "description": this.article.chapeau,
-       "articleSection": this.article.categorie.categorie,
-       "articleBody": this.article.article,
-       "keywords": this.hashtagExtractorService.removeHashtags(this.article.motclef),
-       "inLanguage": "fr",
-       "articleTag": this.hashtagExtractorService.extractHashtags(this.article.motclef),
+      "publisher":{
+        "@type":"Organization",
+        "name":"Camer-Sport",
+        "logo":`${window.location.protocol}//${window.location.host}/assets/camersport.png`,
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": `${window.location.protocol}//${window.location.host}${this.router.url}`
+      },
+      "headline": this.article.titre,
+      "image": {
+        "@type": "ImageObject",
+        "url": this.article.images[0].url,
+        "width": 500,
+        "height": 500
+      },
+      "datePublished": articleDate,
+      "dateModified": today,
+      "author": {
+        "@type": "Person",
+        "name": this.article.auteur
+      },
+      "description": this.article.chapeau,
+      "articleSection": this.article.categorie.categorie,
+      "articleBody": this.article.article,
+      "keywords": this.hashtagExtractorService.removeHashtags(this.article.motclef),
+      "inLanguage": "fr",
+      "articleTag": this.hashtagExtractorService.extractHashtags(this.article.motclef),
 
     };
     this.jldService.setJsonLd(jsonLd);
 
-    //console.log(this.articles);
-    //this.filteredArticles = this.articles.filter((item) => item.categorie.id !== this.article.categorie.id);
-    //console.log(this.filteredArticles);
+
   }
 
   private appendCountryIfFound(title: string,country:string) :string{
-    if (title.toLowerCase().includes(country.toLowerCase())) {
+    if (!title.toLowerCase().includes(country.toLowerCase())) {
       return `${country} ${title} `;
     }
     return title;
+  }
+  // gotoArticle(slug: string) {
+  //   this.router.navigate([ '/article',slug], {
+  //   onSameUrlNavigation: 'reload'
+  //   })
+  // }
+  gotoArticle(slug: string) {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/article', slug]);
+    });
   }
 }
