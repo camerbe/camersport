@@ -9,6 +9,7 @@ import { CanonicalService } from '../../../services/canonical.service';
 import { filter } from 'rxjs';
 import { ArticleItemsService } from '../../../services/article-items.service';
 import { ArticleService } from '../../../services/article.service';
+import slugify from 'slugify';
 
 @Component({
   selector: 'app-article',
@@ -18,12 +19,14 @@ import { ArticleService } from '../../../services/article.service';
 export class ArticleComponent implements OnInit,AfterViewInit  {
 
   @ViewChild('competition') compet!: ElementRef;
+  slugCompetition!: string ;
   constructor() {
     this.articles=this.route.snapshot.data['articleItems'] ;
   }
   ngAfterViewInit(): void {
+    this.slugCompetition=slugify(this.compet.nativeElement.getAttribute('aria-label'), { lower: true, strict: true })
     const label = this.compet.nativeElement.getAttribute('aria-label');
-    console.log('ARIA label (Renderer2):', label);
+    //console.log('ARIA label (Renderer2):', label);
   }
 
   renderer: Renderer2=inject(Renderer2);

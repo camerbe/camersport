@@ -38,6 +38,16 @@ import { ThemoneytizerComponent } from './components/themoneytizer/themoneytizer
 import { ViralizeComponent } from './components/viralize/viralize.component';
 import { LionsIndomptablesComponent } from './layout/lions-indomptables/lions-indomptables.component';
 import { PaginatorModule } from 'primeng/paginator';
+import { CompetitionsComponent } from './layout/competitions/competitions.component';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { ToolbarModule } from 'primeng/toolbar';
+import { ClassementComponent } from './components/classement/classement.component';
+import { DialogModule } from 'primeng/dialog';
+import { CompetitionDetailComponent } from './layout/competition-detail/competition-detail.component';
+import { CompetitionNotFoundComponent } from './components/competition-not-found/competition-not-found.component';
+import { MatchMtnComponent } from './components/match-mtn/match-mtn.component';
+import { LiveComponent } from './layout/live/live.component';
+import { LiveMatchComponent } from './components/live-match/live-match.component';
 
 
 @NgModule({
@@ -57,7 +67,14 @@ import { PaginatorModule } from 'primeng/paginator';
     CompetitionMustReadedComponent,
     ThemoneytizerComponent,
     ViralizeComponent,
-    LionsIndomptablesComponent
+    LionsIndomptablesComponent,
+    CompetitionsComponent,
+    ClassementComponent,
+    CompetitionDetailComponent,
+    CompetitionNotFoundComponent,
+    MatchMtnComponent,
+    LiveComponent,
+    LiveMatchComponent
   ],
   imports: [
     CommonModule,
@@ -81,7 +98,10 @@ import { PaginatorModule } from 'primeng/paginator';
     FieldsetModule,
     TabMenuModule,
     TimelineModule,
-    PaginatorModule
+    PaginatorModule,
+    BreadcrumbModule,
+    ToolbarModule,
+    DialogModule
 
   ],
   exports: [AdsComponent]

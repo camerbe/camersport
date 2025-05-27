@@ -79,11 +79,11 @@ export class ArticleComponent implements OnInit {
       if (meta.filetype == 'image') {
 
         cmsURL = cmsURL + "&type=Images";
-        //console.log(`cmsURL: ${cmsURL}`);
+        console.log(`cmsURL: ${cmsURL}`);
       }
       else {
         cmsURL = cmsURL + "&type=Files";
-        //console.log(`cmsURL: ${cmsURL}`);
+        console.log(`cmsURL: ${cmsURL}`);
       }
 
       // @ts-ignore
@@ -148,6 +148,7 @@ export class ArticleComponent implements OnInit {
         //close_previous : 'no',
         // @ts-ignore
         onMessage: (api, message) => {
+          console.log(`message de Camer-Sport: ${message}`);
           callback(message['content'])
         }
 

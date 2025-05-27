@@ -1,24 +1,42 @@
 <div class="flex flex-col md:flex-row gap-2 w-full">
-  @if(articles && articles.length > 0)
+  @if(articles.length > 0)
   {
   <div class="w-full md:w-8/12">
+
     <section class="grid mt-4 mb-3 ml-2">
       <div class="col-12">
 
-
-        <!-- </ng-template> -->
-         <p-toolbar>
+        <!-- <ng-template pTemplate="header"> -->
+          <p-toolbar>
           <div class="flex align-items-center gap-2">
             <i class="pi pi-list text-2xl text-emerald-700"></i>
-            <h2 class="m-0 uppercase text-emerald-700 text-xl md:text-3xl">
-              {{articles[0].categorie.categorie }}
+            <h2 *ngIf="articles.length>0" class="m-0 uppercase text-emerald-700 text-xl md:text-3xl">
+              {{articles[0].competition.competition }}
             </h2>
           </div>
         </p-toolbar>
-
+        <!-- </ng-template> -->
       </div>
         <!-- <ng-template pTemplate="content" let-articles> -->
-          <div *ngFor="let newlist of articles" class="col-12 md:col-6">
+          <div *ngFor="let newlist of articles; let i=index;" class="col-12 md:col-6">
+            @if(i+1% 2 === 0) {
+              <div class="mb-4 md:my-2">
+                <div class="bg-amber-500" *ngIf="randomNumber===1">
+                  <app-ads
+                  [adClient]="'ca-pub-8638642715460968'"
+                  [adFormat]="'auto'"
+                  [adSlot]="'6927429462'"
+                  fullWidthResponsive="true"
+                  styleClass="bg-gray-500 mt-3 border-round mb-4 text-center"
+                  [adStyle]="{ display: 'block' }"
+                  data-adtest="on"
+                />
+                <!-- <app-taboola />-->
+
+              </div>
+              <app-viralize [zId]="'AAF07vSJ870tXKha'" class="bg-amber-700 mt-3" *ngIf="randomNumber===0"></app-viralize>
+              </div>
+            }
             <article class="mb-4" itemscope itemtype="https://schema.org/NewsArticle">
               <meta itemprop="mainEntityOfPage" [content]="'/article/' + newlist.slug" />
                 <p-card styleClass="h-full shadow-2 hover:shadow-4 transition-all px-3 py-3">
@@ -84,10 +102,11 @@
             />
           </div>
 
-
+      <!-- @if(slug.includes('mtn-')) {
+       <app-match-mtn/>
+      } -->
      </section>
      <section class="grid ml-2">
-
 
         <p-scrollTop></p-scrollTop>
      </section>
@@ -95,15 +114,14 @@
 
   </div>
   <!-- Compare this snippet from src/app/public/layout/lions-indomptables/lions-indomptables.component.html: -->
-  <div class="col-12 md:col-4  mt-4">
-    <app-classement></app-classement>
+  <div class="col-12 md:col-4 mt-4">
+    <app-classement/>
   </div>
-}
-  @else {
-    <div class="flex justify-content-center align-items-center w-full h-full">
-    <app-competition-not-found></app-competition-not-found>
-  </div>
+  }@else{
+    <div class="flex justify-center items-center w-full h-full">
+      <app-competition-not-found></app-competition-not-found>
+    </div>
+
+
   }
-
-
 </div>

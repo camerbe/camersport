@@ -50,3 +50,19 @@
   </ng-template>
 
 </p-dataView>
+<p-divider></p-divider>
+<p-card
+  class="my-3">
+  <ng-template pTemplate="header">
+    <div class="flex justify-between align-items-center pt-4 ">
+      <h5 class="m-0 uppercase md:text-2xl text-emerald-700">
+        <i class="pi pi-gauge px-3  text-xl"></i>live score
+      </h5>
+    </div>
+  </ng-template>
+  <iframe
+    src="https://www.scorebat.com/embed/livescore/?token=MjEyODMzXzE3NDgyNDc3NjFfNTEyYTk2MDQwMTgxODU2ZWVkZTA1NDkzMzc0MjNlNTE5MWIwMDYyZg=="
+    width="100%"
+    height="400px"
+    style="border: none;"></iframe>
+</p-card>

@@ -1,5 +1,5 @@
-::ng-deep .custom-menubar .p-menubar-root {
-  background-color: #166534 !important; /* équivalent bg-green-800 */
+/*::ng-deep .custom-menubar .p-menubar-root {
+  background-color: #166534 !important;
 }
 
 ::ng-deep .custom-menubar .p-menuitem-link,
@@ -11,4 +11,33 @@
 
 ::ng-deep .custom-menubar .p-menuitem-link:hover {
   background-color: #14532d !important;
+}
+
+*/
+/* Style the text inside menu items */
+::ng-deep .custom-menubar .p-menuitem-text {
+  color: white !important;
+  font-size: 14px !important; /* Adjust font size */
+}
+
+/* Change the background of submenu items */
+::ng-deep .custom-menubar .p-submenu-list {
+ /*background-color: bg-green-300 !important;  Example: slate-800 */
+  min-width: 250px !important; /* Enlarge width */
+}
+
+/* Optional: Style individual submenu items on hover */
+::ng-deep .custom-menubar .p-submenu-list .p-menuitem:hover {
+  background-color: #334155 !important; /* Example: slate-700 */
+}
+
+/* Optional: Style the text inside submenu items */
+::ng-deep .custom-menubar .p-submenu-list .p-menuitem-text {
+  color: #14532d !important; /* Example: Tailwind yellow-400 */
+  /*font-weight: 600;*/
+}
+
+::ng-deep .p-submenu-icon {
+  display: inline-block !important;
+  color: white;
 }

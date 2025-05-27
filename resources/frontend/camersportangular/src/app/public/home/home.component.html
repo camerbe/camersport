@@ -1,4 +1,4 @@
-<div class="flex flex-column md:flex-row gap-2">
+<div class="flex flex-column md:flex-row gap-2 mt-3">
   <div class="col-12 md:col-8">
     <app-carousel [carouselItems]="slicedArticles"></app-carousel>
      <section class="grid mt-4">
@@ -83,20 +83,8 @@
   </div>
   <div class="col-12 md:col-4">
 
+    <app-classement/>
 
-    <div class="bg-amber-500">
-          <app-ads
-          [adClient]="'ca-pub-8638642715460968'"
-          [adFormat]="'auto'"
-          [adSlot]="'6927429462'"
-          fullWidthResponsive="true"
-          styleClass="bg-gray-500 mt-3 border-round mb-4 text-center"
-          [adStyle]="{ display: 'block' }"
-          data-adtest="on"
-        />
-        <!-- <app-taboola />-->
-
-      </div>
   </div>
 </div>
 
