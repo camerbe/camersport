@@ -13,6 +13,7 @@ import { MatchSheetDetail } from '../../../core/models/match-sheet-detail';
 import { DropdownChangeEvent } from 'primeng/dropdown';
 import { environment } from '../../../../environments/environment.development';
 import { LiveMatchDetail } from '../../../core/models/live-match-detail';
+import { MatchSheetService } from '../../../services/match-sheet.service';
 
 @Component({
   selector: 'app-live-match',
@@ -27,6 +28,8 @@ export class LiveMatchComponent implements OnInit{
   isExpired!:boolean;
   isAddMode!:boolean;
   id!:number;
+  teamA_name!:string;
+  teamB_name!:string;
   erreur!:string;
   liveMatchs:LiveMatch[]=[];
   teams:TeamDetail[]=[];
@@ -107,10 +110,22 @@ export class LiveMatchComponent implements OnInit{
     toolbar:'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media table mergetags  blockquote'
 
   };
+  teamSelected!: TeamDetail;
 
   onEventTypeChange($event: DropdownChangeEvent) {
     const selectedEventType = $event.value;
     const eventType = this.even_types.find(event => event.value === selectedEventType.value);
+    //console.log(selectedEventType)
+    if(selectedEventType==='But' && this.teamSelected){
+      console.log(this.teamSelected)
+      switch(this.teamSelected.name){
+        case this.teamA_name:
+          this.frmLiveMatch.patchValue({ score_a: (this.score_a?.value ?? 0) + 1 });
+          break;
+        case this.teamB_name:
+          this.frmLiveMatch.patchValue({ score_b: (this.score_b?.value ?? 0) + 1 });
+      }
+    }
     if (eventType) {
       this.frmLiveMatch.patchValue({
         event_type: eventType
@@ -135,6 +150,7 @@ export class LiveMatchComponent implements OnInit{
   router:Router=inject(Router);
   activatedRoute:ActivatedRoute=inject(ActivatedRoute);
   liveMatchService:LiveMatchService=inject(LiveMatchService);
+  matchService:MatchSheetService=inject(MatchSheetService);
 
   constructor() {
     this.frmLiveMatch=this.fb.group({
@@ -146,6 +162,8 @@ export class LiveMatchComponent implements OnInit{
       status: ['confirmed'],
       description: [''],
       event_second: [''],
+      score_a: 0,
+      score_b: 0,
 
     })
   }
@@ -173,16 +191,18 @@ export class LiveMatchComponent implements OnInit{
   get event_second (){
     return this.frmLiveMatch.get('event_second');
   }
+  get score_a (){
+    return this.frmLiveMatch.get('score_a');
+  }
+  get score_b (){
+    return this.frmLiveMatch.get('score_b');
+  }
   onTeamChange(event: any) {
-    // const selectedTeam = event.value;
-    // this.players=this.matchSheet.team_a_data.team_a_id=== selectedTeam.id ? this.matchSheet.team_a_data.startingXI : this.matchSheet.team_b_data.startingXI;
-    // this.frmLiveMatch.patchValue({
-    //   team_id: selectedTeam.id
-    // });
 
     const selectedTeamId = event.value;
     const selectedTeam = this.teams.find(team => team.id === selectedTeamId);
     if (selectedTeam) {
+      this.teamSelected=selectedTeam;
       this.players = this.matchSheet.team_a_data.team_a_id === selectedTeam.id
         ? this.matchSheet.team_a_data.startingXI
         : this.matchSheet.team_b_data.startingXI;
@@ -196,9 +216,12 @@ export class LiveMatchComponent implements OnInit{
     this.expiredAtService.updateState(this.authSevice.isExpired());
     this.expiredAtService.state$.subscribe(state=>this.isExpired=state);
     if(this.isExpired) this.authSevice.logout();
+
     this.liveMatchService.getTeams()
     .subscribe({
       next:(data) =>{
+        const id=this.id;
+        console.log('i='+id);
         const tempData:Team=data as unknown as Team;
         this.teams=tempData["data"] as unknown as TeamDetail[];
 
@@ -212,6 +235,9 @@ export class LiveMatchComponent implements OnInit{
         const tempData:MatchSheet=data as unknown as MatchSheet;
         this.matchSheet=tempData["data"] as unknown as MatchSheetDetail;
         this.players= this.matchSheet.team_a_data.startingXI;
+        this.teams=this.teams.filter(team=>team.id===this.matchSheet.team_a_id || team.id===this.matchSheet.team_b_id );
+        this.teamA_name = this.teams.find(value => value.id === this.matchSheet.team_a_id)?.name?.toString() || 'undefined';
+        this.teamB_name = this.teams.find(value => value.id === this.matchSheet.team_b_id)?.name?.toString() || 'undefined';
         this.frmLiveMatch.patchValue({
           matchsheet_id:this.matchSheet.id
         });

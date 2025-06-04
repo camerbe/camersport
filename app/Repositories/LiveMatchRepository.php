@@ -69,6 +69,8 @@ class LiveMatchRepository extends Repository implements ILiveMatchRrepository
     {
         //dd($data);
         $liveMatch=parent::find($id);
+        $data['score_a']= $data["score_a"] ?? $liveMatch->score_a;
+        $data['score_b']= $data["score_b"] ?? $liveMatch->score_b;
         $data['matchsheet_id']= $data["matchsheet_id"] ?? $liveMatch->matchsheet_id;
         $data['team_id']= $data["team_id"] ?? $liveMatch->team_id;
         $data['event_type']= $data['event_type'] ?? $liveMatch->event_type;
@@ -114,7 +116,7 @@ class LiveMatchRepository extends Repository implements ILiveMatchRrepository
             $lastMatch->team_a_data=json_decode($lastMatch->team_a_data);
             $lastMatch->team_b_data=json_decode($lastMatch->team_b_data);
         }
-        return $lastMatch;
+        return  $lastMatch;
 
     }
 

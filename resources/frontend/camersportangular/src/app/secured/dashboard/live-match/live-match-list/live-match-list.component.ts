@@ -47,7 +47,7 @@ export class LiveMatchListComponent implements OnInit {
         const tempData = data as unknown as LiveMatch;
         this.liveMatchs = tempData["data"] as unknown as LiveMatchDetail[];
         //console.log(this.liveMatchs);
-        console.log(tempData);
+        //console.log(tempData);
       },
       error: (error) => console.log(error)
     });

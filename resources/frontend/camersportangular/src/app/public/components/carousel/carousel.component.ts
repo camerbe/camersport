@@ -1,19 +1,31 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, inject, Input, OnInit, ViewChild } from '@angular/core';
 import { ArticleDetail } from '../../../core/models/article-detail';
 import { ArticleService } from '../../../services/article.service';
 import { Article } from '../../../core/models/article';
+import { Carousel } from 'primeng/carousel';
 
 @Component({
   selector: 'app-carousel',
   templateUrl: './carousel.component.html',
   styleUrl: './carousel.component.css'
 })
-export class CarouselComponent implements OnInit{
-
+export class CarouselComponent implements OnInit,AfterViewInit{
+  @ViewChild('carouselRef') carousel: Carousel | undefined;
   articleService:ArticleService= inject(ArticleService);
+
   @Input() carouselItems: ArticleDetail[] = [];
   articles: ArticleDetail[] = [];
 
+  ngAfterViewInit(): void {
+   setTimeout(() => {
+      // Type assertion to access internal API
+      const carouselAny = this.carousel as any;
+      if (carouselAny && typeof carouselAny.update === 'function') {
+        carouselAny.update();
+      }
+    }, 0);
+
+  }
 
 
   ngOnInit(): void {

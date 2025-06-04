@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { PublicRoutingModule } from './public-routing.module';
 import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -24,7 +23,6 @@ import { DividerModule } from 'primeng/divider';
 import { ApiFootballComponent } from './components/api-football/api-football.component';
 import { ArticleComponent } from './layout/article/article.component';
 import { ScrollTopModule } from 'primeng/scrolltop';
-import { RssComponent } from './layout/rss/rss.component';
 import { DataViewModule } from 'primeng/dataview';
 import { AvatarModule } from 'primeng/avatar';
 import { TaboolaComponent } from './components/taboola/taboola.component';
@@ -47,20 +45,18 @@ import { CompetitionDetailComponent } from './layout/competition-detail/competit
 import { CompetitionNotFoundComponent } from './components/competition-not-found/competition-not-found.component';
 import { MatchMtnComponent } from './components/match-mtn/match-mtn.component';
 import { LiveComponent } from './layout/live/live.component';
-import { LiveMatchComponent } from './components/live-match/live-match.component';
+import { LiveMatchDataComponent } from './components/live-match-data/live-match-data.component';
 
 
 @NgModule({
   declarations: [
     LoginComponent,
-    LayoutComponent,
     CarouselComponent,
     MenuComponent,
     AdsComponent,
     HomeComponent,
     ApiFootballComponent,
     ArticleComponent,
-    RssComponent,
     TaboolaComponent,
     NotCamerComponent,
     CategorieMustReadedComponent,
@@ -74,7 +70,8 @@ import { LiveMatchComponent } from './components/live-match/live-match.component
     CompetitionNotFoundComponent,
     MatchMtnComponent,
     LiveComponent,
-    LiveMatchComponent
+    LiveMatchDataComponent,
+    LayoutComponent
   ],
   imports: [
     CommonModule,
@@ -104,6 +101,8 @@ import { LiveMatchComponent } from './components/live-match/live-match.component
     DialogModule
 
   ],
-  exports: [AdsComponent]
+  exports: [
+    AdsComponent
+  ]
 })
 export class PublicModule { }

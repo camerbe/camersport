@@ -1,0 +1,41 @@
+<div class="w-full">
+    <p-card
+      styleClass="w-full"
+      [style]="{ width: '100%', display: 'block' }">
+      <div class="relative bg-green-700 w-full h-[600px] rounded-md overflow-hidden">
+
+        <!-- Équipe A -->
+        <div
+          *ngFor="let pos of playersA; let i = index"
+          class="absolute text-white text-center w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center border border-white"
+          [ngStyle]="getPositionStyleA(pos.position)"
+        >
+          <p-avatar
+            [style]="{ 'background-color': '#'+lastMatchSheet.color_a }"
+            label="{{ pos.name }}"
+            icon="pi pi-user"
+            pBadge
+            size="xlarge"
+            badgeSize="large"></p-avatar>
+          <span class="absolute inset-0 flex items-center justify-center font-bold">{{ pos.number }}</span>
+        </div>
+
+        <!-- Équipe B (positionnée en miroir sur le terrain) -->
+        <div
+          *ngFor="let pos of playersB; let i = index"
+          class="absolute text-white text-center w-10 h-10 rounded-full bg-red-600 flex items-center justify-center border border-white"
+          [ngStyle]="getPositionStyleB(pos.position)"
+        >
+          <p-avatar
+            [style]="{ 'background-color': '#'+lastMatchSheet.color_b }"
+            label="{{ pos.name }}"
+            icon="pi pi-user"
+            pBadge
+            size="xlarge"
+            badgeSize="large"></p-avatar>
+          <span class="absolute inset-0 flex items-center justify-center font-bold">{{ pos.number }}</span>
+        </div>
+      </div>
+    </p-card>
+</div>
+

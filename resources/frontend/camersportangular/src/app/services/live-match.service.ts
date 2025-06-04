@@ -24,4 +24,10 @@ export class LiveMatchService extends DataService<LiveMatch> {
     return this.httpClient.get<MatchSheet>(environment.baseUrl+`/lives/matchsheets/last`);
   }
 
+  extractImage(htmlText:string):string{
+    const regex = /<img\s+[^>]*src=["']([^"']+)["'][^>]*>/i;
+    const match = htmlText.match(regex);
+    return  match ? match[1] : '';
+  }
+
 }

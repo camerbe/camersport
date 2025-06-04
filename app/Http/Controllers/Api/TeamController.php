@@ -61,7 +61,7 @@ class TeamController extends Controller
                 $team->addMedia(public_path($filePath))
                     ->preservingOriginal()
                     ->withResponsiveImages()
-                    ->usingName($team->name)
+                    ->usingName($team->slugname)
                     ->toMediaCollection('team');
             }
 
@@ -106,18 +106,19 @@ class TeamController extends Controller
         $team=$this->teamService->update($request->all(),$id);
         $image=ImageHelper::extractImgSrc($request->logo);
         if ($team){
-            $media =$team->getMedia('team')->firstWhere('name',$team->name);
-            if($media){
-               $media->delete();
-                $parsedUrl = parse_url($image);
-                $path = $parsedUrl['path'];
-                $filePath = str_replace(url('/storage'), 'storage', $path);
-                $team->addMedia(public_path($filePath))
-                    ->preservingOriginal()
-                    ->withResponsiveImages()
-                    ->usingName($team->name)
-                    ->toMediaCollection('team');
+            $media =$team->getMedia('team')->firstWhere('name',$team->slugname);
+            if($media) {
+                $media->delete();
             }
+            $parsedUrl = parse_url($image);
+            $path = $parsedUrl['path'];
+            $filePath = str_replace(url('/storage'), 'storage', $path);
+            $team->addMedia(public_path($filePath))
+                ->preservingOriginal()
+                ->withResponsiveImages()
+                ->usingName($team->slugname)
+                ->toMediaCollection('team');
+
 
             return response()->json([
                 'success'=>true,

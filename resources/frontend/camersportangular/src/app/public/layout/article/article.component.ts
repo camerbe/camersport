@@ -18,14 +18,20 @@ import slugify from 'slugify';
 })
 export class ArticleComponent implements OnInit,AfterViewInit  {
 
-  @ViewChild('competition') compet!: ElementRef;
+  @ViewChild('competition', { static: false }) compet!: ElementRef;
   slugCompetition!: string ;
   constructor() {
     this.articles=this.route.snapshot.data['articleItems'] ;
   }
   ngAfterViewInit(): void {
-    this.slugCompetition=slugify(this.compet.nativeElement.getAttribute('aria-label'), { lower: true, strict: true })
-    const label = this.compet.nativeElement.getAttribute('aria-label');
+    if (this.compet?.nativeElement?.getAttribute){
+      this.slugCompetition=slugify(this.compet.nativeElement.getAttribute('aria-label'), { lower: true, strict: true })
+      const label = this.compet.nativeElement.getAttribute('aria-label');
+    }
+    else{
+      console.warn('compétition non initialisée');
+    }
+
     //console.log('ARIA label (Renderer2):', label);
   }
 
@@ -66,15 +72,7 @@ export class ArticleComponent implements OnInit,AfterViewInit  {
           ).slice(0, 10);
           //console.log('Filtered:', this.filteredArticles);
         }
-
-      },
-      error:(error)=>console.log(error)
-    });
-    //this.article = art['data'] as ArticleDetail;
-    if (this.article == null) {
-      this.router.navigate(['/accueil']);
-    }
-    this.articleService.categorieMustReaded(this.article.categorie.id)
+        this.articleService.categorieMustReaded(this.article.categorie.id)
     .subscribe({
       next:(data) =>{
         const tempData=data as unknown as Article;
@@ -83,15 +81,22 @@ export class ArticleComponent implements OnInit,AfterViewInit  {
       }
       ,error:(error)=>console.log(error)
     });
-    this.articleService.competitionMustReaded(this.article.competition.id)
-    .subscribe({
-      next:(data) =>{
-        const tempData=data as unknown as Article;
-        this.competitionMustReaded=tempData["data"] as unknown as ArticleDetail[];
-        //console.log(this.competitionMustReaded);
-      }
-      ,error:(error)=>console.log(error)
+      this.articleService.competitionMustReaded(this.article.competition.id)
+      .subscribe({
+        next:(data) =>{
+          const tempData=data as unknown as Article;
+          this.competitionMustReaded=tempData["data"] as unknown as ArticleDetail[];
+          //console.log(this.competitionMustReaded);
+        }
+        ,error:(error)=>console.log(error)
+      });
+    },
+      error:(error)=>console.log(error)
     });
+    if (this.article == null) {
+      this.router.navigate(['/accueil']);
+    }
+
 
     this.canonicalService.updateCanonicalUrl(this.router.url);
 

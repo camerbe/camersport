@@ -4,9 +4,11 @@
   <!-- Main Content -->
   <div class="px-4  bg-gray-100">
     <!-- Carousel -->
-    <!-- Ad Banner-->
+    <!-- Ad Banner -->
+    <p-card
+      [styleClass]="'bg-gray-200 ml-1'"
+      >
 
-     <div class="bg-amber-500">
         <app-ads
         [adClient]="'ca-pub-8638642715460968'"
         [adFormat]="'auto'"
@@ -16,7 +18,9 @@
         [adStyle]="{ display: 'block' }"
         data-adtest="on"
       />
-     </div>
+
+    </p-card>
+
     <!-- News Grid -->
     <div class="grid p-fluid">
       <!--<div class="col-12 md:col-8 lg:col-9">-->

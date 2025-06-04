@@ -150,15 +150,15 @@ export class CompetitionDetailComponent implements OnInit {
     }
 
     updatePagedArticles() {
-        const start = this.currentPage * this.articlesPerPage;
-        const end = start + this.articlesPerPage;
-        this.pagedArticles = this.articles.slice(start, end);
-      }
+      const start = this.currentPage * this.articlesPerPage;
+      const end = start + this.articlesPerPage;
+      this.pagedArticles = this.articles.slice(start, end);
+    }
 
-      onPageChange($event: PaginatorState) {
-        this.currentPage = ($event.page ?? 0) | 0; // Ensure currentPage is always a number
-        this.articlesPerPage = $event.rows || 10; // Default to 10 if rows is undefined
-        this.updatePagedArticles();
-      }
+    onPageChange($event: PaginatorState) {
+      this.currentPage = ($event.page ?? 0) | 0; // Ensure currentPage is always a number
+      this.articlesPerPage = $event.rows || 10; // Default to 10 if rows is undefined
+      this.updatePagedArticles();
+    }
 
 }

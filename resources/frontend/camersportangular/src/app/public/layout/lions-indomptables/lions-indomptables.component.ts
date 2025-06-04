@@ -48,7 +48,7 @@ export class LionsIndomptablesComponent implements OnInit {
           next: (data: ArticleDetail[]) => {
             if (Array.isArray(data)) {
               this.articles = data.filter(item => item.categorie.slugcategorie === this.slugCategorie).slice(0, 100);
-              this.jsonLdArticles=this.articles.slice(0, 20);
+              this.jsonLdArticles= data.filter(item => item.categorie.slugcategorie === this.slugCategorie).slice(0, 20);
               this.article = this.jsonLdArticles[0];
             } else {
               this.articles = [];
@@ -63,7 +63,9 @@ export class LionsIndomptablesComponent implements OnInit {
          * ****************************************************
          */
         this.canonicalService.updateCanonicalUrl(this.router.url);
-
+        if(this.article){
+          console.log(this.article);
+        }
         this.metaService.updateTag({ name: 'description', content: this.article.chapeau });
         this.metaService.updateTag({ name: 'keywords', content: this.article.motclef });
         this.metaService.updateTag({ name: 'title', content: this.article.titre });

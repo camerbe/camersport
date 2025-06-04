@@ -10,6 +10,7 @@ import { RssComponent } from './layout/rss/rss.component';
 import { LionsIndomptablesComponent } from './layout/lions-indomptables/lions-indomptables.component';
 import { CompetitionsComponent } from './layout/competitions/competitions.component';
 import { CompetitionDetailComponent } from './layout/competition-detail/competition-detail.component';
+import { LiveComponent } from './layout/live/live.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,7 @@ const routes: Routes = [
       { path:'article/categorie/:categorie_id',component:ArticleComponent},
       { path:'article/competition/:competition_id',component:ArticleComponent},
       { path:'lions-indomptables',component:LionsIndomptablesComponent},
+      { path:'live',component:LiveComponent},
       { path:'competitions',component:CompetitionsComponent,
         children:[
           {

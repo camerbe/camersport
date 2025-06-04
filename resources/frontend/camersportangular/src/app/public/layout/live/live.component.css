@@ -1,0 +1,296 @@
+/* stadium.component.css */
+:host {
+  display: block;
+  width: 100%;
+}
+
+:host ::ng-deep p-card {
+  width: 100% !important;
+  display: block !important;
+}
+
+:host ::ng-deep .p-card {
+  width: 100% !important;
+}
+.stadium-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Stadium Card Styling */
+:host ::ng-deep .stadium-card {
+  width: 100%;
+}
+
+:host ::ng-deep .stadium-card .p-card-body {
+  padding: 1rem;
+}
+
+/* Stadium Field */
+.stadium-field {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  background: linear-gradient(45deg, #228B22 25%, #32CD32 25%, #32CD32 50%, #228B22 50%, #228B22 75%, #32CD32 75%);
+  background-size: 20px 20px;
+  border: 3px solid #ffffff;
+  border-radius: 8px;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+}
+
+/* Field Background Elements */
+.field-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Center Circle */
+.center-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120px;
+  height: 120px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Center Line */
+.center-line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  background-color: #ffffff;
+  transform: translateX(-50%);
+}
+
+/* Penalty Areas */
+.penalty-area {
+  position: absolute;
+  width: 120px;
+  height: 240px;
+  border: 2px solid #ffffff;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.penalty-area-left {
+  left: 0;
+  border-left: none;
+}
+
+.penalty-area-right {
+  right: 0;
+  border-right: none;
+}
+
+/* Goal Areas */
+.goal-area {
+  position: absolute;
+  width: 60px;
+  height: 120px;
+  border: 2px solid #ffffff;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.goal-area-left {
+  left: 0;
+  border-left: none;
+}
+
+.goal-area-right {
+  right: 0;
+  border-right: none;
+}
+
+/* Corner Arcs */
+.corner-arc {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+}
+
+.corner-top-left {
+  top: -10px;
+  left: -10px;
+  border-bottom-right-radius: 20px;
+  border-top: none;
+  border-left: none;
+}
+
+.corner-top-right {
+  top: -10px;
+  right: -10px;
+  border-bottom-left-radius: 20px;
+  border-top: none;
+  border-right: none;
+}
+
+.corner-bottom-left {
+  bottom: -10px;
+  left: -10px;
+  border-top-right-radius: 20px;
+  border-bottom: none;
+  border-left: none;
+}
+
+.corner-bottom-right {
+  bottom: -10px;
+  right: -10px;
+  border-top-left-radius: 20px;
+  border-bottom: none;
+  border-right: none;
+}
+
+/* Player Styling */
+.player {
+  position: absolute;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.player:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+  z-index: 20;
+}
+
+.player.selected {
+  z-index: 30;
+}
+
+.player.selected ::ng-deep .p-avatar {
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+  border: 3px solid #ffffff;
+}
+
+/* Player Numbers and Names */
+.player-number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+  pointer-events: none;
+}
+
+.player-name {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+  white-space: nowrap;
+  margin-top: 2px;
+  pointer-events: none;
+}
+
+/* Team Specific Styling */
+.player-team-a ::ng-deep .p-avatar {
+  border: 2px solid #ffffff;
+}
+
+.player-team-b ::ng-deep .p-avatar {
+  border: 2px solid #ffffff;
+}
+
+/* Team Cards */
+.team-card {
+  height: 100%;
+}
+
+.team-color-indicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+}
+
+/* Selected Player Card */
+.selected-player-card {
+  border: 2px solid #4CAF50;
+}
+
+/* Controls Styling */
+:host ::ng-deep .p-dropdown {
+  min-width: 120px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .stadium-field {
+    height: 400px;
+  }
+
+  .player-name {
+    display: none;
+  }
+
+  .center-circle {
+    width: 80px;
+    height: 80px;
+  }
+
+  .penalty-area {
+    width: 80px;
+    height: 160px;
+  }
+
+  .goal-area {
+    width: 40px;
+    height: 80px;
+  }
+}
+
+:host ::ng-deep .stadium-card {
+  width: 100% !important;
+  display: block !important;
+}
+
+@media (max-width: 480px) {
+  .stadium-field {
+    height: 300px;
+  }
+
+  .player ::ng-deep .p-avatar {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 12px !important;
+  }
+
+  .player-number {
+    font-size: 10px;
+  }
+}
+
+::ng-deep .p-timeline-vertical .p-timeline-event-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ajustement de l'espacement */
+::ng-deep .p-timeline-vertical .p-timeline-event-opposite {
+  flex: 0 0 auto;
+  padding-right: 1rem;
+}

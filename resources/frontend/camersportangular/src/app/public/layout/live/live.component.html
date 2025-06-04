@@ -1,1 +1,151 @@
-<p>live works!</p>
+@if(lastMatchSheet){
+<p-card  styleClass="stadium-card w-full mx-2" >
+    <ng-template pTemplate="header">
+      <div class="flex items-center justify-between px-4 py-2 bg-gray-100 rounded-t-lg relative">
+        <!-- Colonne gauche -->
+        <div class="font-semibold text-sm text-gray-700">
+          {{ lastMatchSheet.A_team.name }}
+        </div>
+
+        <!-- Colonne centre : centrée visuellement grâce à absolute + full width wrapper -->
+        <div class="absolute left-1/2 transform -translate-x-1/2 text-center font-bold text-lg text-green-800">
+          Football Stadium
+        </div>
+
+        <!-- Colonne droite -->
+        <div class="font-semibold text-sm text-gray-700 text-right">
+          {{ lastMatchSheet.B_team.name }}
+        </div>
+      </div>
+
+    </ng-template>
+    <div class="stadium-field">
+
+
+      <!-- Field Background with Lines -->
+      <div class="field-background">
+        <!-- Center Circle -->
+        <div class="center-circle"></div>
+        <!-- Center Line -->
+        <div class="center-line"></div>
+        <!-- Penalty Areas -->
+        <div class="penalty-area penalty-area-left"></div>
+        <div class="penalty-area penalty-area-right"></div>
+        <!-- Goal Areas -->
+        <div class="goal-area goal-area-left"></div>
+        <div class="goal-area goal-area-right"></div>
+        <!-- Corner Arcs -->
+        <div class="corner-arc corner-top-left"></div>
+        <div class="corner-arc corner-top-right"></div>
+        <div class="corner-arc corner-bottom-left"></div>
+        <div class="corner-arc corner-bottom-right"></div>
+      </div>
+
+      <!-- Team A Players -->
+      <div *ngFor="let player of playersA"
+           class="player player-team-a"
+           [ngStyle]="getPositionStyleA(player.position)"
+          >
+
+        <!-- <p-avatar
+        [style]="{ 'background-color': lastMatchSheet.color_a }"
+        label="{{ player.name }}"
+        [ngStyle]="getPositionStyleA(player.position)"
+        size="xlarge"
+        icon="pi pi-user"
+        pBadge
+        [pTooltip]="player.number + ''"
+        tooltipPosition="top"
+        [escape]="true">
+      </p-avatar> -->
+      <p-chip
+        [style]="{ 'background-color': lastMatchSheet.color_a, 'color': 'white' }"
+        [ngStyle]="getPositionStyleA(player.position)"
+        icon="pi pi-user"
+        label="{{ player.name }}"
+        [pTooltip]="player.number + ''"
+        tooltipPosition="top"
+        [escape]="true">
+      </p-chip>
+
+        <!--<div class="player-number">{{ player.number }}</div>
+        <div class="player-name">{{ player.name }}</div>-->
+      </div>
+
+      <!-- Team B Players -->
+      <div *ngFor="let player of playersB"
+           class="player player-team-b"
+           [ngStyle]="getPositionStyleB(player.position)"
+           >
+        <!-- <p-button
+          [style]="{ 'background-color': lastMatchSheet.color_b}"
+          label="{{ player.number }}"
+          [ngStyle]="getPositionStyleB(player.position)"
+        >
+
+        </p-button> -->
+        <p-chip
+        [style]="{ 'background-color': lastMatchSheet.color_b, 'color': 'white' }"
+        [ngStyle]="getPositionStyleB(player.position)"
+        icon="pi pi-user"
+        label="{{ player.name }}"
+        [pTooltip]="player.number + ''"
+        tooltipPosition="top"
+        [escape]="true">
+        </p-chip>
+
+        <!--<div class="player-number">{{ player.number }}</div>
+        <div class="player-name">{{ player.name }}</div>-->
+      </div>
+    </div>
+  </p-card>
+
+  <section class="grid mb-3 ml-2 mr-1 my-3">
+
+    <div class="col-12 flex flex-col items-center surface-0 rounded-xl py-5">
+        <div class="flex items-center gap-6 mb-5">
+          <div class="flex items-center gap-2">
+              <img [src]="liveMatchService.extractImage(lastMatchSheet.A_team.logo)" alt="{{ lastMatchSheet.A_team.name }}" class="w-8 h-8 object-contain" />
+              <span class="font-semibold text-gray-800">{{ lastMatchSheet.A_team.name }}</span>
+          </div>
+          <div class="text-2xl font-bold text-green-700">
+            {{ totalScore_a }} - {{ totalScore_b }}
+          </div>
+          <div class="flex items-center gap-2">
+            <img [src]="liveMatchService.extractImage(lastMatchSheet.B_team.logo)" alt="{{ lastMatchSheet.B_team.name }}" class="w-8 h-8 object-contain" />
+            <span class="font-semibold text-gray-800">{{ lastMatchSheet.B_team.name }}</span>
+          </div>
+      </div>
+      <p-divider></p-divider>
+        <p-timeline [value]="liveMatchs"  class="mt-5" [ngStyle]="{ width: '100%' }">
+          <ng-template pTemplate="marker" let-event>
+            <!-- <i [ngClass]="getIcon(event.event_type)" class="p-2 text-white rounded-full text-sm bg-blue-500"></i> -->
+            <span class="p-2 text-white rounded-full text-sm shadow-2xl bg-cyan-500">
+              @if(event.event_minute.length<2){0}{{ event.event_minute }}'
+            </span>
+          </ng-template>
+
+          <ng-template pTemplate="content" let-event>
+            <div class="flex flex-col p-3 shadow-2xs rounded">
+              <!-- <span><i [ngClass]="getIcon(event.event_type)" class=" flex p-2 mr-2 text-white rounded-full text-sm"></i></span> -->
+              <div class="flex items-start gap-2">
+                  <span class="mb-2" [innerHTML]="sanitizer.bypassSecurityTrustHtml(getIcon(event.event_type) || '')"></span>
+                  <p [innerHTML]="sanitizer.bypassSecurityTrustHtml(event?.description || '')"></p>
+              </div>
+
+              <span *ngIf="hasPlayer(event.player)" class="text-sm text-gray-400">
+                {{ cleanPlayer(event.player) }}'
+              </span>
+
+            </div>
+          </ng-template>
+        </p-timeline>
+    </div>
+</section>
+}
+@else {
+  <app-competition-not-found/>
+}
+
+
+

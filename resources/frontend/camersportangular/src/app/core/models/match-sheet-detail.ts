@@ -3,7 +3,7 @@ import { TeamBData } from "./team-b-data";
 import { TeamData } from "./team-data";
 
 export interface MatchSheetDetail {
-  [x: string]: any;
+
   id:number;
   team_a_id :number;
   team_b_id :number;

@@ -8,7 +8,7 @@ export class FormationService {
   private formations={
     '4-4-2': {
       positions: [
-        { code: 'GK', x: 5, y: 50 },
+        { code: 'GK', x: 50, y: 50 },
         { code: 'RB', x: 20, y: 85 },
         { code: 'CB', x: 20, y: 65 },
         { code: 'CB', x: 20, y: 35 },

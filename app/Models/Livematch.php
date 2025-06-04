@@ -12,7 +12,7 @@ class Livematch extends Model
     protected $table = 'livematchs';
 
     protected $fillable = [
-        'matchsheet_id', 'team_id', 'player', 'type','event_type',
+        'matchsheet_id', 'team_id', 'player', 'type','event_type','score_a','score_b',
         'description', 'event_minute', 'status','player'
     ];
     protected $casts = [

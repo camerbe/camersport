@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 class MatchSheetController extends Controller
 {
     protected MatchSheetService $matchSheetService;
-    protected $lastMatchSheet;
+    //protected $lastMatchSheet;
 
     /**
      * @param MatchSheetService $matchSheetService
@@ -19,7 +19,7 @@ class MatchSheetController extends Controller
     public function __construct(MatchSheetService $matchSheetService)
     {
         $this->matchSheetService = $matchSheetService;
-        $this->lastMatchSheet=Matchsheet::last();
+        //$this->lastMatchSheet=Matchsheet::last();
     }
 
 
@@ -123,7 +123,7 @@ class MatchSheetController extends Controller
     }
 
     public function getLastMatchSheet(){
-        $matchSheet=$this->lastMatchSheet;
+        $matchSheet=$this->matchSheetService->getLastMatchSheet();
         if ($matchSheet){
             return response()->json([
                 'success'=>true,

@@ -32,6 +32,7 @@
                   </div>
                   <div class="flex items-center gap-1 text-green-700 font-bold uppercase">
                     <a
+                      class="hover:text-blue-600 hover:underline transition-colors duration-200"
                       itemprop="about"
                       #competition
                       ariaLabel="{{ article.competition.competition }}"
@@ -125,7 +126,7 @@
     </div>
 
   </div>
-  <div class="col-12 md:col-4 my-3">
+  <div class="col-12 md:col-4 my-0">
     <app-categorie-must-readed [mustReadedCategorie]="categorieMustReaded" [mustReadedLabel]="article.categorie.categorie"/>
 
     <div class="bg-amber-500">

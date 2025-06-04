@@ -12,6 +12,8 @@ import { DatePipe } from '@angular/common';
 import { Player } from '../../../core/models/player';
 import { TeamAData } from '../../../core/models/team-a-data';
 import { TeamBData } from '../../../core/models/team-b-data';
+import { MatchSheetReponse } from '../../../core/models/match-sheet-reponse';
+import { TeamMatchInfo } from '../../../core/models/team-match-info';
 
 @Component({
   selector: 'app-match-sheet',
@@ -29,7 +31,7 @@ export class MatchSheetComponent implements OnInit {
   label:string="Liste";
   msg!:string;
   isExpired!:boolean;
-  lastMatchSheet!: MatchSheetDetail;
+  lastMatchSheet!: MatchSheetReponse["data"];
   matchForm!: FormGroup;
   formations = [
     { id: '4-3-3', name: '4-3-3' },
@@ -44,14 +46,22 @@ export class MatchSheetComponent implements OnInit {
     { label: 'Gardien', value: 'GK' },
     { label: 'Défenseur droit', value: 'RB' },
     { label: 'Défenseur central', value: 'CB' },
+    { label: 'Défenseur central', value: 'CB1' },
+    { label: 'Défenseur central', value: 'CB2' },
+    { label: 'Défenseur central', value: 'CB3' },
     { label: 'Défenseur gauche', value: 'LB' },
     { label: 'Milieu défensif', value: 'CDM' },
+    { label: 'Milieu défensif', value: 'CDM1' },
+    { label: 'Milieu défensif', value: 'CDM2' },
+    { label: 'Milieu défensif', value: 'CDM3' },
     { label: 'Milieu droit', value: 'RM' },
     { label: 'Milieu central', value: 'CM' },
     { label: 'Milieu gauche', value: 'LM' },
     { label: 'Ailier droit', value: 'RW' },
     { label: 'Ailier gauche', value: 'LW' },
-    { label: 'Attaquant', value: 'ST' }
+    { label: 'Attaquant', value: 'ST' },
+    { label: 'Attaquant', value: 'ST1' },
+    { label: 'Attaquant', value: 'ST2' }
 
   ];
 
@@ -162,9 +172,11 @@ export class MatchSheetComponent implements OnInit {
       this.title="Mise à jour de la feuille de match";
       this.matchSheetService.show(this.id).subscribe({
         next: (data) => {
-          const resData = data["data"] as MatchSheetDetail;
-          const teamAData:TeamAData = resData.team_a_data ;
-          const teamBData:TeamBData = resData.team_b_data ;
+          const resData  = data["data"] as MatchSheetReponse["data"];
+          //console.log(resData.team_a_data);
+          const teamAData = resData.team_a_data as unknown as TeamMatchInfo;
+          console.log(teamAData);
+          const teamBData = resData.team_b_data as unknown  as TeamMatchInfo;
           const playerAData: Player[] = teamAData.startingXI;
           const playerBData: Player[] = teamBData.startingXI;
           const substitutesA: Player[] = teamAData.substitutes;

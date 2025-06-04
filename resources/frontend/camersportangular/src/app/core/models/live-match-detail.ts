@@ -12,5 +12,7 @@ export interface LiveMatchDetail {
   status: string;
   created_at: Date;
   updated_at: Date;
+  score_a:number;
+  score_b:number;
   matchsheet:MatchSheetDetail
 }

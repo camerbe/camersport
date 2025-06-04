@@ -25,6 +25,8 @@ class LiveMatchResource extends JsonResource
             'status'=>$this->status,
             'team_id'=>$this->team_id,
             'updated_at'=>$this->updated_at,
+            'score_a'=>$this->score_a,
+            'score_b'=>$this->score_b,
 
         ];
     }

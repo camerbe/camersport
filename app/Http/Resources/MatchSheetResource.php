@@ -28,7 +28,8 @@ class MatchSheetResource extends JsonResource
             'location'=>$this->location,
             'team_a_data'=>$this->team_a_data,
             'team_b_data'=>$this->team_b_data,
-
+            'A_team'=>new TeamResource($this->teamA),
+            'B_team'=>new TeamResource($this->teamB)
 
         ];
     }

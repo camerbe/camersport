@@ -26,7 +26,8 @@ use UniSharp\LaravelFilemanager\Lfm;
     Route::get('articles/categorie/competition/{article}', [ArticleController::class, 'getArticleByCompetition']);
     Route::get('articles/categorie/{article}/mustreaded', [ArticleController::class, 'getCategorieMustReadedArticle']);
     Route::get('articles/competition/{article}/mustreaded', [ArticleController::class, 'getCompetitionMustReadedArticle']);
-
+    Route::get('matchs/last', [MatchSheetController::class, 'getLastMatchSheet']);
+    Route::get('lives/{id}/matchsheets', [LiveMatchController::class, 'getLiveMatch']);
 
 
 Route::get('articles/public', [ArticleController::class, 'publicIndex']);
@@ -39,9 +40,9 @@ Route::get('articles/public', [ArticleController::class, 'publicIndex']);
         Route::get('articles/pays', [ArticleController::class, 'getCountries']);
         Route::get('articles/user/{articles}', [ArticleController::class, 'getArticleByUserId']);
         Route::post('auth/logout', [AuthController::class, 'logout']);
-        Route::get('matchs/last', [MatchSheetController::class, 'getLastMatchSheet']);
+
         Route::get('matchs/teams', [MatchSheetController::class, 'getTeams']);
-        Route::get('lives/{id}/matchsheets', [LiveMatchController::class, 'getLiveMatch']);
+
         Route::get('lives/teams', [LiveMatchController::class, 'getTeams']);
         Route::get('lives/matchsheets/last', [LiveMatchController::class, 'getLastMatchSheet']);
         Route::apiResources([

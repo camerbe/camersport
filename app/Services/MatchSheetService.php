@@ -30,4 +30,8 @@ class MatchSheetService
     public function getTeams(){
         return $this->matchSheetRepository->getTeams();
     }
+    public function getLastMatchSheet()
+    {
+        return $this->matchSheetRepository->getLast();
+    }
 }
