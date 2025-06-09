@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+    <url>
+    <loc>http://localhost:8000/article/koutaba-un-atterrissage-salue-comme-un-exploit-relance-le-debat-sur-le-developpement-au-cameroun-cameroon</loc>
+    <lastmod>2025-06-08T20:05:02+02:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+    <image:loc>http://localhost:8000/storage/photos/shares/camer/Camair-co-Koutaba270525500.jpg</image:loc>
+</image:image>
+        </url>
+    <url>
+    <loc>http://localhost:8000/article/cameroun-presidentielle-2025-pourquoi-michele-ndoki-ecarte-le-mrc-du-debat-electoral-cameroon</loc>
+    <lastmod>2025-06-08T20:04:43+02:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+    <image:loc>http://localhost:8000/storage/photos/shares/camer/Affaire_Mathis230525500.jpg</image:loc>
+</image:image>
+        </url>
+    <url>
+    <loc>http://localhost:8000/article/claude-assira-et-paul-biya-debat-sur-la-capacite-cognitive-du-president-camerounais-cameroon</loc>
+    <lastmod>2025-06-04T09:36:45+02:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+    <image:loc>http://localhost:8000/storage/photos/shares/camer/Kunde-Emmanuel160525500.jpg</image:loc>
+</image:image>
+        </url>
+    <url>
+    <loc>http://localhost:8000/article/maurice-kamto-leader-de-lopposition-au-cameroun-debat-et-analyse-cameroon</loc>
+    <lastmod>2025-06-08T19:52:18+02:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+    <image:loc>http://localhost:8000/storage/photos/shares/camer/Ali-Bongo160525500.jpg</image:loc>
+</image:image>
+        </url>
+    <url>
+    <loc>http://localhost:8000/article/celestin-bedzigui-denonce-maurice-kamto-un-obstacle-a-lunite-de-lopposition-camerounaise-cameroon</loc>
+    <lastmod>2025-06-08T19:48:22+02:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+    <image:loc>http://localhost:8000/storage/photos/shares/camer/Marthe-Cecile-Micca090524500.jpg</image:loc>
+</image:image>
+        </url>
+    <url>
+    <loc>http://localhost:8000/article/constitution-camerounaise-et-eligibilite-analyse-juridique-des-conditions-dexclusion-cameroon</loc>
+    <lastmod>2025-06-08T19:34:41+02:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+    <image:loc>http://localhost:8000/storage/photos/shares/camer/Kunde-Emmanuel160525500.jpg</image:loc>
+</image:image>
+        </url>
+    <url>
+    <loc>http://localhost:8000/article/presidentielles-2025-au-cameroun-maurice-kamto-face-a-une-menace-de-disqualification-cameroon</loc>
+    <lastmod>2025-06-08T19:48:03+02:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+    <image:loc>http://localhost:8000/storage/photos/shares/camer/Mbilia_Bel140525500.jpg</image:loc>
+</image:image>
+        </url>
+    <url>
+    <loc>http://localhost:8000/article/cameroun-les-biya-en-suisse-153-millions-deuros-depenses-en-suites-presidentielles-cameroon</loc>
+    <lastmod>2025-06-08T17:32:44+02:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+    <image:loc>http://localhost:8000/storage/photos/shares/camer/Louison-Essomba140525500.jpg</image:loc>
+</image:image>
+        </url>
+    <url>
+    <loc>http://localhost:8000/article/cameroun-brenda-biya-condamnee-en-suisse-les-details-de-laffaire-face-a-dencia-sonkey-cameroon</loc>
+    <lastmod>2025-06-08T20:05:36+02:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+    <image:loc>http://localhost:8000/storage/photos/shares/camer/Mbilia_Bel140525500.jpg</image:loc>
+</image:image>
+        </url>
+    <url>
+    <loc>http://localhost:8000/article/cameroun-mathias-eric-owona-nguini-affirme-que-maurice-kamto-ne-sera-pas-candidat-sous-la-banniere-de-lapc-cameroon</loc>
+    <lastmod>2025-06-08T17:34:19+02:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+    <image:loc>http://localhost:8000/storage/photos/shares/camer/Mbilia_Bel140525500.jpg</image:loc>
+</image:image>
+        </url>
+</urlset>
