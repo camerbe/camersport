@@ -46,7 +46,9 @@ import { CompetitionNotFoundComponent } from './components/competition-not-found
 import { MatchMtnComponent } from './components/match-mtn/match-mtn.component';
 import { LiveComponent } from './layout/live/live.component';
 import { LiveMatchDataComponent } from './components/live-match-data/live-match-data.component';
-
+import { RegisterPasswordComponent } from './register-password/register-password.component';
+import { NgOptimizedImage } from '@angular/common';
+import { ResetPasswordComponent } from './register-password/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +73,9 @@ import { LiveMatchDataComponent } from './components/live-match-data/live-match-
     MatchMtnComponent,
     LiveComponent,
     LiveMatchDataComponent,
-    LayoutComponent
+    LayoutComponent,
+    RegisterPasswordComponent,
+    ResetPasswordComponent
   ],
   imports: [
     CommonModule,
@@ -98,7 +102,8 @@ import { LiveMatchDataComponent } from './components/live-match-data/live-match-
     PaginatorModule,
     BreadcrumbModule,
     ToolbarModule,
-    DialogModule
+    DialogModule,
+    NgOptimizedImage
 
   ],
   exports: [

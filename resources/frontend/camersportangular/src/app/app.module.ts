@@ -11,6 +11,7 @@ import localeFr from '@angular/common/locales/fr';
 import { LOCALE_ID } from '@angular/core';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
+
 registerLocaleData(localeFr);
 
 @NgModule({
@@ -37,4 +38,4 @@ registerLocaleData(localeFr);
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

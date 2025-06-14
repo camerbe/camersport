@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Mail\ResetPasswordMail;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 class PasswordController extends Controller
@@ -28,8 +31,10 @@ class PasswordController extends Controller
         ],Response::HTTP_OK);
     }
     public function reset(Request $request){
+
         $passwordRequest=DB::table('password_reset_tokens')
             ->where('token',$request->input('token'))->first();
+
         //dd($passwordRequest);
         if(!$user=User::where('email',$passwordRequest->email)->first()){
             throw new NotFoundHttpException("User inexistant");

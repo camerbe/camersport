@@ -21,7 +21,7 @@
                     <span itemprop="name">{{ article.auteur }}</span>
                   </div>
                   <div class="flex items-center gap-1">
-                    <i class="pi pi-calendar-plus"></i>
+                    <i class="pi pi-calendar-plus text-cyan-600"></i>
                     <time itemprop="datePublished" [attr.datetime]="article.date_parution">
                     <span>{{ article.date_parution | date: 'dd MMM yyyy HH:mm:ss' }}</span>
                     </time>
@@ -44,23 +44,38 @@
 
                   </div>
                 </div>
-                <figure itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+                <!-- <figure itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
                   <p-image
-                    [src]="article.images[0].url || 'assets/placeholder.jpg'"
+                    [src]="article.images.url || 'assets/placeholder.jpg'"
                     alt="{{ article.titre }}"
                     styleClass="w-full h-[500px] object-cover overflow-hidden rounded-md"
                     [preview]="true"
                     [style]="{ 'border-radius': '0.5rem' }"
 
                     >
-                    <meta itemprop="url" [attr.content]="article.images[0].url">
+                    <meta itemprop="url" [attr.content]="article.images.url">
                     <meta itemprop="width" content="500">
                     <meta itemprop="height" content="500">
                     <ng-template pTemplate="indicator">
                       <i class="pi pi-search-plus"></i>
                     </ng-template>
                   </p-image>
+                </figure> -->
+                <figure itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+                  <img
+                    [ngSrc]="article.images.url || 'assets/placeholder.jpg'"
+                    [width]="article.images.width"
+                    [height]="article.images.height"
+                    alt="{{ article.titre }}"
+                    class="w-full h-[{{article.images.height}}px] object-cover rounded-md"
+                    loading="lazy"
+                    fetchpriority="high"
+                  />
+                  <meta itemprop="url" [attr.content]="article.images.url">
+                  <meta itemprop="width" content="{{ article.images.width }}">
+                  <meta itemprop="height" content="{{ article.images.height }}">
                 </figure>
+
             </ng-template>
             <div style="line-height: 1.8;"
               itemprop="articleBody"
@@ -100,7 +115,7 @@
                   <div *ngFor="let article of filteredArticles" class="flex align-items-center p-3 border-1 surface-border border-round mb-2 transition-all transition-duration-300 cursor-pointer uppercase hover:shadow-[0_0_25px_rgba(86,171,47,0.4)]" style="background: linear-gradient(135deg, #032e1e, #56ab2f);">
 
                     <div class="mr-3">
-                      <p-avatar alt="article.titre" [image]="article.images[0]?.url" styleClass="mr-2" size="xlarge" shape="circle" [ariaLabel]="article.titre"></p-avatar>
+                      <p-avatar alt="article.titre" [image]="article.images?.url" styleClass="mr-2" size="xlarge" shape="circle" [ariaLabel]="article.titre"></p-avatar>
                     </div>
 
                     <!-- Contenu avec titre cliquable -->

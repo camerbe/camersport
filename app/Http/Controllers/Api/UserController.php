@@ -124,6 +124,22 @@ class UserController extends Controller
             "message"=>"Une erreur s'est produite..."
         ],Response::HTTP_NOT_FOUND);
     }
+    public function changePassword(Request $request, int $id)
+    {
+        $user=$this->userRepository->changePassword( $request->all(), $id);
+
+        if ($user){
+            return response()->json([
+                'success'=>true,
+                'data'=>$user,
+                'message'=>"Le mot de passe a changé",
+            ],Response::HTTP_CREATED);
+        }
+        return response()->json([
+            "sucess"=>false,
+            "message"=>"Erreur lors de la mise à jour du mot de passe"
+        ],Response::HTTP_NO_CONTENT);
+    }
 
 
 }

@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-
+use Intervention\Image\Laravel\Facades\Image;
 use App\Helpers\ImageHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Repositories\ArticleRepository;
 use App\Services\ArticleService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Symfony\Component\HttpFoundation\Response;
 
 class ArticleController extends Controller
@@ -58,11 +59,22 @@ class ArticleController extends Controller
                 $parsedUrl = parse_url($image);
                 $path = $parsedUrl['path'];
                 $filePath = str_replace(url('/storage'), 'storage', $path);
-                $article->addMedia(public_path($filePath))
-                    ->preservingOriginal()
-                    ->withResponsiveImages()
-                    ->usingName($article->slug)
-                    ->toMediaCollection('article');
+                $absolutePath = public_path($filePath);
+                if (File::exists($absolutePath)) {
+                    $img = Image::read($absolutePath);
+                    $width = $img->width();
+                    $height = $img->height();
+                    $article->addMedia(public_path($filePath))
+                        ->preservingOriginal()
+                        ->withResponsiveImages()
+                        ->usingName($article->slug)
+                        ->withCustomProperties([
+                            'width' => $width,
+                            'height' => $height,
+                        ])
+                        ->toMediaCollection('article');
+                }
+
             }
             $this->articleService->publicIndex();
             return response()->json([
@@ -111,18 +123,27 @@ class ArticleController extends Controller
 
             $media =$article->getMedia('article')->where('name',$article->slug)->first();
 
-            if($media) {
-                //dd($media);
+            if(!is_null($media)) {
                 $media->delete();
             }
             $parsedUrl = parse_url($image);
             $path = $parsedUrl['path'];
             $filePath = str_replace(url('/storage'), 'storage', $path);
-            $article->addMedia(public_path($filePath))
-                ->preservingOriginal()
-                ->withResponsiveImages()
-                ->usingName($article->slug)
-                ->toMediaCollection('article');
+            $absolutePath = public_path($filePath);
+            if (File::exists($absolutePath)) {
+                $img = Image::read($absolutePath);
+                $width = $img->width();
+                $height = $img->height();
+                $article->addMedia(public_path($filePath))
+                    ->preservingOriginal()
+                    ->withResponsiveImages()
+                    ->usingName($article->slug)
+                    ->withCustomProperties([
+                        'width' => $width,
+                        'height' => $height,
+                    ])
+                    ->toMediaCollection('article');
+            }
             return response()->json([
                 'success'=>true,
                 'data'=>$article,

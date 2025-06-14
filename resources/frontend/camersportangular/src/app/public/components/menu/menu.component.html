@@ -1,41 +1,53 @@
-  <p-menubar
-      #menubar
-      [model]="items"
-      autoZIndex="true"
+<p-menubar
+  [model]="items"
+  autoZIndex="true"
+  styleClass="w-full  shadow-lg custom-menubar px-4 py-2 fixed top-0 z-50 rounded-none border-none"
+  >
 
-      styleClass="w-full text-gray-100 bg-green-700  shadow-lg custom-menubar px-4 py-2 fixed top-0 z-50 rounded-none border-none"
-      [style]="{'color': 'white', 'background-color': '#1f2937', 'width': '100%'}">
-      <ng-template pTemplate="start">
-        <div class="flex-shrink-0">
-          <a [routerLink]="'/accueil'" rel="noopener noreferrer">
-            <span class="p-text-4xl p-font-bold p-mr-6 text-amber-400 uppercase">Camer-sp<i class="pi pi-bullseye"></i>rt</span>
-          </a>
-        </div>
-      </ng-template>
+  <ng-template pTemplate="start">
+    <div class="flex-shrink-0">
+      <a [routerLink]="'/accueil'" rel="noopener noreferrer" styleClass="flex items-center">
+        <!-- Option 1: Logo simple -->
+        <img
+          [ngSrc]="'assets/images/camersport.png'"
+          [width]="538"
+          [height]="368"
+          alt="Camer-Sport Logo"
+          class="h-15 md:h-20 w-auto"
+          fetchpriority="high"
+          loading="eager"
 
-      <ng-template pTemplate="end">
-        <div class="hidden md:flex items-center gap-2">
-          <form #searchForm="ngForm" (ngSubmit)="submitSearch()">
-            <input
-              type="text"
-              pInputText
-              name="q"
-              [(ngModel)]="searchQuery"
-              placeholder="Recherche"
-              class="p-inputtext-sm text-black rounded"
-            />
-            <button
-              pButton
-              type="button"
-              icon="pi pi-search"
-              class="p-button-text"
-              (click)="submitSearch()"
-            ></button>
-          </form>
-        </div>
+          >
 
-      </ng-template>
-  </p-menubar>
 
+      </a>
+    </div>
+    <div class="md:hidden">
+      <!-- Le burger menu s'affichera automatiquement ici -->
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="end">
+    <div class="flex items-center gap-2">
+      <form #searchForm="ngForm" (ngSubmit)="submitSearch()" class="hidden md:flex">
+        <input
+          type="text"
+          pInputText
+          name="q"
+          [(ngModel)]="searchQuery"
+          placeholder="Recherche"
+          class="p-inputtext-sm text-black rounded border border-green-300"
+        />
+        <button
+          pButton
+          type="button"
+          icon="pi pi-search"
+          class="p-button-text"
+          (click)="submitSearch()"
+        ></button>
+      </form>
+    </div>
+  </ng-template>
+</p-menubar>
 
 

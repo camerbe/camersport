@@ -59,5 +59,15 @@ class UserRepository extends BaseRepository
        );
     }
 
+    public  function changePassword(array $input, $id)
+    {
+        $currentUser=parent::findById($id);
+        $currentUser->password_changed_at=now();
+        $currentUser->password=bcrypt($input['password']);
+        $currentUser->save();
+        return new UserResource($currentUser);
+    }
+
+
 
 }

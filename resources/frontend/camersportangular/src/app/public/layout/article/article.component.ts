@@ -57,6 +57,12 @@ export class ArticleComponent implements OnInit,AfterViewInit  {
 
   ngOnInit(): void {
     let currentArticle = this.route.snapshot.data['slug'] ;
+
+    if (!currentArticle || !currentArticle['data']) {
+      console.error('Article data is missing');
+      this.router.navigate(['/accueil']);
+      return;
+    }
     //console.log(currentArticle);
     this.articleItemsService.state$.subscribe({
       next:(data:ArticleDetail[])=>{
@@ -114,7 +120,7 @@ export class ArticleComponent implements OnInit,AfterViewInit  {
     this.metaService.updateTag({ name: 'title', content: this.article.titre });
     this.metaService.updateTag({ name: 'og:title', content: this.article.titre });
     this.metaService.updateTag({ name: 'og:description', content: this.article.chapeau });
-    this.metaService.updateTag({ name: 'og:image', content: this.article.images[0].url });
+    this.metaService.updateTag({ name: 'og:image', content: this.article.images.url });
     this.metaService.updateTag({ name: 'og:url', content: this.router.url });
     this.metaService.updateTag({ name: 'og:type', content: 'article' });
     this.metaService.updateTag({ name: 'og:locale', content: 'fr_FR' });
@@ -122,7 +128,7 @@ export class ArticleComponent implements OnInit,AfterViewInit  {
     this.metaService.updateTag({ name: 'og:site_name', content: 'Camer-sport.com' });
     this.metaService.updateTag({ name: 'twitter:title', content: this.article.titre });
     this.metaService.updateTag({ name: 'twitter:description', content: this.article.chapeau });
-    this.metaService.updateTag({ name: 'twitter:image', content: this.article.images[0].url });
+    this.metaService.updateTag({ name: 'twitter:image', content: this.article.images.url });
     this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
     this.metaService.updateTag({ name: 'twitter:site', content: '@camer.be' });
     this.metaService.updateTag({ name: 'twitter:creator', content: '@camersport' });
@@ -155,7 +161,7 @@ export class ArticleComponent implements OnInit,AfterViewInit  {
       "headline": this.article.titre,
       "image": {
         "@type": "ImageObject",
-        "url": this.article.images[0].url,
+        "url": this.article.images.url,
         "width": 500,
         "height": 500
       },
@@ -163,7 +169,8 @@ export class ArticleComponent implements OnInit,AfterViewInit  {
       "dateModified": today,
       "author": {
         "@type": "Person",
-        "name": this.article.auteur
+        "name": this.article.auteur,
+        "url" : this.article.images.url,
       },
       "description": this.article.chapeau,
       "articleSection": this.article.categorie.categorie,

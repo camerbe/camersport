@@ -50,6 +50,7 @@ class LiveMatchController extends Controller
         $livematch=$this->livematchService->create($request->all());
 
         if ($livematch){
+            event($livematch);
             return response()->json([
                 'success'=>true,
                 'data'=>$livematch,
@@ -93,6 +94,7 @@ class LiveMatchController extends Controller
         $livematch=$this->livematchService->update($request->all(),$id);
 
         if ($livematch){
+            //event($livematch);
             return response()->json([
                 'success'=>true,
                 'data'=>$livematch,
@@ -113,6 +115,7 @@ class LiveMatchController extends Controller
         //
         $livematch=$this->livematchService->delete($id);
         if($livematch>0){
+
             return response()->json([
                 "success"=>true,
                 "message"=>"Suppression réussie"

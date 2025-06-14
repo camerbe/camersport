@@ -19,7 +19,7 @@
       itemtype="https://schema.org/NewsArticle"
     >
       <p-image
-        [src]="carouselItem.images[0].url"
+        [src]="carouselItem.images?.url || 'assets/placeholder.jpg' "
         alt="{{ carouselItem.titre }}"
         width="100%"
         height="100%"
@@ -76,4 +76,3 @@
     </article>
   </ng-template>
 </p-carousel>
-

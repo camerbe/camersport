@@ -43,6 +43,7 @@
                 <ng-template pTemplate="header">
                   <div class="text-sm font-bold uppercase line-clamp-2" itemprop="headline">{{ newlist.titre }}</div>
                   <div class="text-right text-sm text-500 mt-1">
+                    <i class="pi pi-calendar-plus text-cyan-600"></i>
                     <time itemprop="datePublished" [attr.datetime]="newlist.date_parution">
                     {{ newlist.date_parution | date: 'dd MMM yyyy HH:mm' }}
                     </time>
@@ -50,7 +51,7 @@
                 </ng-template>
 
                 <p-image
-                  [src]="newlist.images[0].url || 'assets/placeholder.jpg'"
+                  [src]="newlist.images.url || 'assets/placeholder.jpg'"
                   alt="{{ newlist.titre }}"
                   itemprop="image"
                   [imageStyle]="{ 'object-fit': 'cover' }"
@@ -63,7 +64,7 @@
                   </ng-template>
 
                     <img
-                      [src]="newlist.images[0].url || 'assets/placeholder.jpg'"
+                      [src]="newlist.images.url || 'assets/placeholder.jpg'"
                       alt="{{ newlist.titre }}"
                       width="100%"
                       height="200px"

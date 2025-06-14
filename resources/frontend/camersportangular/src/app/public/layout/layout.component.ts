@@ -19,6 +19,7 @@ export class LayoutComponent implements OnInit {
   slicedNews:ArticleDetail[]=[];
   randomNumber: number = 0;
   currentYear: number = new Date().getFullYear();
+  loadAds!:boolean;
 
   articleService: ArticleService = inject(ArticleService);
   articleItemsService:ArticleItemsService=inject(ArticleItemsService);
@@ -34,6 +35,9 @@ export class LayoutComponent implements OnInit {
 
 
   ngOnInit(): void {
+    setTimeout(() => {
+      this.loadAds = true;
+    }, 1000);
     if (isPlatformBrowser(this.platformId)) {
       this.isMobile = window.innerWidth < 768;
       this.randomNumber = Math.floor(Math.random() * 1000001) / 1000000;

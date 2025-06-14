@@ -41,6 +41,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { MessageModule } from 'primeng/message';
 import { LiveMatchComponent } from './live-match/live-match.component';
 import { LiveMatchListComponent } from './live-match/live-match-list/live-match-list.component';
+import { UnauthorizeComponent } from './unauthorize/unauthorize.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { LiveMatchListComponent } from './live-match/live-match-list/live-match-
     MatchSheetListComponent,
     LiveMatchComponent,
     LiveMatchListComponent,
+    UnauthorizeComponent,
   ],
   imports: [
     CommonModule,

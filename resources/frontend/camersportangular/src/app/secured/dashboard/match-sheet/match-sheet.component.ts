@@ -37,7 +37,6 @@ export class MatchSheetComponent implements OnInit {
     { id: '4-3-3', name: '4-3-3' },
     { id: '4-4-2', name: '4-4-2' },
     { id: '3-5-2', name: '3-5-2' },
-    { id: '4-2-3-1', name: '4-2-3-1' },
     { id: '5-3-2', name: '5-3-2' }
   ];
 
@@ -45,23 +44,25 @@ export class MatchSheetComponent implements OnInit {
 
     { label: 'Gardien', value: 'GK' },
     { label: 'Défenseur droit', value: 'RB' },
-    { label: 'Défenseur central', value: 'CB' },
-    { label: 'Défenseur central', value: 'CB1' },
-    { label: 'Défenseur central', value: 'CB2' },
-    { label: 'Défenseur central', value: 'CB3' },
+    { label: 'Défenseur central | Norm', value: 'CB' },
+    { label: 'Défenseur central 1', value: 'CB1' },
+    { label: 'Défenseur central 2', value: 'CB2' },
+    { label: 'Défenseur central 3', value: 'CB3' },
     { label: 'Défenseur gauche', value: 'LB' },
-    { label: 'Milieu défensif', value: 'CDM' },
-    { label: 'Milieu défensif', value: 'CDM1' },
-    { label: 'Milieu défensif', value: 'CDM2' },
-    { label: 'Milieu défensif', value: 'CDM3' },
+    { label: 'Milieu défensif | Norm', value: 'CDM' },
+    { label: 'Milieu défensif 1', value: 'CDM1' },
+    { label: 'Milieu défensif 2', value: 'CDM2' },
+    { label: 'Milieu défensif 3', value: 'CDM3' },
     { label: 'Milieu droit', value: 'RM' },
-    { label: 'Milieu central', value: 'CM' },
+    { label: 'Milieu central Norm', value: 'CM' },
+    { label: 'Milieu central 1', value: 'CM1' },
+    { label: 'Milieu central 2', value: 'CM2' },
     { label: 'Milieu gauche', value: 'LM' },
     { label: 'Ailier droit', value: 'RW' },
     { label: 'Ailier gauche', value: 'LW' },
-    { label: 'Attaquant', value: 'ST' },
-    { label: 'Attaquant', value: 'ST1' },
-    { label: 'Attaquant', value: 'ST2' }
+    { label: 'Attaquant Norm', value: 'ST' },
+    { label: 'Attaquant 1', value: 'ST1' },
+    { label: 'Attaquant 2', value: 'ST2' }
 
   ];
 

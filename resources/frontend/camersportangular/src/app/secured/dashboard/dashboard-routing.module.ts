@@ -23,15 +23,27 @@ import { MatchSheetListComponent } from './match-sheet/match-sheet-list/match-sh
 import { LiveMatchComponent } from './live-match/live-match.component';
 import { LiveMatchListComponent } from './live-match/live-match-list/live-match-list.component';
 import { liveMatchResolver } from '../../shared/resolvers/live-match.resolver';
+import { adminGuard } from '../../shared/admin.guard';
+import { UnauthorizeComponent } from './unauthorize/unauthorize.component';
 
 const routes: Routes = [
   {
     path:'',component:DashboardComponent,
     children:[
-      {path:'register',component:RegisterComponent},
-      {path:'register/list',component:RegisterListComponent},
+
+      {
+        path:'register',
+        component:RegisterComponent,
+        canMatch:[adminGuard]
+      },
+      {
+        path:'register/list',
+        component:RegisterListComponent,
+         canMatch:[adminGuard]
+      },
       { path : "register/show/:id",component:RegisterComponent,
         resolve : { user: userResolver },
+        canMatch:[adminGuard]
       },
       {path:'categorie',component:CategorieComponent},
       {path:'categorie/list',component:CategorieListComponent},
@@ -63,7 +75,7 @@ const routes: Routes = [
       {path:'live/show/:id',component:LiveMatchComponent
         ,resolve : { liveMatch : liveMatchResolver },
       },
-      
+      {path:'unauthorized',component:UnauthorizeComponent},
     ]
   }
 ];

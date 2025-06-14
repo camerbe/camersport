@@ -11,8 +11,10 @@ use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Feed\Feedable;
+use Spatie\Feed\FeedItem;
 
-class Article extends Model  implements HasMedia
+class Article extends Model  implements HasMedia,Feedable
 {
     use HasFactory,InteractsWithMedia;
 
@@ -101,9 +103,10 @@ class Article extends Model  implements HasMedia
         return $this->getMedia('article')->map(function ($media) {
             return [
                 'original' => $media->getUrl(),
-                'thumb' => $media->getUrl('thumb'), // Conversion
+                //'thumb' => $media->getUrl('thumb'), // Conversion
                 'properties' => $media->custom_properties,
                 'width' => $media->getCustomProperty('width'),
+                'height'=> $media->getCustomProperty('height'),
             ];
         });
     }
@@ -122,5 +125,21 @@ class Article extends Model  implements HasMedia
     public function competition()
     {
         return $this->belongsTo(Competition::class);
+    }
+
+    public function toFeedItem(): FeedItem
+    {
+
+        return FeedItem::create()
+            ->id($this->id)
+            ->title($this->titre)
+            ->summary($this->chapeau)
+            ->updated($this->updated_at)
+            ->link(route('posts.show', $this->slug))
+            ->authorName($this->auteur);
+    }
+    public function getFeedItems()
+    {
+        return static::latest()->published()->take(20)->get();
     }
 }

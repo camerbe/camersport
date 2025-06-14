@@ -65,6 +65,7 @@
         label="{{ player.name }}"
         [pTooltip]="player.number + ''"
         tooltipPosition="top"
+        [image]="liveMatchService.extractImage(lastMatchSheet.A_team.logo)"
         [escape]="true">
       </p-chip>
 
@@ -85,12 +86,13 @@
 
         </p-button> -->
         <p-chip
-        [style]="{ 'background-color': lastMatchSheet.color_b, 'color': 'white' }"
+        [style]="{ 'background-color': lastMatchSheet.color_b, 'color': 'white' ,'width':'100%'}"
         [ngStyle]="getPositionStyleB(player.position)"
         icon="pi pi-user"
         label="{{ player.name }}"
         [pTooltip]="player.number + ''"
         tooltipPosition="top"
+
         [escape]="true">
         </p-chip>
 
@@ -110,11 +112,26 @@
           </div>
           <div class="text-2xl font-bold text-green-700">
             {{ totalScore_a }} - {{ totalScore_b }}
-          </div>
+           </div>
           <div class="flex items-center gap-2">
             <img [src]="liveMatchService.extractImage(lastMatchSheet.B_team.logo)" alt="{{ lastMatchSheet.B_team.name }}" class="w-8 h-8 object-contain" />
             <span class="font-semibold text-gray-800">{{ lastMatchSheet.B_team.name }}</span>
           </div>
+
+      </div>
+      <div class="flex flex-col gap-1 mb-3" *ngIf="lastBut.length > 0">
+        <ng-container *ngFor="let but of lastBut">
+          <div class="grid">
+            <div class="col-6 flex" *ngIf="but.score_a > 0">
+              <span class="flex mr-1">⚽ </span>
+              <span class="flex text-gray-700 ">{{ but.event_minute }}'</span>
+            </div>
+            <div class="col-6 flex" *ngIf="but.score_b > 0">
+              <span class="flex mr-1">⚽</span>
+              <span class="flex text-gray-700 ">{{ but.event_minute }}'</span>
+            </div>
+          </div>
+        </ng-container>
       </div>
       <p-divider></p-divider>
         <p-timeline [value]="liveMatchs"  class="mt-5" [ngStyle]="{ width: '100%' }">
@@ -134,7 +151,7 @@
               </div>
 
               <span *ngIf="hasPlayer(event.player)" class="text-sm text-gray-400">
-                {{ cleanPlayer(event.player) }}'
+                {{ cleanPlayer(event.player) }}
               </span>
 
             </div>

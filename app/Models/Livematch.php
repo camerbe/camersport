@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Broadcasting\Channel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Livematch extends Model
+class Livematch extends Model implements ShouldBroadcast
 {
-    use HasFactory;
+    use BroadcastsEvents,HasFactory;
 
     protected $table = 'livematchs';
 
@@ -27,4 +30,28 @@ class Livematch extends Model
     {
         return $this->belongsTo(Team::class);
     }
+
+    public function broadcastOn(): array
+    {
+        return [
+            new Channel('livematchs'),
+        ];
+    }
+    public function broadcastAs($event)
+    {
+        return match($event) {
+            'created' => 'LivematchCreated',
+            'updated' => 'LivematchUpdated',
+            'deleted' => 'LivematchDeleted',
+            default => 'LivematchEvent'
+        };
+    }
+    public function broadcastWith()
+    {
+        return [
+            'livematch' => $this->toArray(),
+            'timestamp' => now()->toISOString()
+        ];
+    }
+
 }

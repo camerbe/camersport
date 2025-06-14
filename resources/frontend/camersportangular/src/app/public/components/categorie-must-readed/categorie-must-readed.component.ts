@@ -1,4 +1,4 @@
-import { Component, Inject, inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, inject, Input, NgZone, OnInit, PLATFORM_ID } from '@angular/core';
 import { ArticleItemsService } from '../../../services/article-items.service';
 import { ArticleDetail } from '../../../core/models/article-detail';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,18 +9,21 @@ import { ArticleService } from '../../../services/article.service';
 @Component({
   selector: 'app-categorie-must-readed',
   templateUrl: './categorie-must-readed.component.html',
-  styleUrl: './categorie-must-readed.component.css'
+  styleUrl: './categorie-must-readed.component.css',
+  changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class CategorieMustReadedComponent implements OnInit {
   @Input() mustReadedCategorie: ArticleDetail[] = [];
   @Input() mustReadedLabel: string = '';
 
+  private zone=inject(NgZone);
   router:Router=inject(Router);
-
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
   ngOnInit(): void {
 
   }
   gotoArticle(slug: string) {
+
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate(['/article', slug]);
     });

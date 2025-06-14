@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, Inject, inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, inject, NgZone, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { Menubar } from 'primeng/menubar';
@@ -7,12 +7,13 @@ import { Menubar } from 'primeng/menubar';
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
-  styleUrl: './menu.component.css'
+  styleUrl: './menu.component.css',
+  changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class MenuComponent implements AfterViewInit ,OnInit{
 
-
-  @ViewChild('menubar') menubar!: Menubar;
+  private zone=inject(NgZone);
+  //@ViewChild('menubar') menubar!: Menubar;
   activeParentItem: any; // Track the parent menu item
   searchQuery:string='';
   itemMenu: MenuItem[] = [

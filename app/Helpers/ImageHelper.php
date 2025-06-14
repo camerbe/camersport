@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Str;
+
 class ImageHelper
 {
     /**
@@ -17,6 +19,29 @@ class ImageHelper
         }
         return $html;
     }
+    public static function  extractNonHashtagWords(string $input): string
+    {
+        // Sépare la chaîne sur les virgules
+        $items = array_map('trim', explode(',', $input));
+
+        // Filtre les éléments qui ne commencent pas par #
+        $nonHashtags = array_filter($items, function ($word) {
+            return !str_starts_with(trim($word), '#');
+        });
+
+        // Recompose la chaîne avec virgule
+        return implode(',', $nonHashtags);
+    }
+    public static function appendCountryIfFound(string $title, string $country): string
+    {
+        if (!str_contains(strtolower($title), strtolower($country))) {
+            return Str::title($country) . ' - ' . $title;
+        }
+
+        return $title;
+    }
+
+
 
 
 }

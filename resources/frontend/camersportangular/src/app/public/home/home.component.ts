@@ -18,6 +18,9 @@ import { PaginatorState } from 'primeng/paginator';
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
+openImagePreview(arg0: string|undefined) {
+throw new Error('Method not implemented.');
+}
   //@Input() news:ArticleDetail[]=[];
   articles:ArticleDetail[]=[];
   article!:ArticleDetail;
@@ -31,6 +34,8 @@ export class HomeComponent implements OnInit {
   articlesPerPage = 5;
   currentPage = 0;
   pagedArticles: ArticleDetail[] = [];
+
+
 
   /**
    *
@@ -49,16 +54,17 @@ export class HomeComponent implements OnInit {
   articleItemsService:ArticleItemsService=inject(ArticleItemsService);
 
   ngOnInit(): void {
+
     this.randomNumber = Math.floor(Math.random() * 1000001) / 1000000;
     this.articleItemsService.updateState(this.route.snapshot.data['articleItems']);
-  if (isPlatformBrowser(this.platformId)){
-    this.articleItemsService.state$.subscribe({
+    if (isPlatformBrowser(this.platformId)){
+      this.articleItemsService.state$.subscribe({
           next:(data:ArticleDetail[])=>{
             this.articles=data;
             this.news=data.slice(0, 25).filter((item:ArticleDetail) => item.pays_code === "CMR");
             this.otherNews=data.slice(0, 25).filter((item:ArticleDetail) => item.pays_code !== "CMR");
             //console.log(this.otherNews);
-            this.slicedArticles=data.slice(0, 10);
+            this.slicedArticles=data.slice(0, 5);
             //console.log(this.slicedArticles)
             this.jsonLdArticles=data.slice(0, 20);
             this.article = this.jsonLdArticles[0];
@@ -73,7 +79,7 @@ export class HomeComponent implements OnInit {
           this.metaService.updateTag({ name: 'title', content: this.article.titre });
           this.metaService.updateTag({ name: 'og:title', content: this.article.titre });
           this.metaService.updateTag({ name: 'og:description', content: this.article.chapeau });
-          this.metaService.updateTag({ name: 'og:image', content: this.article.images[0].url });
+          this.metaService.updateTag({ name: 'og:image', content: this.article.images.url });
           this.metaService.updateTag({ name: 'og:url', content: this.router.url });
           this.metaService.updateTag({ name: 'og:type', content: 'article' });
           this.metaService.updateTag({ name: 'og:locale', content: 'fr_FR' });
@@ -81,7 +87,7 @@ export class HomeComponent implements OnInit {
           this.metaService.updateTag({ name: 'og:site_name', content: 'Camer-sport.com' });
           this.metaService.updateTag({ name: 'twitter:title', content: this.article.titre });
           this.metaService.updateTag({ name: 'twitter:description', content: this.article.chapeau });
-          this.metaService.updateTag({ name: 'twitter:image', content: this.article.images[0].url });
+          this.metaService.updateTag({ name: 'twitter:image', content: this.article.images.url });
           this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
           this.metaService.updateTag({ name: 'twitter:site', content: '@camer.be' });
           this.metaService.updateTag({ name: 'twitter:creator', content: '@camersport' });
@@ -126,7 +132,7 @@ export class HomeComponent implements OnInit {
         "headline": article.titre,
         "image": {
           "@type": "ImageObject",
-          "url": article.images[0].url,
+          "url": article.images.url,
           "width": 500,
           "height": 500
         },
@@ -151,15 +157,15 @@ export class HomeComponent implements OnInit {
   }
 
   updatePagedArticles() {
-        const start = this.currentPage * this.articlesPerPage;
-        const end = start + this.articlesPerPage;
-        this.pagedArticles = this.articles.slice(start, end);
-      }
+    const start = this.currentPage * this.articlesPerPage;
+    const end = start + this.articlesPerPage;
+    this.pagedArticles = this.articles.slice(start, end);
+  }
 
-      onPageChange($event: PaginatorState) {
-        this.currentPage = ($event.page ?? 0) | 0; // Ensure currentPage is always a number
-        this.articlesPerPage = $event.rows || 10; // Default to 10 if rows is undefined
-        this.updatePagedArticles();
-      }
+  onPageChange($event: PaginatorState) {
+    this.currentPage = ($event.page ?? 0) | 0; // Ensure currentPage is always a number
+    this.articlesPerPage = $event.rows || 10; // Default to 10 if rows is undefined
+    this.updatePagedArticles();
+  }
 
 }

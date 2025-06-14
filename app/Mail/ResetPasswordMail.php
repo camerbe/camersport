@@ -16,7 +16,7 @@ class ResetPasswordMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(protected $token)
     {
         //
     }
@@ -27,7 +27,7 @@ class ResetPasswordMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Reset Password Mail',
+            subject: 'Réinitialisation de votre mot de passe',
         );
     }
 
@@ -37,7 +37,10 @@ class ResetPasswordMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.reset',
+            with: [
+                'resetUrl' => env('FRONTEND_URL').'/reset/'.$this->token,
+            ],
         );
     }
 

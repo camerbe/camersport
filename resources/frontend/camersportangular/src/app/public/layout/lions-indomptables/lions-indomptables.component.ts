@@ -64,37 +64,37 @@ export class LionsIndomptablesComponent implements OnInit {
          */
         this.canonicalService.updateCanonicalUrl(this.router.url);
         if(this.article){
-          console.log(this.article);
+          this.metaService.updateTag({ name: 'description', content: this.article.chapeau });
+          this.metaService.updateTag({ name: 'keywords', content: this.article.motclef });
+          this.metaService.updateTag({ name: 'title', content: this.article.titre });
+          this.metaService.updateTag({ name: 'og:title', content: this.article.titre });
+          this.metaService.updateTag({ name: 'og:description', content: this.article.chapeau });
+          this.metaService.updateTag({ name: 'og:image', content: this.article.images.url });
+          this.metaService.updateTag({ name: 'og:url', content: this.router.url });
+          this.metaService.updateTag({ name: 'og:type', content: 'article' });
+          this.metaService.updateTag({ name: 'og:locale', content: 'fr_FR' });
+          this.metaService.updateTag({ name: 'og:locale:alternate', content: 'en-us' });
+          this.metaService.updateTag({ name: 'og:site_name', content: 'Camer-sport.com' });
+          this.metaService.updateTag({ name: 'twitter:title', content: this.article.titre });
+          this.metaService.updateTag({ name: 'twitter:description', content: this.article.chapeau });
+          this.metaService.updateTag({ name: 'twitter:image', content: this.article.images.url });
+          this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
+          this.metaService.updateTag({ name: 'twitter:site', content: '@camer.be' });
+          this.metaService.updateTag({ name: 'twitter:creator', content: '@camersport' });
+          this.metaService.updateTag({ name: 'twitter:url', content: this.router.url });
+          this.metaService.updateTag({ name: 'robots', content: 'index, follow' });
+          //this.metaService.updateTag({ name: 'canonical', content: this.router.url });
+          this.metaService.updateTag({ name: 'article:modified_time', content: new Date(Date.now()).toISOString().slice(0, 19) + '+00:00' });
+          this.metaService.updateTag({ name: 'article:published_time', content: new Date(this.article.date_parution).toISOString().slice(0, 19) + '+00:00' });
+
+          this.metaService.updateTag({ name: 'article:section', content: this.article.categorie.categorie });
+
+          this.metaService.updateTag({ name: 'article:tag', content: this.hashtagExtractorService.extractHashtags(this.article.motclef)   });
+          this.metaService.updateTag({ name: 'article:author', content: this.article.auteur });
+          this.metaService.updateTag({ name: 'article:publisher', content: 'camer-sport.com' });
+          this.titleService.setTitle(`Camer-sport.com : Football Camerounais ${this.article.categorie.categorie}`);
         }
-        this.metaService.updateTag({ name: 'description', content: this.article.chapeau });
-        this.metaService.updateTag({ name: 'keywords', content: this.article.motclef });
-        this.metaService.updateTag({ name: 'title', content: this.article.titre });
-        this.metaService.updateTag({ name: 'og:title', content: this.article.titre });
-        this.metaService.updateTag({ name: 'og:description', content: this.article.chapeau });
-        this.metaService.updateTag({ name: 'og:image', content: this.article.images[0].url });
-        this.metaService.updateTag({ name: 'og:url', content: this.router.url });
-        this.metaService.updateTag({ name: 'og:type', content: 'article' });
-        this.metaService.updateTag({ name: 'og:locale', content: 'fr_FR' });
-        this.metaService.updateTag({ name: 'og:locale:alternate', content: 'en-us' });
-        this.metaService.updateTag({ name: 'og:site_name', content: 'Camer-sport.com' });
-        this.metaService.updateTag({ name: 'twitter:title', content: this.article.titre });
-        this.metaService.updateTag({ name: 'twitter:description', content: this.article.chapeau });
-        this.metaService.updateTag({ name: 'twitter:image', content: this.article.images[0].url });
-        this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
-        this.metaService.updateTag({ name: 'twitter:site', content: '@camer.be' });
-        this.metaService.updateTag({ name: 'twitter:creator', content: '@camersport' });
-        this.metaService.updateTag({ name: 'twitter:url', content: this.router.url });
-        this.metaService.updateTag({ name: 'robots', content: 'index, follow' });
-        //this.metaService.updateTag({ name: 'canonical', content: this.router.url });
-        this.metaService.updateTag({ name: 'article:modified_time', content: new Date(Date.now()).toISOString().slice(0, 19) + '+00:00' });
-        this.metaService.updateTag({ name: 'article:published_time', content: new Date(this.article.date_parution).toISOString().slice(0, 19) + '+00:00' });
 
-        this.metaService.updateTag({ name: 'article:section', content: this.article.categorie.categorie });
-
-        this.metaService.updateTag({ name: 'article:tag', content: this.hashtagExtractorService.extractHashtags(this.article.motclef)   });
-        this.metaService.updateTag({ name: 'article:author', content: this.article.auteur });
-        this.metaService.updateTag({ name: 'article:publisher', content: 'camer-sport.com' });
-        this.titleService.setTitle(`Camer-sport.com : Football Camerounais ${this.article.categorie.categorie}`);
         /*****************************************************
          *
          */
@@ -118,7 +118,7 @@ export class LionsIndomptablesComponent implements OnInit {
           "headline": article.titre,
           "image": {
             "@type": "ImageObject",
-            "url": article.images[0].url,
+            "url": article.images.url,
             "width": 500,
             "height": 500
           },

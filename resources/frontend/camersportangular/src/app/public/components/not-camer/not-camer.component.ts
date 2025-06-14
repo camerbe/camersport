@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { afterRender, Component, Input } from '@angular/core';
 import { ArticleDetail } from '../../../core/models/article-detail';
 
 @Component({
@@ -8,5 +8,9 @@ import { ArticleDetail } from '../../../core/models/article-detail';
 })
 export class NotCamerComponent {
   @Input () notcamer:ArticleDetail[] = [];
-  
+  constructor(){
+    afterRender(()=>{
+
+    })
+  }
 }

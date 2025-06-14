@@ -89,14 +89,14 @@ export class RegisterComponent implements OnInit {
     if(this.isAddMode){
       this.userService.create(this.frmRegister.value)
       .subscribe({
-        next:()=>this.router.navigate(['/dashboard/register/list']),
+        next:()=>this.router.navigate(['/secured/dashboard/register/list']),
         error:(error)=>console.log(error)
       });
     }
     else{
       this.userService.patch(this.id,this.frmRegister.value)
       .subscribe({
-        next:()=>this.router.navigate(['/dashboard/register/list'])
+        next:()=>this.router.navigate(['/secured/dashboard/register/list'])
       });
     }
   }

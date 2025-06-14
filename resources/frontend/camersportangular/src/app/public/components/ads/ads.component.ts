@@ -24,6 +24,7 @@ export class AdsComponent implements AfterViewInit {
 
   el:ElementRef=inject(ElementRef);
   renderer:Renderer2=inject(Renderer2);
+
   //insElement: HTMLModElement=inject(HTMLModElement);
 
   constructor( @Inject(PLATFORM_ID) private platformId: Object) {}
@@ -60,6 +61,7 @@ export class AdsComponent implements AfterViewInit {
   }
 
   ngOnInit(): void {
+
     // Initialize Google Ads
     //(window.adsbygoogle = window.adsbygoogle || []).push({});
   }

@@ -74,7 +74,7 @@ export class CompetitionDetailComponent implements OnInit {
           this.metaService.updateTag({ name: 'title', content: this.article.titre });
           this.metaService.updateTag({ name: 'og:title', content: this.article.titre });
           this.metaService.updateTag({ name: 'og:description', content: this.article.chapeau });
-          this.metaService.updateTag({ name: 'og:image', content: this.article.images[0].url });
+          this.metaService.updateTag({ name: 'og:image', content: this.article.images.url });
           this.metaService.updateTag({ name: 'og:url', content: this.router.url });
           this.metaService.updateTag({ name: 'og:type', content: 'article' });
           this.metaService.updateTag({ name: 'og:locale', content: 'fr_FR' });
@@ -82,7 +82,7 @@ export class CompetitionDetailComponent implements OnInit {
           this.metaService.updateTag({ name: 'og:site_name', content: 'Camer-sport.com' });
           this.metaService.updateTag({ name: 'twitter:title', content: this.article.titre });
           this.metaService.updateTag({ name: 'twitter:description', content: this.article.chapeau });
-          this.metaService.updateTag({ name: 'twitter:image', content: this.article.images[0].url });
+          this.metaService.updateTag({ name: 'twitter:image', content: this.article.images.url });
           this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
           this.metaService.updateTag({ name: 'twitter:site', content: '@camer.be' });
           this.metaService.updateTag({ name: 'twitter:creator', content: '@camersport' });
@@ -121,7 +121,7 @@ export class CompetitionDetailComponent implements OnInit {
             "headline": article.titre,
             "image": {
               "@type": "ImageObject",
-              "url": article.images[0].url,
+              "url": article.images.url,
               "width": 500,
               "height": 500
             },

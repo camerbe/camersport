@@ -1,3 +1,4 @@
+import { ResetPasswordComponent } from './register-password/reset-password/reset-password.component';
 import { articleSlugResolver } from './../shared/resolvers/article-slug.resolver';
 import { articleItemsResolver } from './../shared/resolvers/article-items.resolver';
 import { NgModule } from '@angular/core';
@@ -11,6 +12,7 @@ import { LionsIndomptablesComponent } from './layout/lions-indomptables/lions-in
 import { CompetitionsComponent } from './layout/competitions/competitions.component';
 import { CompetitionDetailComponent } from './layout/competition-detail/competition-detail.component';
 import { LiveComponent } from './layout/live/live.component';
+import { RegisterPasswordComponent } from './register-password/register-password.component';
 
 const routes: Routes = [
   {
@@ -35,8 +37,7 @@ const routes: Routes = [
         resolve: {slug:articleSlugResolver},
         runGuardsAndResolvers: 'paramsChange'
       }
-      ,
-      { path:'article/categorie/:categorie_id',component:ArticleComponent},
+      ,{ path:'article/categorie/:categorie_id',component:ArticleComponent},
       { path:'article/competition/:competition_id',component:ArticleComponent},
       { path:'lions-indomptables',component:LionsIndomptablesComponent},
       { path:'live',component:LiveComponent},
@@ -55,6 +56,14 @@ const routes: Routes = [
     ]
   },
   { path:'login',component:LoginComponent },
+  {
+    path:'register/:id',
+    component:RegisterPasswordComponent
+  },
+  {
+    path: 'reset/:token',
+    component: ResetPasswordComponent
+  }
 
 ];
 

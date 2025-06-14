@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\MatchSheetController;
+use App\Http\Controllers\Api\PasswordController;
 use App\Http\Controllers\Api\RssController;
 use App\Http\Controllers\Api\TeamController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -28,9 +29,11 @@ use UniSharp\LaravelFilemanager\Lfm;
     Route::get('articles/competition/{article}/mustreaded', [ArticleController::class, 'getCompetitionMustReadedArticle']);
     Route::get('matchs/last', [MatchSheetController::class, 'getLastMatchSheet']);
     Route::get('lives/{id}/matchsheets', [LiveMatchController::class, 'getLiveMatch']);
+    Route::patch('register/{register}', [UserController::class, 'changePassword']);
+    Route::post('password/forgot', [PasswordController::class, 'forgot']);
+    Route::post('password/reset', [PasswordController::class, 'reset']);
 
-
-Route::get('articles/public', [ArticleController::class, 'publicIndex']);
+    Route::get('articles/public', [ArticleController::class, 'publicIndex']);
 
     Route::post('auth/login', [AuthController::class, 'login']);
     Route::post('auth/changepassword', [AuthController::class, 'changePassword']);
@@ -65,16 +68,21 @@ Route::get('articles/public', [ArticleController::class, 'publicIndex']);
         return view('auth.verify-email');
     })->middleware('auth')->name('verification.notice');
 
-    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-        $request->fulfill();
+    Route::get('/email/verify/{id}/{hash}', function (Request $request) {
+        if (! URL::hasValidSignature($request)) {
+            abort(403, 'Lien expiré ou signature invalide.');
+        }
+        $user=\App\Models\User::find($request->id);
+        if($user && is_null($user->email_verified_at)){
+            $user->email_verified_at=now();
+            $user->save();
+            return redirect()->away(env('FRONTEND_URL')."/register/{$request->id}");
 
-        return redirect('/home');
-    })->middleware(['auth', 'signed'])->name('verification.verify');
-
-
+        }
+        return redirect()->away(env('FRONTEND_URL'));;
+    })->middleware(['web', 'signed'])->name('verification.verify');
 
     Route::post('/email/verification-notification', function (Request $request) {
         $request->user()->sendEmailVerificationNotification();
-
         return back()->with('message', 'Verification link sent!');
     })->middleware(['auth', 'throttle:6,1'])->name('verification.send');

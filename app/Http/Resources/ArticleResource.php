@@ -7,6 +7,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ArticleResource extends JsonResource
 {
+
+
     /**
      * Transform the resource into an array.
      *
@@ -34,7 +36,8 @@ class ArticleResource extends JsonResource
             'pays'=>new PaysResource($this->bled),
             'categorie'=> new CategorieResource($this->categorie),
             'competition'=> new CompetitionResource($this->competition),
-            'images' => $this->whenLoaded('media', function () {
+            'images' => $this->getFeaturedImage(),
+            /*'images' => $this->whenLoaded('media', function () {
                 return $this->getMedia('article')->map(function ($media) {
                     return [
                         'url' => $media->getUrl(),
@@ -44,9 +47,27 @@ class ArticleResource extends JsonResource
                         'meta' => $media->custom_properties
                     ];
                 });
-            }),
+            }),*/
 
 
         ];
+    }
+    protected function getFeaturedImage(): ?array
+    {
+        if (!$this->relationLoaded('media')) {
+            return null;
+        }
+        /*$media =$article->getMedia('article')->where('name',$article->slug)->first();
+        $media = $this->getFirstMedia('article');*/
+        $media = $this->getMedia('article')->where('name',$this->slug)->first();
+        //dd($media);
+        return $media ? [
+            'url' => $media->getUrl(),
+            'mime_type' => $media->mime_type,
+            'extension' => $media->extension,
+            'width'=>$media->getCustomProperty('width'),
+            'height'=>$media->getCustomProperty('height'),
+            'meta' => $media->custom_properties
+        ] : null;
     }
 }

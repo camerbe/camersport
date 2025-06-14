@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { ArticleDetail } from '../../../core/models/article-detail';
 import { Router } from '@angular/router';
 
@@ -6,7 +6,8 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-competition-must-readed',
   templateUrl: './competition-must-readed.component.html',
-  styleUrl: './competition-must-readed.component.css'
+  styleUrl: './competition-must-readed.component.css',
+  changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class CompetitionMustReadedComponent {
   @Input() mustReadedCompetition: ArticleDetail[] = [];

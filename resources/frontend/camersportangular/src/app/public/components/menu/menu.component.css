@@ -1,76 +1,18 @@
-/*::ng-deep .custom-menubar .p-menubar-root {
-  background-color: #166534 !important;
-}
-
 ::ng-deep .custom-menubar .p-menuitem-link,
 ::ng-deep .custom-menubar .p-menuitem-text,
 ::ng-deep .custom-menubar .pi {
-  color: white !important;
+  color: green !important;
   fill: white !important;
 }
 
-::ng-deep .custom-menubar .p-menuitem-link:hover {
-  background-color: #14532d !important;
-}
+/*:ng-deep .custom-menubar .p-menubar-button {
+  color: green !important;
+  fill: white !important;
+}*/
 
-*/
-/* Style the text inside menu items */
-::ng-deep .custom-menubar .p-menuitem-text {
-  color: white !important;
-  font-size: 14px !important; /* Adjust font size */
-}
-
-/* Change the background of submenu items */
 ::ng-deep .custom-menubar .p-submenu-list {
- /*background-color: bg-green-300 !important;  Example: slate-800 */
-  min-width: 250px !important; /* Enlarge width */
-}
-
-/* Optional: Style individual submenu items on hover */
-::ng-deep .custom-menubar .p-submenu-list .p-menuitem:hover {
-  background-color: #334155 !important; /* Example: slate-700 */
-}
-
-/* Optional: Style the text inside submenu items */
-::ng-deep .custom-menubar .p-submenu-list .p-menuitem-text {
-  color: #14532d !important; /* Example: Tailwind yellow-400 */
-  /*font-weight: 600;*/
-}
-
-::ng-deep .p-submenu-icon {
-  display: inline-block !important;
-  color: white;
-}
-::ng-deep .p-menuitem-link.p-menuitem-active,
-::ng-deep .p-menuitem-link:hover {
-  background-color: #ff6600; /* nouvelle couleur de fond */
-  color: #fff; /* nouvelle couleur du texte */
-  border-radius: 5px;
-}
-/* Force hamburger menu to appear on mobile */
-@media screen and (max-width: 960px) {
-  :host ::ng-deep .p-menubar .p-menubar-button {
-    display: flex !important;
-  }
-
-  :host ::ng-deep .p-menubar .p-menubar-root-list {
-    display: none;
-  }
-
-  :host ::ng-deep .p-menubar .p-menubar-root-list.p-menubar-root-list-active {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: #1f2937;
-    z-index: 1000;
-  }
-}
-
-/* Ensure the menubar takes full width */
-:host ::ng-deep .p-menubar {
-  width: 100% !important;
+ /*background-color: bg-green-300 !important;  /*Example: slate-800*/
+ min-width: 250px !important;  /*Enlarge width*/
+  /*color: #ccc !important;*/
 }
 

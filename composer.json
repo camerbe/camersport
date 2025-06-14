@@ -7,11 +7,15 @@
     "require": {
         "php": "^8.2",
         "html2text/html2text": "^4.3",
+        "intervention/image-laravel": "^1.5",
         "laravel/framework": "^11.9",
+        "laravel/reverb": "^1.5",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "php-open-source-saver/jwt-auth": "^2.8",
+        "spatie/laravel-feed": "^4.4",
         "spatie/laravel-medialibrary": "^11.9",
+        "spatie/laravel-sitemap": "^7.3",
         "unisharp/laravel-filemanager": "^2.10"
     },
     "require-dev": {

@@ -8,7 +8,7 @@
   <ng-template pTemplate="header">
     <div class="flex justify-between align-items-center mb-4">
       <h5 class="m-0 uppercase md:text-2xl text-emerald-700">
-        <i class="pi pi-globe mr-2 text-xl"></i>International
+        <i class="pi pi-globe mr-2 text-xl"></i>ailleurs
       </h5>
     </div>
   </ng-template>
@@ -25,7 +25,7 @@
       <div class="col-12" *ngFor="let item of notcamer; let first = first" class="col-12">
         <div class="flex flex-column sm:flex-row sm:align-items-center p-4 gap-3 relative" [ngClass]="{ 'border-top-1 surface-border': !first }">
           <div class="md:w-10rem">
-            <img class="block xl:block mx-auto border-round w-full" [src]="item.images[0].url" [alt]="item.titre" />
+            <img class="block xl:block mx-auto border-round w-full" [src]="item.images?.url  || 'assets/placeholder.jpg'" [alt]="item.titre" />
 
           </div>
           <div class="flex flex-column md:flex-row justify-content-between md:align-items-center flex-1 gap-4">
@@ -64,5 +64,6 @@
     src="https://www.scorebat.com/embed/livescore/?token=MjEyODMzXzE3NDgyNDc3NjFfNTEyYTk2MDQwMTgxODU2ZWVkZTA1NDkzMzc0MjNlNTE5MWIwMDYyZg=="
     width="100%"
     height="400px"
+    title="live score"
     style="border: none;"></iframe>
 </p-card>

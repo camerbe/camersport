@@ -22,7 +22,7 @@ export interface ArticleDetail {
   competition_id:number;
   user:UserDetails;
   pays:PaysDetail;
-  images: ImageDetail[];
+  images: ImageDetail;
   categorie: CategorieDetail;
   competition: CompetitionDetail;
 

@@ -10,43 +10,19 @@
       >
 
         <app-ads
-        [adClient]="'ca-pub-8638642715460968'"
-        [adFormat]="'auto'"
-        [adSlot]="'6927429462'"
-        fullWidthResponsive="true"
-        styleClass="bg-gray-500 mt-3 border-round mb-4 text-center"
-        [adStyle]="{ display: 'block' }"
-        data-adtest="on"
+          [adClient]="'ca-pub-8638642715460968'"
+          [adFormat]="'auto'"
+          [adSlot]="'6927429462'"
+          fullWidthResponsive="true"
+          [adStyle]="{ display: 'block' }"
+          data-adtest="on"
       />
 
     </p-card>
 
     <!-- News Grid -->
     <div class="grid p-fluid">
-      <!--<div class="col-12 md:col-8 lg:col-9">-->
-        <router-outlet/>
-      <!--</div>-->
-      <!-- Right Sidebar -->
-      <!--<div class="col-12 md:col-4 lg:col-3">
-        <div class="p-4 surface-50 border-round">
-          <h3>Sidebar</h3>
-          <div id="taboola-below-article-thumbnails"></div>
-          <app-api-football/>
-          <p-divider></p-divider>
-          <div class="bg-amber-500">
-            <app-ads
-            [adClient]="'ca-pub-8638642715460968'"
-            [adFormat]="'auto'"
-            [adSlot]="'6927429462'"
-            fullWidthResponsive="true"
-            styleClass="bg-gray-500 mt-3 border-round mb-4 text-center"
-            [adStyle]="{ display: 'block' }"
-            data-adtest="on"
-          />
-          </div>
-
-        </div>
-      </div>-->
+      <router-outlet/>
     </div>
 
     <!-- Footer Ad -->
@@ -69,14 +45,78 @@
   <!-- Footer -->
   <!-- Footer -->
   <div class="bg-gray-700 text-white p-4 mt-4">
-    <div class="grid">
-      <div class="col-12 md:col-4 text-center md:text-left">
-        <h4 class="text-orange-500 mb-2"><span class="p-text-4xl p-font-bold p-mr-6 text-amber-100 uppercase">Camer-sp<i class="pi pi-bullseye"></i>rt</span></h4>
-        <p class="text-sm text-300">L'actualité footballistique 24h/24</p>
-      </div>
-      <div class="col-12 md:col-8 text-center md:text-right mt-3 md:mt-0">
-        <p class="text-sm text-300">© 2017 - {{ currentYear }} Tous droits réservés</p>
+  <div class="grid">
+    <div class="col-12 md:col-4 text-center md:text-left">
+      <h4 class="text-orange-500 mb-2">
+        <span class="p-text-4xl p-font-bold p-mr-6 text-amber-100 uppercase">
+          Camer-sp<i class="pi pi-bullseye"></i>rt
+        </span>
+      </h4>
+      <p class="text-sm text-300">Le foot en temps et en heure</p>
+
+      <!-- Liens réseaux sociaux avec icônes SVG -->
+      <div class="flex justify-center md:justify-start gap-4 mt-4">
+        <!-- Facebook -->
+        <a href="https://www.facebook.com/profile.php?id=100010794889004"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="w-8 h-8 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center transition-colors duration-300"
+           aria-label="Facebook">
+          <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+        </a>
+
+        <!-- Bluesky -->
+        <a href="https://bsky.app/profile/camerbe.bsky.social"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="w-8 h-8 bg-blue-500 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors duration-300"
+           aria-label="Bluesky">
+          <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"/>
+          </svg>
+        </a>
+
+        <!-- X (Twitter) -->
+        <a href="https://x.com/camersport"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="w-8 h-8 bg-black hover:bg-gray-800 rounded-full flex items-center justify-center transition-colors duration-300"
+           aria-label="X (Twitter)">
+          <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+        </a>
+
+        <!-- Threads -->
+        <a href="https://www.threads.com/@camergroup"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 rounded-full flex items-center justify-center transition-colors duration-300"
+           aria-label="Threads">
+          <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12.186 24h-.007c-5.947-.039-8.814-2.508-8.814-9.339v-5.207c0-6.831 2.867-9.3 8.814-9.339h.007c5.947.039 8.814 2.508 8.814 9.339v5.207c0 6.831-2.867 9.3-8.814 9.339z"/>
+          </svg>
+        </a>
+
+        <!-- YouTube -->
+        <a href="https://youtube.com/@votre-chaine"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="w-8 h-8 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center transition-colors duration-300"
+           aria-label="YouTube">
+          <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+          </svg>
+        </a>
       </div>
     </div>
+
+    <div class="col-12 md:col-8 text-center md:text-right mt-3 md:mt-0">
+      <p class="text-sm text-300 mb-2">Suivez-nous sur nos réseaux sociaux</p>
+      <p class="text-sm text-300">© 2017 - {{ currentYear }} Tous droits réservés</p>
+    </div>
   </div>
+</div>
  <!--</div>-->

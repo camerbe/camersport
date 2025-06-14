@@ -186,7 +186,7 @@ class ArticleRepository extends Repository implements IArticleRepository
         if($articles->isEmpty()){
             $duration=now()->addMonth(1);
             $articles = Cache::remember($cacheKey, $duration, function () {
-                return Article::with(['media'])
+                return Article::with(['media','bled', 'categorie', 'competition'])
                     ->where('date_parution', '<=', now())
                     ->orderByDesc('date_parution')
                     ->take(200)
