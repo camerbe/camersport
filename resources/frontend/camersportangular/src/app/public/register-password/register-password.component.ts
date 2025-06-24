@@ -1,8 +1,9 @@
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, Inject, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { CustomValidators } from '../../shared/validators/custom-validators';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-register-password',
@@ -11,14 +12,21 @@ import { CustomValidators } from '../../shared/validators/custom-validators';
 })
 export class RegisterPasswordComponent implements OnInit{
   id!:number;
-  fb:FormBuilder=inject(FormBuilder);
+  // fb:FormBuilder=inject(FormBuilder);
   frmRegister!:FormGroup;
-  authSevice:AuthService=inject(AuthService);
-  activatedRoute:ActivatedRoute=inject(ActivatedRoute);
-  router:Router=inject(Router);
-
-  constructor() {
-    this.frmRegister=this.fb.group({
+  // authSevice:AuthService=inject(AuthService);
+  // activatedRoute:ActivatedRoute=inject(ActivatedRoute);
+  // router:Router=inject(Router);
+  isBrowser!: boolean;
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private fb:FormBuilder,
+    private authSevice:AuthService,
+    private activatedRoute:ActivatedRoute,
+    private router:Router
+  ) {
+      this.isBrowser = isPlatformBrowser(this.platformId);
+      this.frmRegister=this.fb.group({
       password:['',[Validators.required,
         Validators.minLength(6),
         CustomValidators.atLeastOneSpecialCharacter(),
@@ -34,6 +42,7 @@ export class RegisterPasswordComponent implements OnInit{
     return this.frmRegister.get('password');
   }
   ngOnInit(): void {
+    if(!this.isBrowser) return;
     this.id=this.activatedRoute.snapshot.params['id'];
   }
   onSubmit() {

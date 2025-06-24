@@ -24,38 +24,45 @@ import { EchoService } from '../../../services/echo.service';
 })
 export class LiveComponent implements OnInit,OnDestroy {
   lastMatchSheet!:MatchSheetReponse["data"];
-    playersA:Player[]=[];
-    playersB:Player[]=[];
-    formationA!:Formation|undefined;
-    formationB!:Formation|undefined;
-    positionA: FormationPosition[] = [];
-    positionB: FormationPosition[] = [];
-    liveMatchs:LiveMatchDetail[]=[];
-    lastBut: LiveMatchDetail[] =[];
-    totalScore_a:number=0;
-    totalScore_b:number=0;
+  playersA:Player[]=[];
+  playersB:Player[]=[];
+  formationA!:Formation|undefined;
+  formationB!:Formation|undefined;
+  positionA: FormationPosition[] = [];
+  positionB: FormationPosition[] = [];
+  liveMatchs:LiveMatchDetail[]=[];
+  lastBut: LiveMatchDetail[] =[];
+  totalScore_a:number=0;
+  totalScore_b:number=0;
+  isBrowser!: boolean;
 
-    matchSheetService:MatchSheetService=inject(MatchSheetService);
-    formationPosition:FormationPositionService=inject(FormationPositionService);
-    liveMatchService:LiveMatchService=inject(LiveMatchService);
-    sanitizer:DomSanitizer= inject(DomSanitizer);
-    echoService:EchoService= inject(EchoService);
+    // matchSheetService:MatchSheetService=inject(MatchSheetService);
+    // formationPosition:FormationPositionService=inject(FormationPositionService);
+    // liveMatchService:LiveMatchService=inject(LiveMatchService);
+    // sanitizer:DomSanitizer= inject(DomSanitizer);
+    //echoService:EchoService= inject(EchoService);
     constructor(
         @Inject(PLATFORM_ID) private platformId: Object,
-        private cd: ChangeDetectorRef
+        private cd: ChangeDetectorRef,
+        //private echoService: EchoService
+        private matchSheetService: MatchSheetService,
+        private formationPosition: FormationPositionService,
+        public liveMatchService: LiveMatchService,
+        public sanitizer: DomSanitizer
       ) {
-
+        this.isBrowser = isPlatformBrowser(this.platformId);
       }
   ngOnDestroy(): void {
-    this.echoService.leaveChannel();
+    //this.echoService.leaveChannel();
   }
 
   ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)){
-      this.echoService.subscribeToLivematchs((event) => {
-        console.log('Livematch event:', event);
+    if (!this.isBrowser) return;
+    //if (isPlatformBrowser(this.platformId)){
+      //this.echoService.subscribeToLivematchs((event) => {
+       // console.log('Livematch event:', event);
 
-      });
+      //});
       this.matchSheetService.getLastMtachSheet()
       .pipe(switchMap(response => {
         this.lastMatchSheet = response.data;
@@ -95,7 +102,7 @@ export class LiveComponent implements OnInit,OnDestroy {
 
       });
 
-    }
+    //}
 
   }
 

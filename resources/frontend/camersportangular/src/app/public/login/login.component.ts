@@ -1,7 +1,7 @@
 import { FormBuilder, FormGroupDirective, Validators } from '@angular/forms';
-import { AuthService } from './../../../../../camersport/src/app/public/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { FormGroup } from '@angular/forms';
-import { Component, inject } from '@angular/core';
+import { Component, Inject, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Jwt } from '../../core/models/jwt';
 import { JwtService } from '../../services/jwt.service';
 import { JwtDecoded } from '../../core/models/jwt-decoded';
@@ -10,30 +10,36 @@ import { Router } from '@angular/router';
 import { PasswordReset } from '../../core/models/password-reset';
 import { PasswordResetService } from '../../services/password-reset.service';
 import Swal from "sweetalert2";
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   erreur!: string;
   frmLogin!: FormGroup;
   frmForgotPw!: FormGroup;
   token!:Jwt;
   visible:boolean=false;
   forgotPassword!:PasswordReset;
+  isBrowser!: boolean;
 
-  authService:AuthService=inject(AuthService);
-  fb:FormBuilder=inject(FormBuilder);
-  fbPw:FormBuilder=inject(FormBuilder);
-  jwtService:JwtService=inject(JwtService);
-  router:Router=inject(Router);
-  passwordService:PasswordResetService=inject(PasswordResetService);
   /**
    *
   */
- constructor() {
+ constructor(
+  @Inject(PLATFORM_ID) private platformId: Object,
+  private authService: AuthService,
+  private fb: FormBuilder,
+  private fbPw: FormBuilder,
+  private jwtService: JwtService,
+  private router: Router,
+  private passwordService: PasswordResetService
+
+) {
+  this.isBrowser = isPlatformBrowser(this.platformId);
    this.frmLogin=this.fb.group({
      email:['',[Validators.required,Validators.email]],
      password:['',[Validators.required]],
@@ -48,33 +54,70 @@ export class LoginComponent {
 
 
   }
+  ngOnInit(): void {
+    if(!this.isBrowser) return;
+  }
   onSubmit() {
-    this.authService.login(this.frmLogin.value)
+    if(!this.isBrowser) return;
+    // const authService = inject(AuthService);
+    // const router = inject(Router);
+    if(isPlatformBrowser(this.platformId)) {
+       this.authService.login(this.frmLogin.value)
     .subscribe({
       next:data =>{
         this.token=data;
         const decodedToken:JwtPayload=this.jwtService.DecodeToken(this.token.token)  as unknown as JwtPayload
         // console.log(this.token)
         // console.log(decodedToken)
-        localStorage.setItem('token',this.token.token);
-        localStorage.setItem('expiredAt', decodedToken.expires_in);
-        localStorage.setItem('fullname',decodedToken.fullName);
-        localStorage.setItem('userId',decodedToken.userId.toString());
-        localStorage.setItem('role',decodedToken.role.toString());
-        switch(decodedToken.role){
-          case "Admin" :
+
+          // localStorage.setItem('token',this.token.token);
+
+          // localStorage.setItem('expiredAt', decodedToken.expires_in);
+          // localStorage.setItem('fullname',decodedToken.fullName);
+          // localStorage.setItem('userId',decodedToken.userId.toString());
+          // localStorage.setItem('role',decodedToken.role.toString());
+
+          this.safeLocalStorageSet('token', this.token.token);
+          this.safeLocalStorageSet('expiredAt', decodedToken.expires_in);
+          this.safeLocalStorageSet('fullname', decodedToken.fullName);
+          this.safeLocalStorageSet('userId', decodedToken.userId.toString());
+          this.safeLocalStorageSet('role', decodedToken.role.toString());
+          //this.safeLocalStorageSet('token', this.token.token);
+          //console.log(decodedToken.role);
+          try{
+            switch(decodedToken.role){
+            case "Admin" :
             case "Redac" :
-              this.router.navigate(['/secured/dashboard']);
-              break;
+
+                this.router.navigate(['/secured/dashboard/register/list']);
+                break;
               default :
-              this.router.navigate(['login']);
+                this.router.navigate(['login']);
             }
+          }
+          catch (e) {
+            console.error('Error decoding token:', e);
+          }
+
+
 
           },
           error:(error)=>this.erreur="Informations d'identification invalides"
 
-        })
+
+      })
+    }
+    }
+
+    private safeLocalStorageSet(key: string, value: string): void {
+      if (this.isBrowser) {
+        localStorage.setItem(key, value);
       }
+    }
+
+
+
+
       showDialog() {
         this.visible=true;
       }
@@ -83,7 +126,7 @@ export class LoginComponent {
       }
       forgotPasswordSubmit() {
         this.visible=false;
-        console.log(this.forgotPassword);
+        if(!this.isBrowser) return;
         this.forgotPassword = {
           email: this.passwordResetEmail?.value,
           password: '',

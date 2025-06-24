@@ -16,14 +16,39 @@ export class CategorieMustReadedComponent implements OnInit {
   @Input() mustReadedCategorie: ArticleDetail[] = [];
   @Input() mustReadedLabel: string = '';
 
-  private zone=inject(NgZone);
-  router:Router=inject(Router);
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  isBrowser!: boolean;
+  // private zone=inject(NgZone);
+  // router:Router=inject(Router);
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private zone: NgZone,
+    private router: Router,
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+    // this.zone.runOutsideAngular(() => {
+    //   this.router.events.subscribe((event) => {
+    //     if (event instanceof NavigationEnd) {
+    //       this.zone.run(() => {
+    //         // Handle the event in the Angular zone
+    //       });
+    //     }
+    //   });
+    // });
+  }
   ngOnInit(): void {
-
+    if (!this.isBrowser) return;
+    // this.zone.runOutsideAngular(() => {
+    //   this.router.events.subscribe((event) => {
+    //     if (event instanceof NavigationEnd) {
+    //       this.zone.run(() => {
+    //         // Handle the event in the Angular zone
+    //       });
+    //     }
+    //   });
+    // });
   }
   gotoArticle(slug: string) {
-
+    if (!this.isBrowser) return;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate(['/article', slug]);
     });

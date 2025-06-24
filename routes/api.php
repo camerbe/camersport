@@ -34,6 +34,7 @@ use UniSharp\LaravelFilemanager\Lfm;
     Route::post('password/reset', [PasswordController::class, 'reset']);
 
     Route::get('articles/public', [ArticleController::class, 'publicIndex']);
+    Route::get('rss/camer', [RssController::class, 'getCamerRss']);
 
     Route::post('auth/login', [AuthController::class, 'login']);
     Route::post('auth/changepassword', [AuthController::class, 'changePassword']);

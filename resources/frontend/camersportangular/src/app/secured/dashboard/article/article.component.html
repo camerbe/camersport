@@ -126,7 +126,7 @@
     <div class="grid mb-4">
       <div class="col-12">
         <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Article</label>
-        <editor [init]="init" formControlName="article" aria-placeholder="Article Article Article"/>
+        <editor *ngIf="isTinyMceLoaded" [init]="init" formControlName="article" aria-placeholder="Article Article Article"/>
         <span *ngIf="article?.invalid && (article?.touched || article?.dirty)" class="text-red-800">* L'article est requis</span>
       </div>
     </div>
@@ -146,12 +146,12 @@
     <div class="field col-12">
       <div class="mb-4">
         <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Image</label>
-        <editor [init]="initImage" formControlName="image" aria-placeholder="Image Image Image"/>
+        <editor *ngIf="isTinyMceLoaded"  [init]="initImage" formControlName="image" aria-placeholder="Image Image Image"/>
         <span *ngIf="image?.invalid && (image?.touched || image?.dirty)" class="text-red-800">* L'image est requise</span>
       </div>
     </div>
-      <button pButton *ngIf="isAddMode" [disabled]="!frmArticle.valid" class="bg-indigo-600 text-white px-4 py-2 rounded">Ajouter</button>
-      <button pButton *ngIf="!isAddMode" [disabled]="!frmArticle.valid" class="bg-indigo-600 text-white px-4 py-2 rounded">Mettre à jour</button>
+      <button pButton icon="pi pi-save" *ngIf="isAddMode" [disabled]="!frmArticle.valid" class="bg-indigo-600 text-white px-4 py-2 rounded">Ajouter</button>
+      <button pButton icon="pi pi-save" *ngIf="!isAddMode" [disabled]="!frmArticle.valid" class="bg-indigo-600 text-white px-4 py-2 rounded">Mettre à jour</button>
   </form>
 </div>
 

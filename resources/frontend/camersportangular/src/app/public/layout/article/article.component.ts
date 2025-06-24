@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, inject, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, inject, OnInit, PLATFORM_ID, Renderer2, ViewChild } from '@angular/core';
 import { ArticleDetail } from '../../../core/models/article-detail';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Article } from '../../../core/models/article';
@@ -10,6 +10,7 @@ import { filter } from 'rxjs';
 import { ArticleItemsService } from '../../../services/article-items.service';
 import { ArticleService } from '../../../services/article.service';
 import slugify from 'slugify';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-article',
@@ -20,10 +21,11 @@ export class ArticleComponent implements OnInit,AfterViewInit  {
 
   @ViewChild('competition', { static: false }) compet!: ElementRef;
   slugCompetition!: string ;
-  constructor() {
-    this.articles=this.route.snapshot.data['articleItems'] ;
-  }
+  isBrowser: boolean ;
+
+
   ngAfterViewInit(): void {
+    if (!this.isBrowser) return;
     if (this.compet?.nativeElement?.getAttribute){
       this.slugCompetition=slugify(this.compet.nativeElement.getAttribute('aria-label'), { lower: true, strict: true })
       const label = this.compet.nativeElement.getAttribute('aria-label');
@@ -35,17 +37,40 @@ export class ArticleComponent implements OnInit,AfterViewInit  {
     //console.log('ARIA label (Renderer2):', label);
   }
 
-  renderer: Renderer2=inject(Renderer2);
-  route:ActivatedRoute= inject(ActivatedRoute);
-  router:Router= inject(Router);
-  sanitizer:DomSanitizer= inject(DomSanitizer);
-  metaService:Meta= inject(Meta);
-  titleService:Title= inject(Title);
-  jldService:JsonLdService= inject(JsonLdService);
-  hashtagExtractorService:HashtagExtractorService=inject(HashtagExtractorService);
-  canonicalService: CanonicalService= inject(CanonicalService);
-  articleItemsService: ArticleItemsService = inject(ArticleItemsService);
-  articleService: ArticleService = inject(ArticleService);
+  // renderer: Renderer2=inject(Renderer2);
+  // route:ActivatedRoute= inject(ActivatedRoute);
+  // router:Router= inject(Router);
+  // sanitizer:DomSanitizer= inject(DomSanitizer);
+  // metaService:Meta= inject(Meta);
+  // titleService:Title= inject(Title);
+  // jldService:JsonLdService= inject(JsonLdService);
+  // hashtagExtractorService:HashtagExtractorService=inject(HashtagExtractorService);
+  // canonicalService: CanonicalService= inject(CanonicalService);
+  // articleItemsService: ArticleItemsService = inject(ArticleItemsService);
+  // articleService: ArticleService = inject(ArticleService);
+
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private route: ActivatedRoute,
+    private router: Router,
+    public sanitizer: DomSanitizer,
+    private metaService: Meta,
+    private titleService: Title,
+    private jldService: JsonLdService,
+    private hashtagExtractorService: HashtagExtractorService,
+    private canonicalService: CanonicalService,
+    private articleItemsService: ArticleItemsService,
+    private articleService: ArticleService,
+    private renderer: Renderer2
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+
+  }
+
+  /**
+   *
+   */
+
 
   article!: ArticleDetail;
   articles:ArticleDetail[]=[];
@@ -56,6 +81,8 @@ export class ArticleComponent implements OnInit,AfterViewInit  {
   isMobile: boolean = false;
 
   ngOnInit(): void {
+    this.articles=this.route.snapshot.data['articleItems'] ;
+    if (!this.isBrowser) return;
     let currentArticle = this.route.snapshot.data['slug'] ;
 
     if (!currentArticle || !currentArticle['data']) {
@@ -162,8 +189,8 @@ export class ArticleComponent implements OnInit,AfterViewInit  {
       "image": {
         "@type": "ImageObject",
         "url": this.article.images.url,
-        "width": 500,
-        "height": 500
+        "width": this.article.images.width,
+        "height": this.article.images.height
       },
       "datePublished": articleDate,
       "dateModified": today,

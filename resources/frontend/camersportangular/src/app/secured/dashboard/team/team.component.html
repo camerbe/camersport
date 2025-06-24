@@ -17,6 +17,7 @@
       <div class="col-12">
         <label class="block text-gray-700"><span class="text-red-500 mr-1">*</span>Logo</label>
         <editor
+          *ngIf="isTinyMceLoaded"
           [init]="initImage"
           formControlName="logo"
           aria-placeholder="Image Image Image"

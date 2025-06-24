@@ -13,18 +13,22 @@ import { User } from '../core/models/user';
 })
 export class AuthService {
   private baseURL:string=environment.baseUrl;
-  httpClient:HttpClient=inject(HttpClient);
-  router:Router=inject(Router);
+
   /**
    *
    */
-  constructor(@Inject(PLATFORM_ID) private platformId: object) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: object,
+    private httpClient:HttpClient,
+    private router:Router
+
+) {}
 
   changePassword(id:number,password:Partial<string>):Observable<User>{
     return this.httpClient.patch<User>(this.baseURL + `/register/${id}`, JSON.stringify(password));
   }
   login(credentials:Credentials):Observable<Jwt>{
-    return this.httpClient.post<Jwt>(this.baseURL+`/auth/login`,credentials);
+    return this.httpClient.post<Jwt>(this.baseURL+`/auth/login`,credentials,{ withCredentials: true });
   }
 
   logout():void{
@@ -35,18 +39,18 @@ export class AuthService {
       localStorage.removeItem('expireAt');
       localStorage.removeItem('fullName');
       localStorage.clear();
+      //const router = inject(Router);
+      this.router.navigate(['login'])
     }
 
-    this.router.navigate(['login'])
+
   }
   isExpired():boolean{
 
     if(isPlatformBrowser(this.platformId)){
       const dateNow=new Date().toLocaleString();
       const expire_At =  localStorage.getItem('expiredAt')|| '';
-      // console.log(`now ${dateNow}`)
-      // console.log(`Expired at ${expire_At}`)
-      // console.log(`isExpired ${dateNow > expire_At}`)
+
       return dateNow > expire_At
     }
     return true;

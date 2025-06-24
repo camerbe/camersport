@@ -28,9 +28,9 @@ import { UnauthorizeComponent } from './unauthorize/unauthorize.component';
 
 const routes: Routes = [
   {
-    path:'',component:DashboardComponent,
+    path:'dashboard',component:DashboardComponent,
+    //canMatch:[adminGuard],
     children:[
-
       {
         path:'register',
         component:RegisterComponent,
@@ -39,41 +39,48 @@ const routes: Routes = [
       {
         path:'register/list',
         component:RegisterListComponent,
-         canMatch:[adminGuard]
+        canMatch:[adminGuard]
       },
       { path : "register/show/:id",component:RegisterComponent,
         resolve : { user: userResolver },
+        runGuardsAndResolvers: 'paramsChange',
         canMatch:[adminGuard]
       },
       {path:'categorie',component:CategorieComponent},
       {path:'categorie/list',component:CategorieListComponent},
       { path : "categorie/show/:id",component:CategorieComponent,
         resolve : { categorie : categorieResolver },
+        runGuardsAndResolvers: 'paramsChange'
       },
       {path:'competition',component:CompetitionComponent},
       {path:'competition/list',component:CompetitionListComponent},
-      { path : "competition/show/:id",component:CompetitionComponent,
+      {path:'competition/show/:id',component:CompetitionComponent,
         resolve : { competition : competitionResolver },
+        runGuardsAndResolvers: 'paramsChange'
       },
       {path:'article',component:ArticleComponent},
       {path:'article/list',component:ArticleListComponent},
-      { path : "article/show/:id",component:ArticleComponent,
+      {path: 'article/show/:id',component:ArticleComponent,
         resolve : { article : articleResolver },
+        runGuardsAndResolvers: 'paramsChange'
       },
       {path:'team',component:TeamComponent},
       {path:'team/list',component:TeamListComponent},
-      { path : "team/show/:id",component:TeamComponent,
+      {path:'team/show/:id',component:TeamComponent,
         resolve : { team : teamResolver },
+
       },
       {path:'matchsheet',component:MatchSheetComponent},
       {path:'matchsheet/list',component:MatchSheetListComponent},
-      { path : "matchsheet/show/:id",component:MatchSheetComponent,
+      {path:'matchsheet/show/:id',component:MatchSheetComponent,
         resolve : { matchsheet : matchSheetResolver },
+        runGuardsAndResolvers: 'paramsChange'
       },
       {path:'live',component:LiveMatchComponent},
       {path:'live/list',component:LiveMatchListComponent},
-      {path:'live/show/:id',component:LiveMatchComponent
-        ,resolve : { liveMatch : liveMatchResolver },
+      {path:'live/show/:id',component:LiveMatchComponent,
+        resolve : { liveMatch : liveMatchResolver },
+        runGuardsAndResolvers: 'paramsChange'
       },
       {path:'unauthorized',component:UnauthorizeComponent},
     ]

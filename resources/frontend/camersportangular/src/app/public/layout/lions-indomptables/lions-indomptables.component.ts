@@ -18,15 +18,15 @@ import { CanonicalService } from '../../../services/canonical.service';
 export class LionsIndomptablesComponent implements OnInit {
 
 
-  articleItemService:ArticleItemsService=inject(ArticleItemsService);
-  jsonLdService:JsonLdService=inject(JsonLdService);
-  hashtagExtractorService:HashtagExtractorService=inject(HashtagExtractorService);
-  metaService:Meta=inject(Meta);
-  titleService:Title=inject(Title);
-  canonicalService:CanonicalService=inject(CanonicalService);
-  articleItemsService:ArticleItemsService=inject(ArticleItemsService);
-  router:Router = inject(Router);
-  route:ActivatedRoute = inject(ActivatedRoute);
+  // articleItemService:ArticleItemsService=inject(ArticleItemsService);
+  // jsonLdService:JsonLdService=inject(JsonLdService);
+  // hashtagExtractorService:HashtagExtractorService=inject(HashtagExtractorService);
+  // metaService:Meta=inject(Meta);
+  // titleService:Title=inject(Title);
+  // canonicalService:CanonicalService=inject(CanonicalService);
+  // articleItemsService:ArticleItemsService=inject(ArticleItemsService);
+  // router:Router = inject(Router);
+  // route:ActivatedRoute = inject(ActivatedRoute);
   articles:ArticleDetail[] = [];
   slugCategorie: string = slugify('Lions Indomptables', { lower: true, strict: true });
   articlesPerPage = 10;
@@ -35,13 +35,30 @@ export class LionsIndomptablesComponent implements OnInit {
   jsonLdArticles:ArticleDetail[]=[];
   jsonldArticle: any[] = [];
   article!:ArticleDetail;
+  isBrowser!: boolean;
   // isMobile: boolean = false;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private articleItemService: ArticleItemsService,
+    private jsonLdService: JsonLdService,
+    private hashtagExtractorService: HashtagExtractorService,
+    private metaService: Meta,
+    private titleService: Title,
+    private canonicalService: CanonicalService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private articleItemsService: ArticleItemsService,
+    private articleService: ArticleItemsService
+
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
     //this.articleItemService.updateState(this.route.snapshot.data['articleItems']);
-    if (isPlatformBrowser(this.platformId)){
+    if(!this.isBrowser) return;
+    //if (isPlatformBrowser(this.platformId)){
       if( this.articles.length === 0 || this.articles === undefined || this.articles === null) {
         this.updatePagedArticles();
         this.articleItemService.state$.subscribe({
@@ -145,7 +162,7 @@ export class LionsIndomptablesComponent implements OnInit {
 
       }
 
-    }
+    //}
 
     //console.log(items.length);
   }

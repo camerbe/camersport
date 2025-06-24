@@ -1,7 +1,8 @@
+import { routes } from './../../app-routing.module';
 import { ArticleDetail } from './../../core/models/article-detail';
 import { JsonLdService } from './../../services/json-ld.service';
 import { ArticleService } from './../../services/article.service';
-import { Component, Inject, inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
+import { afterNextRender, Component, Inject, inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
 
 
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,9 +19,7 @@ import { PaginatorState } from 'primeng/paginator';
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
-openImagePreview(arg0: string|undefined) {
-throw new Error('Method not implemented.');
-}
+
   //@Input() news:ArticleDetail[]=[];
   articles:ArticleDetail[]=[];
   article!:ArticleDetail;
@@ -34,32 +33,41 @@ throw new Error('Method not implemented.');
   articlesPerPage = 5;
   currentPage = 0;
   pagedArticles: ArticleDetail[] = [];
-
+  isBrowser!: boolean;
 
 
   /**
    *
    */
   constructor(
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
-  //articleService:ArticleService=inject(ArticleService)
-  route:ActivatedRoute=inject(ActivatedRoute);
-  router:Router=inject(Router);
-  jsonLdService:JsonLdService=inject(JsonLdService);
-  hashtagExtractorService:HashtagExtractorService=inject(HashtagExtractorService);
-  metaService:Meta=inject(Meta);
-  titleService:Title=inject(Title);
-  canonicalService:CanonicalService=inject(CanonicalService);
-  articleItemsService:ArticleItemsService=inject(ArticleItemsService);
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private route: ActivatedRoute,
+    private router: Router,
+    private jsonLdService: JsonLdService,
+    private hashtagExtractorService: HashtagExtractorService,
+    private metaService: Meta,
+    private titleService: Title,
+    private canonicalService: CanonicalService,
+    private articleItemsService: ArticleItemsService
+  ) {
+      this.isBrowser = isPlatformBrowser(this.platformId);
+      afterNextRender(()=>{
+        this.randomNumber = Math.floor(Math.random() * 1000001) / 1000000;
+        console.log('Route data:', this.route.snapshot.data['articleItems']);
+        this.articleItemsService.updateState(this.route.snapshot.data['articleItems']);
+      })
+  }
+
 
   ngOnInit(): void {
-
-    this.randomNumber = Math.floor(Math.random() * 1000001) / 1000000;
-    this.articleItemsService.updateState(this.route.snapshot.data['articleItems']);
+    if(!this.isBrowser) return;
+   // this.articleItemsService.updateState(this.route.snapshot.data['articleItems']);
+    //console.log('Route data:', this.route.snapshot.data['articleItems']);
     if (isPlatformBrowser(this.platformId)){
       this.articleItemsService.state$.subscribe({
           next:(data:ArticleDetail[])=>{
+            //console.log(data);
+            if(!data || data.length === 0) return
             this.articles=data;
             this.news=data.slice(0, 25).filter((item:ArticleDetail) => item.pays_code === "CMR");
             this.otherNews=data.slice(0, 25).filter((item:ArticleDetail) => item.pays_code !== "CMR");
@@ -67,7 +75,10 @@ throw new Error('Method not implemented.');
             this.slicedArticles=data.slice(0, 5);
             //console.log(this.slicedArticles)
             this.jsonLdArticles=data.slice(0, 20);
-            this.article = this.jsonLdArticles[0];
+            //console.log(data);
+            this.article = data.slice(0, 1)[0];
+            console.log(this.jsonLdArticles)
+            //this.article = this.jsonLdArticles[0];
             //console.log(this.article);
           },
           error:(error)=>console.log(error)

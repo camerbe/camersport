@@ -20,28 +20,41 @@ export class LayoutComponent implements OnInit {
   randomNumber: number = 0;
   currentYear: number = new Date().getFullYear();
   loadAds!:boolean;
+  isBrowser!: boolean;
 
-  articleService: ArticleService = inject(ArticleService);
-  articleItemsService:ArticleItemsService=inject(ArticleItemsService);
-  route:ActivatedRoute=inject(ActivatedRoute);
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event: Event) {
-    if (isPlatformBrowser(this.platformId)) {
+  // articleService: ArticleService = inject(ArticleService);
+  // articleItemsService:ArticleItemsService=inject(ArticleItemsService);
+  // route:ActivatedRoute=inject(ActivatedRoute);
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private articleService: ArticleService,
+    private articleItemsService: ArticleItemsService,
+    private route: ActivatedRoute
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+    if (this.isBrowser) {
       this.isMobile = window.innerWidth < 768;
     }
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    if(!this.isBrowser) return;
+    //if (isPlatformBrowser(this.platformId)) {
+      this.isMobile = window.innerWidth < 768;
+    //}
+  }
+
 
   ngOnInit(): void {
+    if (!this.isBrowser) return;
     setTimeout(() => {
       this.loadAds = true;
     }, 1000);
-    if (isPlatformBrowser(this.platformId)) {
+    //if (isPlatformBrowser(this.platformId)) {
       this.isMobile = window.innerWidth < 768;
       this.randomNumber = Math.floor(Math.random() * 1000001) / 1000000;
-    }
+    //}
     this.articleItemsService.updateState(this.route.snapshot.data['articleItems']);
 
 

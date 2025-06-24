@@ -29,7 +29,7 @@ import { TaboolaComponent } from './components/taboola/taboola.component';
 import { NotCamerComponent } from './components/not-camer/not-camer.component';
 import { FieldsetModule } from 'primeng/fieldset';
 import { CategorieMustReadedComponent } from './components/categorie-must-readed/categorie-must-readed.component';
-import { CompetitionMustReadedComponent } from './components/competition-must-readed/competition-must-readed.component';
+import { CompetitionMustReadedComponenton } from './components/competition-must-readed/competition-must-readed.component';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { TimelineModule } from 'primeng/timeline';
 import { ThemoneytizerComponent } from './components/themoneytizer/themoneytizer.component';
@@ -49,7 +49,7 @@ import { LiveMatchDataComponent } from './components/live-match-data/live-match-
 import { RegisterPasswordComponent } from './register-password/register-password.component';
 import { NgOptimizedImage } from '@angular/common';
 import { ResetPasswordComponent } from './register-password/reset-password/reset-password.component';
-
+import { RssComponent } from './layout/rss/rss.component';
 @NgModule({
   declarations: [
     LoginComponent,
@@ -62,7 +62,7 @@ import { ResetPasswordComponent } from './register-password/reset-password/reset
     TaboolaComponent,
     NotCamerComponent,
     CategorieMustReadedComponent,
-    CompetitionMustReadedComponent,
+    CompetitionMustReadedComponenton,
     ThemoneytizerComponent,
     ViralizeComponent,
     LionsIndomptablesComponent,
@@ -75,7 +75,8 @@ import { ResetPasswordComponent } from './register-password/reset-password/reset
     LiveMatchDataComponent,
     LayoutComponent,
     RegisterPasswordComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    RssComponent
   ],
   imports: [
     CommonModule,

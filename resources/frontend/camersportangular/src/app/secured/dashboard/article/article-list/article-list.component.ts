@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, Inject, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ArticleDetail } from '../../../../core/models/article-detail';
 import { Article } from '../../../../core/models/article';
 import { ArticleService } from '../../../../services/article.service';
@@ -6,6 +6,7 @@ import { ExpiredAtService } from '../../../../services/expired-at.service';
 import { AuthService } from '../../../../services/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-article-list',
@@ -30,16 +31,27 @@ export class ArticleListComponent implements OnInit {
   article!:ArticleDetail;
   id!:number;
   slug!:string;
-  isAddMode!:boolean
+  isAddMode!:boolean;
+  isBrowser!: boolean;
 
-  articleService:ArticleService=inject(ArticleService);
-  expiredAtService:ExpiredAtService=inject(ExpiredAtService);
-  authService:AuthService=inject(AuthService);
-  activedRoute:ActivatedRoute=inject(ActivatedRoute);
+  // articleService:ArticleService=inject(ArticleService);
+  // expiredAtService:ExpiredAtService=inject(ExpiredAtService);
+  // authService:AuthService=inject(AuthService);
+  // activedRoute:ActivatedRoute=inject(ActivatedRoute);
 
-  constructor() { }
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private articleService: ArticleService,
+    private expiredAtService: ExpiredAtService,
+    private authService: AuthService,
+    private activedRoute: ActivatedRoute
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+
+  }
 
   ngOnInit(): void {
+    if (!this.isBrowser) return;
     this.id=this.activedRoute.snapshot.params['id'];
     this.isAddMode=!this.id;
 

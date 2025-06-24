@@ -3,7 +3,7 @@
 
     <div class="h-full">
       <article itemscope itemtype="https://schema.org/NewsArticle">
-        <p-card styleClass="px-3 md:py-4">
+        <p-card *ngIf="isBrowser" styleClass="px-3 md:py-4">
           <ng-template pTemplate="header">
               <!-- <div class="text-sm font-bold uppercase">{{ article.titre }}</div>
               <div class="text-right text-sm text-500 mt-1">
@@ -142,7 +142,7 @@
 
   </div>
   <div class="col-12 md:col-4 my-0">
-    <app-categorie-must-readed [mustReadedCategorie]="categorieMustReaded" [mustReadedLabel]="article.categorie.categorie"/>
+    <app-categorie-must-readed *ngIf="isBrowser" [mustReadedCategorie]="categorieMustReaded" [mustReadedLabel]="article.categorie.categorie"/>
 
     <div class="bg-amber-500">
           <app-ads
@@ -152,7 +152,7 @@
           fullWidthResponsive="true"
           styleClass="bg-gray-500 mt-3 border-round mb-4 text-center"
           [adStyle]="{ display: 'block' }"
-          data-adtest="on"
+
         />
         <!-- <app-taboola />-->
 

@@ -14,9 +14,14 @@ export class TaboolaComponent implements AfterViewInit {
   @ViewChild('taboolaContainer', { static: true }) containerRef!: ElementRef<HTMLDivElement>;
 
 
-  taboolaService: TaboolaService = inject(TaboolaService);
-  sanitizer: DomSanitizer = inject(DomSanitizer);
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  // taboolaService: TaboolaService = inject(TaboolaService);
+  // sanitizer: DomSanitizer = inject(DomSanitizer);
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private domSanitizer: DomSanitizer,
+    private taboolaService: TaboolaService
+
+  ) {}
 
   ngAfterViewInit(): void {
     if (isPlatformBrowser(this.platformId)){

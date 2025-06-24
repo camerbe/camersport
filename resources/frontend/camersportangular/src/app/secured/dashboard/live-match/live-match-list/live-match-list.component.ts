@@ -1,11 +1,12 @@
 import { LiveMatchDetail } from './../../../../core/models/live-match-detail';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, Inject, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { LiveMatch } from '../../../../core/models/live-match';
 import { LiveMatchService } from '../../../../services/live-match.service';
 import { ExpiredAtService } from '../../../../services/expired-at.service';
 import { AuthService } from '../../../../services/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
+import { isPlatformBrowser } from '@angular/common';
 
 
 @Component({
@@ -26,13 +27,24 @@ export class LiveMatchListComponent implements OnInit {
   severity!: string;
   msg!: string;
 
-  liveMatchService: LiveMatchService = inject(LiveMatchService);
-  expiredAtService:ExpiredAtService=inject(ExpiredAtService);
-  authService:AuthService=inject(AuthService);
-  activedRoute:ActivatedRoute=inject(ActivatedRoute);
+  // liveMatchService: LiveMatchService = inject(LiveMatchService);
+  // expiredAtService:ExpiredAtService=inject(ExpiredAtService);
+  // authService:AuthService=inject(AuthService);
+  // activedRoute:ActivatedRoute=inject(ActivatedRoute);
 
+  isBrowser!: boolean;
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private liveMatchService: LiveMatchService,
+    private expiredAtService: ExpiredAtService,
+    private authService: AuthService,
+    private activedRoute: ActivatedRoute
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
+    if (!this.isBrowser) return;
     this.id=this.activedRoute.snapshot.params['id'];
     this.isAddMode=!this.id;
 
@@ -84,7 +96,7 @@ export class LiveMatchListComponent implements OnInit {
                     })
                     swalWithTailwindButtons.fire(
                       'Supprimé!',
-                      "Lévènement du live a été supprimé.",
+                      "L'évènement du live a été supprimé.",
                       'success'
                     )
                   }

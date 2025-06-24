@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, Inject, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { CompetitionDetail } from '../../../../core/models/competition-detail';
 import { CompetitionService } from '../../../../services/competition.service';
 import { ExpiredAtService } from '../../../../services/expired-at.service';
@@ -6,6 +6,7 @@ import { AuthService } from '../../../../services/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { Competition } from '../../../../core/models/competition';
 import Swal from 'sweetalert2';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-competition-list',
@@ -22,15 +23,25 @@ export class CompetitionListComponent implements OnInit {
   competition!:CompetitionDetail;
   id!:number;
   isAddMode!:boolean
+  isBrowser: boolean;
 
-  competitionService:CompetitionService=inject(CompetitionService);
-  expiredAtService:ExpiredAtService=inject(ExpiredAtService);
-  authService:AuthService=inject(AuthService);
-  activedRoute:ActivatedRoute=inject(ActivatedRoute);
+  // competitionService:CompetitionService=inject(CompetitionService);
+  // expiredAtService:ExpiredAtService=inject(ExpiredAtService);
+  // authService:AuthService=inject(AuthService);
+  // activedRoute:ActivatedRoute=inject(ActivatedRoute);
 
-  constructor() { }
+  constructor(
+    private competitionService: CompetitionService,
+    private expiredAtService: ExpiredAtService,
+    private authService: AuthService,
+    private activedRoute: ActivatedRoute,
+    @Inject(PLATFORM_ID) private platformId: Object,
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
+    if (!this.isBrowser) return;
     this.id=this.activedRoute.snapshot.params['id'];
     this.isAddMode=!this.id;
 

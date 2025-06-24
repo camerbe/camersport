@@ -29,11 +29,11 @@
 
           </div>
           <div class="flex flex-column md:flex-row justify-content-between md:align-items-center flex-1 gap-4">
-            <div class="flex flex-row md:flex-column justify-content-between align-items-start gap-2">
+            <div class="flex flex-row md:flex-col justify-between items-start gap-2">
               <div>
-                <p-chip label="{{ item.categorie.categorie }}" />
+                <p-chip label="{{ item.categorie.categorie }}" class="mb-1 md:mb-0" />
 
-                <div class="text-lg font-medium text-900 mt-2">{{ item.pays.pays }}</div>
+                <div class="text-lg font-medium text-900 mt-2 ">{{ item.pays.pays }}</div>
               </div>
             </div>
             <div class="flex flex-row md:flex-column justify-content-between align-items gap-2">

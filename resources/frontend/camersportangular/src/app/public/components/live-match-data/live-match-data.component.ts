@@ -1,11 +1,12 @@
 import { FormationPosition } from './../../../core/models/formation-position';
 import { TeamData } from './../../../core/models/team-data';
 import { MatchSheetService } from './../../../services/match-sheet.service';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, Inject, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { MatchSheetReponse } from '../../../core/models/match-sheet-reponse';
 import { Player } from '../../../core/models/player';
 import { FormationPositionService } from '../../../services/formation-position.service';
 import { Formation } from '../../../core/models/formation';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-live-match-data',
@@ -20,11 +21,33 @@ export class LiveMatchDataComponent implements OnInit {
   formationB!:Formation|undefined;
   positionA: FormationPosition[] = [];
   positionB: FormationPosition[] = [];
+  isBrowser!: boolean;
 
-  matchSheetService:MatchSheetService=inject(MatchSheetService);
-  formationPosition:FormationPositionService=inject(FormationPositionService);
+  // matchSheetService:MatchSheetService=inject(MatchSheetService);
+  // formationPosition:FormationPositionService=inject(FormationPositionService);
+
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private matchSheetService: MatchSheetService,
+    private formationPosition: FormationPositionService
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+    // this.matchSheetService.getLastMtachSheet()
+    //   .subscribe((response)=>{
+    //     this.lastMatchSheet=response.data
+    //     const teamAData=JSON.parse(this.lastMatchSheet.team_a_data);
+    //     const teamBData=JSON.parse(this.lastMatchSheet.team_b_data);
+    //     this.playersA=teamAData.startingXI;
+    //     this.playersB=teamAData.startingXI;
+    //     this.formationA=this.formationPosition.getFormationByName(this.lastMatchSheet.formation_a);
+    //     this.formationB=this.formationPosition.getFormationByName(this.lastMatchSheet.formation_a);
+    //     this.positionA = this.formationA?.positions ?? [];
+    //     this.positionB = this.formationB?.positions ?? [];
+    //   });
+  }
 
   ngOnInit(): void {
+    if (!this.isBrowser) return;
     this.matchSheetService.getLastMtachSheet()
       .subscribe((response)=>{
         this.lastMatchSheet=response.data

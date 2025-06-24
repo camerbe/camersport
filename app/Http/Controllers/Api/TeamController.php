@@ -29,6 +29,7 @@ class TeamController extends Controller
     {
         //
         $teams=$this->teamService->all();
+        //dd($teams);
         if ($teams){
 
             return response()->json([

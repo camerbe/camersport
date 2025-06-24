@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
 import { ReplaySubject } from 'rxjs';
@@ -25,8 +26,11 @@ export class EchoService {
 
     this.echoReady$.next(this.echo);
   }
-  constructor() {
-    this.initEcho();
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    if (isPlatformBrowser(this.platformId)){
+      this.initEcho();
+    }
+
   }
 
   subscribeToLivematchs(callback: (event: any) => void): void {
@@ -38,6 +42,9 @@ export class EchoService {
   });
   }
   leaveChannel(){
-    this.echo.leave('livematchs');
+    if (this.echo) {
+      this.echo.leave('livematchs');
+    }
+
   }
 }

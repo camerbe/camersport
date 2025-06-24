@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, Inject, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { CategorieService } from '../../../../services/categorie.service';
 import { ExpiredAtService } from '../../../../services/expired-at.service';
 import { AuthService } from '../../../../services/auth.service';
@@ -6,6 +6,7 @@ import { CategorieDetail } from '../../../../core/models/categorie-detail';
 import { Categorie } from '../../../../core/models/categorie';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-categorie-list',
@@ -23,12 +24,29 @@ export class CategorieListComponent implements OnInit {
   id!:number;
   isAddMode!:boolean
 
-  categorieService:CategorieService=inject(CategorieService);
-  expiredAtService:ExpiredAtService=inject(ExpiredAtService);
-  authService:AuthService=inject(AuthService);
-  activedRoute:ActivatedRoute=inject(ActivatedRoute);
+  // categorieService:CategorieService=inject(CategorieService);
+  // expiredAtService:ExpiredAtService=inject(ExpiredAtService);
+  // authService:AuthService=inject(AuthService);
+  // activedRoute:ActivatedRoute=inject(ActivatedRoute);
+  isBrowser: boolean;
+
+  /**
+   *
+   */
+  constructor(
+    private categorieService: CategorieService,
+    private expiredAtService: ExpiredAtService,
+    private authService: AuthService,
+    private activedRoute: ActivatedRoute,
+    @Inject(PLATFORM_ID) private platformId: Object,
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+
+  }
+  // Removed duplicate platformId method to resolve identifier conflict
 
   ngOnInit(): void {
+    if (!this.isBrowser) return;
     this.id=this.activedRoute.snapshot.params['id'];
     this.isAddMode=!this.id;
 

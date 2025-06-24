@@ -1,8 +1,9 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, inject, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Inject, inject, Input, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { ArticleDetail } from '../../../core/models/article-detail';
 import { ArticleService } from '../../../services/article.service';
 import { Article } from '../../../core/models/article';
 import { Carousel } from 'primeng/carousel';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-carousel',
@@ -12,7 +13,18 @@ import { Carousel } from 'primeng/carousel';
 })
 export class CarouselComponent implements OnInit,AfterViewInit{
   @ViewChild('carouselRef') carousel: Carousel | undefined;
-  articleService:ArticleService= inject(ArticleService);
+  isBrowser!: boolean;
+  // articleService:ArticleService= inject(ArticleService);
+
+  /**
+   *
+   */
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private articleService: ArticleService
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   @Input() carouselItems: ArticleDetail[] = [];
   articles: ArticleDetail[] = [];
@@ -20,6 +32,7 @@ export class CarouselComponent implements OnInit,AfterViewInit{
   displayImagePreview!: boolean;
 
   ngAfterViewInit(): void {
+    if (!this.isBrowser || !this.carousel) return;
     setTimeout(() => {
       // Type assertion to access internal API
       const carouselAny = this.carousel as any;

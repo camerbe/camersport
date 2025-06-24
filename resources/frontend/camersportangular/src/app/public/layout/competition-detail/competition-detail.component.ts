@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import { afterNextRender, Component, ElementRef, Inject, inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { ArticleDetail } from '../../../core/models/article-detail';
 import { ArticleItemsService } from '../../../services/article-items.service';
 import { JsonLdService } from '../../../services/json-ld.service';
@@ -19,15 +19,7 @@ export class CompetitionDetailComponent implements OnInit {
   randomNumber!: number;
   articles:ArticleDetail[]=[];
   labelCompetition!:string;
-  articleItemService:ArticleItemsService=inject(ArticleItemsService);
-  jsonLdService:JsonLdService=inject(JsonLdService);
-  hashtagExtractorService:HashtagExtractorService=inject(HashtagExtractorService);
-  metaService:Meta=inject(Meta);
-  titleService:Title=inject(Title);
-  canonicalService:CanonicalService=inject(CanonicalService);
-  articleItemsService:ArticleItemsService=inject(ArticleItemsService);
-  router:Router = inject(Router);
-  route:ActivatedRoute = inject(ActivatedRoute);
+
 
   articlesPerPage = 10;
   currentPage = 0;
@@ -36,19 +28,51 @@ export class CompetitionDetailComponent implements OnInit {
   jsonldArticle: any[] = [];
   article!:ArticleDetail;
   slug!:string;
+  isBrowser!: boolean;
 
-    constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+    constructor(
+      @Inject(PLATFORM_ID) private platformId: Object,
+      private articleItemService: ArticleItemsService,
+      private jsonLdService: JsonLdService,
+      private hashtagExtractorService: HashtagExtractorService,
+      private metaService: Meta,
+      private titleService: Title,
+      private canonicalService: CanonicalService,
+      private router: Router,
+      private route: ActivatedRoute
+    ) {
+      this.isBrowser = isPlatformBrowser(this.platformId);
+      if (this.isBrowser) {
+        this.randomNumber = Math.floor(Math.random() * 1000001) / 1000000;
+      }
+      afterNextRender(() => {
+        console.log('Route data:', this.route.snapshot.data['articleItems']);
+        // Update the state of articleItemsService with the data from the route
+      });
+      //this.articles=this.route.snapshot.data['articleItems'] ;
+
+    }
     ngOnInit(): void {
+      console.log('Route data:', this.route.snapshot.data['articleItems']);
+
+      const resolvedArticles = this.route.snapshot.data['articleItems'];
+      if (!resolvedArticles) return
+      this.articleItemService.updateState(resolvedArticles);
+      if (!this.isBrowser) return;
       this.slug=this.route.snapshot.params['competition'];
-      this.randomNumber = Math.floor(Math.random() * 1000001) / 1000000;
+
+
       if (isPlatformBrowser(this.platformId)){
          if( this.articles.length === 0 || this.articles === undefined || this.articles === null){
+
           this.updatePagedArticles();
           this.articleItemService.state$.subscribe({
             next: (data: ArticleDetail[]) => {
+              //console.log('Data received from articleItemsService:', data);
               if (Array.isArray(data)) {
+
                 this.articles = data.filter(item => item.competition && item.competition.slugcompetition === this.slug).slice(0, 100);
-                if( this.articles.length > 0) {
+                if( this.articles !==null) {
                   this.jsonLdArticles=this.articles.slice(0, 20);
                   this.article = this.jsonLdArticles[0];
                 }
@@ -56,6 +80,7 @@ export class CompetitionDetailComponent implements OnInit {
 
               } else {
                 this.articles = [];
+                //this.router.navigate(['/accueil'])
               }
             },
             error: (error) => {
@@ -68,13 +93,14 @@ export class CompetitionDetailComponent implements OnInit {
            */
           if( this.article) {
           this.canonicalService.updateCanonicalUrl(this.router.url);
+          const imageUrl = this.article?.images?.url || 'https://placehold.co/400';
 
           this.metaService.updateTag({ name: 'description', content: this.article.chapeau });
           this.metaService.updateTag({ name: 'keywords', content: this.article.motclef });
           this.metaService.updateTag({ name: 'title', content: this.article.titre });
           this.metaService.updateTag({ name: 'og:title', content: this.article.titre });
           this.metaService.updateTag({ name: 'og:description', content: this.article.chapeau });
-          this.metaService.updateTag({ name: 'og:image', content: this.article.images.url });
+          this.metaService.updateTag({ name: 'og:image', content: imageUrl });
           this.metaService.updateTag({ name: 'og:url', content: this.router.url });
           this.metaService.updateTag({ name: 'og:type', content: 'article' });
           this.metaService.updateTag({ name: 'og:locale', content: 'fr_FR' });
@@ -82,7 +108,7 @@ export class CompetitionDetailComponent implements OnInit {
           this.metaService.updateTag({ name: 'og:site_name', content: 'Camer-sport.com' });
           this.metaService.updateTag({ name: 'twitter:title', content: this.article.titre });
           this.metaService.updateTag({ name: 'twitter:description', content: this.article.chapeau });
-          this.metaService.updateTag({ name: 'twitter:image', content: this.article.images.url });
+          this.metaService.updateTag({ name: 'twitter:image', content: imageUrl  });
           this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
           this.metaService.updateTag({ name: 'twitter:site', content: '@camer.be' });
           this.metaService.updateTag({ name: 'twitter:creator', content: '@camersport' });
@@ -101,6 +127,7 @@ export class CompetitionDetailComponent implements OnInit {
           /*****************************************************
            *
            */
+          //console.log(this.jsonLdArticles)
           this.jsonLdArticles.forEach((article) => {
           const date =new Date(Date.now());
           const today=date.toISOString().slice(0, 19) + '+00:00'

@@ -1,1 +1,65 @@
-<p>rss works!</p>
+<div *ngIf="rssList" class="shadow-3 border-round bg-white">
+  <p-carousel
+
+    [value]="rssList"
+    [numVisible]="1"
+    [numScroll]="1"
+    [circular]="rssList.length > 1"
+    [autoplayInterval]="5000"
+    [showIndicators]="true"
+    [showNavigators]="true"
+    containerClass="shadow-3 border-round"
+    contentClass="bg-white border-round"
+    indicatorStyleClass="bg-gray-300"
+    styleClass="bg-gray-100">
+    <ng-template pTemplate="header">
+      <div class="flex justify-between align-items-center py-4 bg-white border-round ">
+        <h5 class="m-0 uppercase md:text-2xl text-emerald-700">
+          <i class="pi pi-chevron-right px-3  text-xl"></i>Camer info
+        </h5>
+      </div>
+    </ng-template>
+    <ng-template let-carouselItem pTemplate="carouselItem">
+      <article
+        class="relative w-full h-[400px] md:h-[300px] border-round overflow-hidden group"
+        itemscope
+        itemtype="https://schema.org/NewsArticle"
+      >
+        <p-image
+          [src]="carouselItem.image"
+          alt="{{ carouselItem.titre }}"
+          width="100%"
+          height="100%"
+
+          styleClass="w-full h-full object-cover pt-3"
+          itemprop="image"
+        >
+        </p-image>
+        <div
+          class="absolute top-1/4 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3 transition-opacity duration-500 opacity-100 group-hover:opacity-100"
+          >
+          <h5
+            itemprop="headline"
+            class="text-white text-sm font-bold uppercase">
+            {{ carouselItem.titre }}
+          </h5>
+          <a
+            itemprop="url"
+            rel="noopener noreferrer"
+            [href]="carouselItem.lien"
+            target="_blank">
+            <p-button
+              label="Lire l'article"
+              title="Lire"
+              icon="pi pi-arrow-right"
+              styleClass="p-button-rounded p-button-outlined p-button-success"
+            ></p-button>
+          </a>
+
+        </div>
+      </article>
+    </ng-template>
+
+  </p-carousel>
+</div>
+

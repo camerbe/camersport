@@ -1,6 +1,6 @@
 <div class="flex flex-column md:flex-row gap-2 mt-3">
   <div class="col-12 md:col-8">
-    <app-carousel [carouselItems]="slicedArticles"></app-carousel>
+    <app-carousel *ngIf="slicedArticles.length>0" [carouselItems]="slicedArticles"></app-carousel>
      <section class="grid mt-4">
         <div *ngFor="let newlist of news" class="col-12 md:col-6">
               <article itemscope itemtype="https://schema.org/NewsArticle">
@@ -107,7 +107,7 @@
           fullWidthResponsive="true"
           styleClass="bg-gray-500 mt-3 border-round mb-4 text-center"
           [adStyle]="{ display: 'block' }"
-          data-adtest="on"
+
         />
         <!-- <app-taboola />-->
 

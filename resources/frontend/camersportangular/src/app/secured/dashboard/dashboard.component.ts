@@ -35,6 +35,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
     this.expiredAtService.updateState(this.authService.isExpired())
     this.expiredAtService.state$.subscribe({
       next:(state)=>this.isExpired=state

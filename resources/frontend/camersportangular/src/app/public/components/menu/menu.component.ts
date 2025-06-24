@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, inject, NgZone, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import { afterNextRender, afterRender, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, inject, NgZone, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { Menubar } from 'primeng/menubar';
@@ -12,7 +12,23 @@ import { Menubar } from 'primeng/menubar';
 })
 export class MenuComponent implements AfterViewInit ,OnInit{
 
-  private zone=inject(NgZone);
+  // private zone=inject(NgZone);
+  // router:Router = inject(Router);
+  isBrowser!: boolean;
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private cdr: ChangeDetectorRef,
+    private zone: NgZone,
+    private router: Router
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+    afterNextRender(()=>{
+       this.items=this.itemMenu;
+    })
+
+
+  }
+
   //@ViewChild('menubar') menubar!: Menubar;
   activeParentItem: any; // Track the parent menu item
   searchQuery:string='';
@@ -46,6 +62,7 @@ export class MenuComponent implements AfterViewInit ,OnInit{
     },
     {
       label: 'Championnat',
+      rel: 'nofollow',
       /*icon: 'pi pi-angle-down',*/
       styleClass: "text-white hover:text-yellow-300 transition-colors uppercase",
       items: [
@@ -130,7 +147,7 @@ export class MenuComponent implements AfterViewInit ,OnInit{
     },
     {
       label: 'Afrique',
-
+      rel: 'nofollow',
       /*icon: 'pi pi-angle-down',*/
       //styleClass: "bg-gray-200 text-white hover:text-yellow-300 transition-colors uppercase",
       style: { 'color': 'white', 'text-transform': 'uppercase' },
@@ -202,26 +219,40 @@ export class MenuComponent implements AfterViewInit ,OnInit{
   items: MenuItem[] = [];
 
 
-  router:Router = inject(Router);
+
   /**
    *
    */
-  constructor(@Inject(PLATFORM_ID) private platformId: Object,private cdr: ChangeDetectorRef) {}
+
   ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)){
-      this.items=this.itemMenu;
-    }
+    // if (isPlatformBrowser(this.platformId)){
+    //   this.items=this.itemMenu;
+    // }
   }
   ngAfterViewInit(): void {
-   if (isPlatformBrowser(this.platformId)){
+    if (!this.isBrowser) return;
+    // this.zone.runOutsideAngular(() => {
+    //   this.router.events.subscribe((event) => {
+    //     if (event instanceof NavigationEnd) {
+    //       this.zone.run(() => {
+    //         // Handle the event in the Angular zone
+    //       });
+    //     }
+    //   });
+    // });
+    //this.items=this.itemMenu;
+
       this.cdr.detectChanges();
-    }
+
   }
   submitSearch() {
-     if (this.searchQuery) {
+    if (isPlatformBrowser(this.platformId)) {
+      if (this.searchQuery) {
         const url = `https://www.google.com/search?q=${encodeURIComponent(this.searchQuery)}&sitesearch=camer-sport.com`;
         window.open(url, '_blank');
       }
+    }
+
   }
 
 

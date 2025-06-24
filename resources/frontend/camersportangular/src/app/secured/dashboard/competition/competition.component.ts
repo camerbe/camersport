@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, Inject, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { CompetitionDetail } from '../../../core/models/competition-detail';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
@@ -7,6 +7,7 @@ import { CompetitionService } from '../../../services/competition.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Competition } from '../../../core/models/competition';
 import { first } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-competition',
@@ -24,14 +25,24 @@ export class CompetitionComponent implements OnInit {
   competitions:Competition[]=[];
   frmCompetition!:FormGroup;
 
-  fb:FormBuilder=inject(FormBuilder);
-  authSevice:AuthService=inject(AuthService);
-  expiredAtService:ExpiredAtService=inject(ExpiredAtService);
-  competitionService:CompetitionService=inject(CompetitionService);
-  router:Router=inject(Router);
-  activatedRoute:ActivatedRoute=inject(ActivatedRoute);
+  isBrowser!: boolean;
+  // fb:FormBuilder=inject(FormBuilder);
+  // authSevice:AuthService=inject(AuthService);
+  // expiredAtService:ExpiredAtService=inject(ExpiredAtService);
+  // competitionService:CompetitionService=inject(CompetitionService);
+  // router:Router=inject(Router);
+  // activatedRoute:ActivatedRoute=inject(ActivatedRoute);
 
-  constructor() {
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private fb:FormBuilder,
+    private authSevice:AuthService,
+    private expiredAtService:ExpiredAtService,
+    private competitionService:CompetitionService,
+    private router:Router,
+    private activatedRoute:ActivatedRoute
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
     this.frmCompetition=this.fb.group({
       competition:['',Validators.required]
     });
@@ -59,6 +70,7 @@ export class CompetitionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (!this.isBrowser) return;
     this.id=this.activatedRoute.snapshot.params['id'];
     this.isAddMode=!this.id;
     this.expiredAtService.updateState(this.authSevice.isExpired());

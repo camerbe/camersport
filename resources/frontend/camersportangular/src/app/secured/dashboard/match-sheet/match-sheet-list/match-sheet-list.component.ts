@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, Inject, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { MatchSheetDetail } from '../../../../core/models/match-sheet-detail';
 import { MatchSheet } from '../../../../core/models/match-sheet';
 import { MatchSheetService } from '../../../../services/match-sheet.service';
@@ -6,6 +6,7 @@ import { ExpiredAtService } from '../../../../services/expired-at.service';
 import { AuthService } from '../../../../services/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-match-sheet-list',
@@ -26,16 +27,25 @@ export class MatchSheetListComponent implements OnInit {
   isAddMode!:boolean
   severity!:string;
   msg!:string;
+  isBrowser!: boolean;
 
+  // matchSheetService:MatchSheetService=inject(MatchSheetService);
+  // expiredAtService:ExpiredAtService=inject(ExpiredAtService);
+  // authService:AuthService=inject(AuthService);
+  // activedRoute:ActivatedRoute=inject(ActivatedRoute);
 
-  matchSheetService:MatchSheetService=inject(MatchSheetService);
-  expiredAtService:ExpiredAtService=inject(ExpiredAtService);
-  authService:AuthService=inject(AuthService);
-  activedRoute:ActivatedRoute=inject(ActivatedRoute);
-
-  constructor() {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private matchSheetService: MatchSheetService,
+    private expiredAtService: ExpiredAtService,
+    private authService: AuthService,
+    private activedRoute: ActivatedRoute
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
+    if (!this.isBrowser) return;
     // Fetch match sheets from the service
     this.id=this.activedRoute.snapshot.params['id'];
     this.isAddMode=!this.id;

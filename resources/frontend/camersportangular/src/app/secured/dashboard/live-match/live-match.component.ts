@@ -1,5 +1,5 @@
 import { Player } from './../../../core/models/player';
-import { Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LiveMatch } from '../../../core/models/live-match';
 import { AuthService } from '../../../services/auth.service';
@@ -14,16 +14,17 @@ import { DropdownChangeEvent } from 'primeng/dropdown';
 import { environment } from '../../../../environments/environment.development';
 import { LiveMatchDetail } from '../../../core/models/live-match-detail';
 import { MatchSheetService } from '../../../services/match-sheet.service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-live-match',
   templateUrl: './live-match.component.html',
   styleUrl: './live-match.component.css'
 })
-export class LiveMatchComponent implements OnInit{
+export class LiveMatchComponent implements OnInit, AfterViewInit {
   frmLiveMatch!: FormGroup;
   title:string="Ajout Live Match";
-  link:string="/secured/dashboard/live/list";
+  link:string="/secured/live/list";
   label:string="Liste";
   isExpired!:boolean;
   isAddMode!:boolean;
@@ -57,59 +58,13 @@ export class LiveMatchComponent implements OnInit{
     { label: 'Seconde_mi_temps', value: 'Seconde_mi_temps' },
     { label: 'Verification_VAR', value: 'Verification_VAR' }
   ];
+  isBrowser!: boolean;
+  tinymce: any;
+  //initImage: any= {};
+  init: any= {};
+  isTinyMceLoaded = false;
 
 
-  init={
-    path_absolute : "/",
-    relative_urls: false,
-    base_url: '/tinymce',
-    suffix: '.min',
-    height: 450,
-    menubar: 'file edit view insert format tools table tc help',
-    toolbar_sticky: false,
-
-    // @ts-ignore
-    file_picker_callback : function(callback, value, meta) {
-      var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
-      var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
-      //var cmsURL = `${environment.baseUrl}api/laravel-filemanager?editor=` + meta.fieldname;
-      var cmsURL = `${environment.baseUrl}/laravel-filemanager?editor=${meta.fieldname}`;
-      //const targetOrigin = "http://localhost:8000";
-
-      if (meta.filetype == 'image') {
-
-        cmsURL = cmsURL + "&type=Images";
-        //console.log(`cmsURL: ${cmsURL}`);
-      }
-      else {
-        cmsURL = cmsURL + "&type=Files";
-        //console.log(`cmsURL: ${cmsURL}`);
-      }
-
-      // @ts-ignore
-      // @ts-ignore
-
-      tinymce.activeEditor.windowManager.openUrl({
-        url : cmsURL,
-        title : 'Camer-Sport',
-        width : x * 0.8,
-        height : y * 0.8,
-        //resizable : 'yes',
-        //close_previous : 'no',
-        // @ts-ignore
-        onMessage: (api, message) => {
-          callback(message['content'])
-        }
-
-      });
-    },
-    plugins: [
-      'image', 'media', 'tools', 'link', 'advlist',
-      'autolink', 'lists', 'table', 'wordcount','code','searchreplace'
-    ],
-    toolbar:'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media table mergetags  blockquote'
-
-  };
   teamSelected!: TeamDetail;
 
   onEventTypeChange($event: DropdownChangeEvent) {
@@ -144,16 +99,26 @@ export class LiveMatchComponent implements OnInit{
 
   }
 
-  fb:FormBuilder = inject(FormBuilder);
-  authSevice:AuthService=inject(AuthService);
-  expiredAtService:ExpiredAtService=inject(ExpiredAtService);
-  router:Router=inject(Router);
-  activatedRoute:ActivatedRoute=inject(ActivatedRoute);
-  liveMatchService:LiveMatchService=inject(LiveMatchService);
-  matchService:MatchSheetService=inject(MatchSheetService);
+  // fb:FormBuilder = inject(FormBuilder);
+  // authSevice:AuthService=inject(AuthService);
+  // expiredAtService:ExpiredAtService=inject(ExpiredAtService);
+  // router:Router=inject(Router);
+  // activatedRoute:ActivatedRoute=inject(ActivatedRoute);
+  // liveMatchService:LiveMatchService=inject(LiveMatchService);
+  // matchService:MatchSheetService=inject(MatchSheetService);
 
-  constructor() {
-    this.frmLiveMatch=this.fb.group({
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private fb:FormBuilder,
+    private authSevice:AuthService,
+    private expiredAtService:ExpiredAtService,
+    private router:Router,
+    private activatedRoute:ActivatedRoute,
+    private liveMatchService:LiveMatchService,
+    private matchService:MatchSheetService
+  ) {
+      this.isBrowser = isPlatformBrowser(this.platformId);
+      this.frmLiveMatch=this.fb.group({
       matchsheet_id :['',Validators.required],
       team_id  :['',Validators.required],
       event_type  :['',Validators.required],
@@ -166,6 +131,58 @@ export class LiveMatchComponent implements OnInit{
       score_b: 0,
 
     })
+  }
+  async ngAfterViewInit():Promise<void>  {
+    if (!this.isBrowser) return;
+    try {
+      const tinymceModule = await import('tinymce');
+      this.tinymce = tinymceModule.default;
+      this.initTinyMceConfig();
+      this.isTinyMceLoaded = true;
+    } catch (error) {
+      console.error('Error loading tinymce:', error);
+      this.isTinyMceLoaded = false;
+    }
+  }
+  initTinyMceConfig() {
+    const baseConfig = {
+      path_absolute: "/",
+      relative_urls: false,
+      base_url: '/tinymce',
+      suffix: '.min',
+      height: 450,
+      file_picker_callback: (callback: any, value: any, meta: any) => {
+        this.filePickerHandler(callback, value, meta);
+      }
+    };
+    this.init = {
+      ...baseConfig,
+      menubar: 'file edit view insert format tools table tc help',
+      toolbar_sticky: false,
+      plugins: [
+        'image', 'media', 'tools', 'link', 'advlist',
+        'autolink', 'lists', 'table', 'wordcount', 'code', 'searchreplace'
+      ],
+      toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media table mergetags blockquote'
+    };
+  }
+  filePickerHandler(callback: any, value: any, meta: any) {
+    const x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+    const y = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
+
+    let cmsURL = `${environment.baseUrl}/laravel-filemanager?editor=${meta.fieldname}`;
+    cmsURL += (meta.filetype == 'image') ? '&type=Images' : '&type=Files';
+
+    this.tinymce.activeEditor.windowManager.openUrl({
+      url: cmsURL,
+      title: 'Camer-Sport',
+      width: x * 0.8,
+      height: y * 0.8,
+      onMessage: (api: any, message: any) => {
+        callback(message.content);
+        api.close();
+      }
+    });
   }
   get matchsheet_id(){
     return this.frmLiveMatch.get('matchsheet_id');
@@ -221,7 +238,7 @@ export class LiveMatchComponent implements OnInit{
     .subscribe({
       next:(data) =>{
         const id=this.id;
-        console.log('i='+id);
+        //console.log('i='+id);
         const tempData:Team=data as unknown as Team;
         this.teams=tempData["data"] as unknown as TeamDetail[];
 
@@ -296,15 +313,15 @@ export class LiveMatchComponent implements OnInit{
 
       this.liveMatchService.create(this.frmLiveMatch.value)
       .subscribe({
-        next:()=>this.router.navigate(['/secured/dashboard/live/list']),
+        next:()=>this.router.navigate(['/secured/live/list']),
         error:(error)=>console.log(error)
       });
     }
     else{
-      console.log(this.frmLiveMatch.value);
+      //console.log(this.frmLiveMatch.value);
       this.liveMatchService.patch(this.id,this.frmLiveMatch.value)
       .subscribe({
-        next:()=>this.router.navigate(['/secured/dashboard/live/list']),
+        next:()=>this.router.navigate(['/secured/live/list']),
         error:(error)=>console.log(error)
       });
     }

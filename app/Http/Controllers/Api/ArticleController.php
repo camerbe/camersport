@@ -117,7 +117,7 @@ class ArticleController extends Controller
         //
 
         $article=$this->articleService->update($request->all(),$id);
-        $this->articleService->publicIndex();
+
         $image=ImageHelper::extractImgSrc($request->image);
         if ($article){
 
@@ -130,6 +130,7 @@ class ArticleController extends Controller
             $path = $parsedUrl['path'];
             $filePath = str_replace(url('/storage'), 'storage', $path);
             $absolutePath = public_path($filePath);
+            ;
             if (File::exists($absolutePath)) {
                 $img = Image::read($absolutePath);
                 $width = $img->width();
@@ -144,6 +145,7 @@ class ArticleController extends Controller
                     ])
                     ->toMediaCollection('article');
             }
+            $this->articleService->publicIndex();
             return response()->json([
                 'success'=>true,
                 'data'=>$article,

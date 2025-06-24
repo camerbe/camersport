@@ -1,4 +1,5 @@
 @if(lastMatchSheet){
+
 <p-card  styleClass="stadium-card w-full mx-2" >
     <ng-template pTemplate="header">
       <div class="flex items-center justify-between px-4 py-2 bg-gray-100 rounded-t-lg relative">
@@ -65,7 +66,7 @@
         label="{{ player.name }}"
         [pTooltip]="player.number + ''"
         tooltipPosition="top"
-        [image]="liveMatchService.extractImage(lastMatchSheet.A_team.logo)"
+
         [escape]="true">
       </p-chip>
 
@@ -101,64 +102,71 @@
       </div>
     </div>
   </p-card>
+  <div class="flex flex-column md:flex-row gap-2">
+    <div class="col-12 md:col-8 my-3">
+        <section class="grid mb-3 ml-2 mr-1 my-3">
 
-  <section class="grid mb-3 ml-2 mr-1 my-3">
-
-    <div class="col-12 flex flex-col items-center surface-0 rounded-xl py-5">
-        <div class="flex items-center gap-6 mb-5">
-          <div class="flex items-center gap-2">
-              <img [src]="liveMatchService.extractImage(lastMatchSheet.A_team.logo)" alt="{{ lastMatchSheet.A_team.name }}" class="w-8 h-8 object-contain" />
-              <span class="font-semibold text-gray-800">{{ lastMatchSheet.A_team.name }}</span>
-          </div>
-          <div class="text-2xl font-bold text-green-700">
-            {{ totalScore_a }} - {{ totalScore_b }}
-           </div>
-          <div class="flex items-center gap-2">
-            <img [src]="liveMatchService.extractImage(lastMatchSheet.B_team.logo)" alt="{{ lastMatchSheet.B_team.name }}" class="w-8 h-8 object-contain" />
-            <span class="font-semibold text-gray-800">{{ lastMatchSheet.B_team.name }}</span>
-          </div>
-
-      </div>
-      <div class="flex flex-col gap-1 mb-3" *ngIf="lastBut.length > 0">
-        <ng-container *ngFor="let but of lastBut">
-          <div class="grid">
-            <div class="col-6 flex" *ngIf="but.score_a > 0">
-              <span class="flex mr-1">⚽ </span>
-              <span class="flex text-gray-700 ">{{ but.event_minute }}'</span>
-            </div>
-            <div class="col-6 flex" *ngIf="but.score_b > 0">
-              <span class="flex mr-1">⚽</span>
-              <span class="flex text-gray-700 ">{{ but.event_minute }}'</span>
-            </div>
-          </div>
-        </ng-container>
-      </div>
-      <p-divider></p-divider>
-        <p-timeline [value]="liveMatchs"  class="mt-5" [ngStyle]="{ width: '100%' }">
-          <ng-template pTemplate="marker" let-event>
-            <!-- <i [ngClass]="getIcon(event.event_type)" class="p-2 text-white rounded-full text-sm bg-blue-500"></i> -->
-            <span class="p-2 text-white rounded-full text-sm shadow-2xl bg-cyan-500">
-              @if(event.event_minute.length<2){0}{{ event.event_minute }}'
-            </span>
-          </ng-template>
-
-          <ng-template pTemplate="content" let-event>
-            <div class="flex flex-col p-3 shadow-2xs rounded">
-              <!-- <span><i [ngClass]="getIcon(event.event_type)" class=" flex p-2 mr-2 text-white rounded-full text-sm"></i></span> -->
-              <div class="flex items-start gap-2">
-                  <span class="mb-2" [innerHTML]="sanitizer.bypassSecurityTrustHtml(getIcon(event.event_type) || '')"></span>
-                  <p [innerHTML]="sanitizer.bypassSecurityTrustHtml(event?.description || '')"></p>
-              </div>
-
-              <span *ngIf="hasPlayer(event.player)" class="text-sm text-gray-400">
-                {{ cleanPlayer(event.player) }}
-              </span>
+          <div class="col-12 flex flex-col items-center surface-0 rounded-xl py-5">
+              <div class="flex items-center gap-6 mb-5">
+                <div class="flex items-center gap-2">
+                    <img [src]="liveMatchService.extractImage(lastMatchSheet.A_team.logo)" alt="{{ lastMatchSheet.A_team.name }}" class="w-8 h-8 object-contain" />
+                    <span class="font-semibold text-gray-800 whitespace-nowrap">{{ lastMatchSheet.A_team.name }}</span>
+                </div>
+                <div class="text-2xl font-bold text-green-700">
+                  {{ totalScore_a }} - {{ totalScore_b }}
+                </div>
+                <div class="flex items-center gap-2">
+                  <img [src]="liveMatchService.extractImage(lastMatchSheet.B_team.logo)" alt="{{ lastMatchSheet.B_team.name }}" class="w-8 h-8 object-contain" />
+                  <span class="font-semibold text-gray-800 whitespace-nowrap">{{ lastMatchSheet.B_team.name }}</span>
+                </div>
 
             </div>
-          </ng-template>
-        </p-timeline>
+            <div class="flex flex-col gap-1 mb-3" *ngIf="lastBut.length > 0">
+              <ng-container *ngFor="let but of lastBut">
+                <div class="grid">
+                  <div class="col-6 flex" *ngIf="but.score_a > 0">
+                    <span class="flex mr-1">⚽ </span>
+                    <span class="flex text-gray-700 ">{{ but.event_minute }}'</span>
+                  </div>
+                  <div class="col-6 flex" *ngIf="but.score_b > 0">
+                    <span class="flex mr-1">⚽</span>
+                    <span class="flex text-gray-700 ">{{ but.event_minute }}'</span>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+            <p-divider></p-divider>
+              <p-timeline [value]="liveMatchs"  class="mt-5" [ngStyle]="{ width: '100%' }">
+                <ng-template pTemplate="marker" let-event>
+                  <!-- <i [ngClass]="getIcon(event.event_type)" class="p-2 text-white rounded-full text-sm bg-blue-500"></i> -->
+                  <span class="p-2 text-white rounded-full text-sm shadow-2xl bg-cyan-500">
+                    @if(event.event_minute.length<2){0}{{ event.event_minute }}'
+                  </span>
+                </ng-template>
+
+                <ng-template pTemplate="content" let-event>
+                  <div class="flex flex-col p-3 shadow-2xs rounded">
+                    <!-- <span><i [ngClass]="getIcon(event.event_type)" class=" flex p-2 mr-2 text-white rounded-full text-sm"></i></span> -->
+                    <div class="flex items-start gap-2">
+                        <span class="mb-2" [innerHTML]="sanitizer.bypassSecurityTrustHtml(getIcon(event.event_type) || '')"></span>
+                        <p [innerHTML]="sanitizer.bypassSecurityTrustHtml(event?.description || '')"></p>
+                    </div>
+
+                    <span *ngIf="hasPlayer(event.player)" class="text-sm text-gray-400">
+                      {{ cleanPlayer(event.player) }}
+                    </span>
+
+                  </div>
+                </ng-template>
+              </p-timeline>
+          </div>
+      </section>
     </div>
-</section>
+    <div class="col-12 md:col-4 my-3">
+      <app-classement></app-classement>
+    </div>
+  </div>
+
 }
 @else {
   <app-competition-not-found/>

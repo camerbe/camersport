@@ -1,16 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { LoginComponent } from './public/login/login.component';
 
-const routes: Routes = [
+export const routes: Routes  = [
+  { path: 'login', component: LoginComponent },
   {
     path: '',
-    loadChildren:(()=>import('./public/public.module').then(m=>m.PublicModule))
+    loadChildren: () => import('./public/public.module').then(m => m.PublicModule)
   },
   {
-    path:'secured',loadChildren:(()=>import('./secured/secured.module').then(m=>m.SecuredModule))
+    path: 'secured',
+    loadChildren: () => import('./secured/dashboard/dashboard.module').then(m => m.DashboardModule)
   },
-  { path: '**', component:PageNotFoundComponent }
+  { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({

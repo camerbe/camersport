@@ -22,12 +22,16 @@ export class AdsComponent implements AfterViewInit {
   };
   @Input() fullWidthResponsive = 'true';
 
-  el:ElementRef=inject(ElementRef);
-  renderer:Renderer2=inject(Renderer2);
+  // el:ElementRef=inject(ElementRef);
+  // renderer:Renderer2=inject(Renderer2);
 
   //insElement: HTMLModElement=inject(HTMLModElement);
 
-  constructor( @Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private el: ElementRef,
+    private renderer: Renderer2
+  ) {}
 
   ngAfterViewInit(): void {
     if (isPlatformBrowser(this.platformId)) {

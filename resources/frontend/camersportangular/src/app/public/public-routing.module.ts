@@ -3,7 +3,7 @@ import { articleSlugResolver } from './../shared/resolvers/article-slug.resolver
 import { articleItemsResolver } from './../shared/resolvers/article-items.resolver';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
+//import { LoginComponent } from './login/login.component';
 import { LayoutComponent } from './layout/layout.component';
 import { HomeComponent } from './home/home.component';
 import { ArticleComponent } from './layout/article/article.component';
@@ -15,57 +15,65 @@ import { LiveComponent } from './layout/live/live.component';
 import { RegisterPasswordComponent } from './register-password/register-password.component';
 
 const routes: Routes = [
+  // Routes publiques sans layout
+
+  { path: 'register/:id', component: RegisterPasswordComponent },
+  { path: 'reset/:token', component: ResetPasswordComponent },
+
+  // Routes principales avec layout
+  { path: '', redirectTo: 'accueil', pathMatch: 'full' },
   {
     path: '',
     component: LayoutComponent,
-    children:[
-      {
-        path:'',
-        redirectTo:'accueil',
-        pathMatch:"full"
-      },
-      {
-        path:'accueil',component:HomeComponent,
-        resolve: {articleItems:articleItemsResolver}
-      },
-      {
-        path:'rss',component:RssComponent,
+    children: [
 
-      },
       {
-        path:'article/:slug',component:ArticleComponent,
-        resolve: {slug:articleSlugResolver},
+        path: 'accueil',
+        component: HomeComponent,
+        resolve: { articleItems: articleItemsResolver }
+      },
+      { path: 'rss', component: RssComponent },
+      {
+        path: 'article/:slug',
+        component: ArticleComponent,
+        resolve: { slug: articleSlugResolver },
         runGuardsAndResolvers: 'paramsChange'
-      }
-      ,{ path:'article/categorie/:categorie_id',component:ArticleComponent},
-      { path:'article/competition/:competition_id',component:ArticleComponent},
-      { path:'lions-indomptables',component:LionsIndomptablesComponent},
-      { path:'live',component:LiveComponent},
-      { path:'competitions',component:CompetitionsComponent,
-        children:[
-          {
-            path:':competition',
-            component:CompetitionDetailComponent,
-            runGuardsAndResolvers: 'paramsChange'
-          }
-
-        ]
       },
-
-
+      {
+        path: 'article/categorie/:categorie_id',
+        component: ArticleComponent
+      },
+      {
+        path: 'article/competition/:competition_id',
+        component: ArticleComponent
+      },
+      {
+        path: 'lions-indomptables',
+        component: LionsIndomptablesComponent
+      },
+      { path: 'live', component: LiveComponent },
+      {
+        path: 'competitions',
+        component: CompetitionsComponent,
+        children: [
+          {
+            path: ':competition',
+            component: CompetitionDetailComponent,
+            //runGuardsAndResolvers: 'paramsChange'
+            resolve: {
+              articleItems: articleItemsResolver
+            }
+          }
+        ]
+      }
     ]
   },
-  { path:'login',component:LoginComponent },
-  {
-    path:'register/:id',
-    component:RegisterPasswordComponent
-  },
-  {
-    path: 'reset/:token',
-    component: ResetPasswordComponent
-  }
 
+  // Redirection pour les routes inconnues
+  //{ path: '**', component: Pa }
 ];
+
+
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

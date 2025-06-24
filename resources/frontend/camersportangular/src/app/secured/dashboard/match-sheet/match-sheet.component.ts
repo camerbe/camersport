@@ -1,5 +1,5 @@
 import { TeamData } from './../../../core/models/team-data';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, Inject, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Team } from '../../../core/models/team';
 import { MatchSheetDetail } from '../../../core/models/match-sheet-detail';
 import { MatchSheetService } from '../../../services/match-sheet.service';
@@ -8,7 +8,7 @@ import { AuthService } from '../../../services/auth.service';
 import { ExpiredAtService } from '../../../services/expired-at.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TeamDetail } from '../../../core/models/team-detail';
-import { DatePipe } from '@angular/common';
+import { DatePipe, isPlatformBrowser } from '@angular/common';
 import { Player } from '../../../core/models/player';
 import { TeamAData } from '../../../core/models/team-a-data';
 import { TeamBData } from '../../../core/models/team-b-data';
@@ -65,16 +65,29 @@ export class MatchSheetComponent implements OnInit {
     { label: 'Attaquant 2', value: 'ST2' }
 
   ];
+  isBrowser: boolean;
 
-  fb:FormBuilder = inject(FormBuilder);
-  matchSheetService: MatchSheetService=inject(MatchSheetService);
-  authSevice:AuthService=inject(AuthService);
-  expiredAtService:ExpiredAtService=inject(ExpiredAtService);
-  router:Router=inject(Router);
-  activatedRoute:ActivatedRoute=inject(ActivatedRoute);
-  datePipe:DatePipe=inject(DatePipe);
+  // fb:FormBuilder = inject(FormBuilder);
+  // matchSheetService: MatchSheetService=inject(MatchSheetService);
+  // authSevice:AuthService=inject(AuthService);
+  // expiredAtService:ExpiredAtService=inject(ExpiredAtService);
+  // router:Router=inject(Router);
+  // activatedRoute:ActivatedRoute=inject(ActivatedRoute);
+  // datePipe:DatePipe=inject(DatePipe);
 
-  constructor() {
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private fb: FormBuilder,
+    private matchSheetService: MatchSheetService,
+    private authSevice: AuthService,
+    private expiredAtService: ExpiredAtService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private datePipe: DatePipe,
+
+
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
     this.matchForm = this.fb.group({
       match_date: ['', Validators.required],
       location: ['', Validators.required],
@@ -162,6 +175,7 @@ export class MatchSheetComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (!this.isBrowser) return;
     this.id=this.activatedRoute.snapshot.params['id'];
     this.isAddMode=!this.id;
     this.expiredAtService.updateState(this.authSevice.isExpired());
@@ -176,7 +190,7 @@ export class MatchSheetComponent implements OnInit {
           const resData  = data["data"] as MatchSheetReponse["data"];
           //console.log(resData.team_a_data);
           const teamAData = resData.team_a_data as unknown as TeamMatchInfo;
-          console.log(teamAData);
+          //console.log(teamAData);
           const teamBData = resData.team_b_data as unknown  as TeamMatchInfo;
           const playerAData: Player[] = teamAData.startingXI;
           const playerBData: Player[] = teamBData.startingXI;

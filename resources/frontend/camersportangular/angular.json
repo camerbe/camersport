@@ -47,17 +47,44 @@
             "polyfills": [
               "zone.js"
             ],
+
             "allowedCommonJsDependencies": [
               "slugify",
-              "pusher-js"
+              "pusher-js",
+              "tinymce"
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/assets",
+              "src/assets/robots.txt",
               {
                 "glob": "**/*",
                 "input": "node_modules/tinymce",
                 "output": "/tinymce/"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/tinymce/skins",
+                "output": "assets/tinymce/skins"
+              },
+              {
+              "glob": "**/*",
+              "input": "node_modules/tinymce/icons",
+              "output": "assets/tinymce/icons"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/tinymce/themes",
+                "output": "assets/tinymce/themes"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/tinymce/plugins",
+                "output": "assets/tinymce/plugins"
+              },
+              {
+                "glob": "**/*",
+                "input": "public"
               }
             ],
             "styles": [
@@ -78,6 +105,9 @@
           },
           "configurations": {
             "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
               "budgets": [
                 {
                   "type": "initial",
@@ -89,8 +119,7 @@
                   "maximumWarning": "4kB",
                   "maximumError": "6kB"
                 }
-              ],
-              "outputHashing": "all"
+              ]
             },
             "development": {
               "optimization": false,

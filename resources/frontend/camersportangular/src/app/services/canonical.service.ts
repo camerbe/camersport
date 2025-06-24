@@ -30,15 +30,18 @@ export class CanonicalService {
       this.canonicalLink = renderer.createElement('link');
       renderer.setAttribute(this.canonicalLink, 'rel', 'canonical');
       renderer.appendChild(this.document.head, this.canonicalLink);
-    }
+      }
     }
 
 
   }
   updateCanonicalUrl(url: string): void {
     if (!this.canonicalLink) return;
-    const canonicalUrl = `${window.location.protocol}//${window.location.host}${url}`;
-    this.canonicalLink.setAttribute('href', canonicalUrl);
+     if (isPlatformBrowser(this.platformId)){
+      const canonicalUrl = `${window.location.protocol}//${window.location.host}${url}`;
+      this.canonicalLink.setAttribute('href', canonicalUrl);
+     }
+
   }
 
 }

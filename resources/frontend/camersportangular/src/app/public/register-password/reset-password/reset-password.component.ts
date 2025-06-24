@@ -1,10 +1,11 @@
 import { PasswordReset } from './../../../core/models/password-reset';
 import { PasswordResetService } from './../../../services/password-reset.service';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, Inject, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomValidators } from '../../../shared/validators/custom-validators';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-reset-password',
@@ -14,18 +15,27 @@ import { CustomValidators } from '../../../shared/validators/custom-validators';
 export class ResetPasswordComponent implements OnInit {
 
   token!:string;
-  fb:FormBuilder=inject(FormBuilder);
+  // fb:FormBuilder=inject(FormBuilder);
   frmReset!:FormGroup;
-  authSevice:AuthService=inject(AuthService);
-  activatedRoute:ActivatedRoute=inject(ActivatedRoute);
-  router:Router=inject(Router);
-  passwordResetService:PasswordResetService=inject(PasswordResetService);
+  isBrowser!: boolean;
+  // authSevice:AuthService=inject(AuthService);
+  // activatedRoute:ActivatedRoute=inject(ActivatedRoute);
+  // router:Router=inject(Router);
+  // passwordResetService:PasswordResetService=inject(PasswordResetService);
 
   /**
    *
   */
- constructor() {
-   this.frmReset=this.fb.group({
+ constructor(
+  @Inject(PLATFORM_ID) private platformId: Object,
+  private fb:FormBuilder,
+  private authSevice:AuthService,
+  private activatedRoute:ActivatedRoute,
+  private router:Router,
+  private passwordResetService:PasswordResetService
+ ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+    this.frmReset=this.fb.group({
      email:[''],
      password:['',[Validators.required,
       Validators.minLength(6),
@@ -45,12 +55,13 @@ export class ResetPasswordComponent implements OnInit {
     return  this.frmReset.get('confirmation');
   }
   ngOnInit(): void {
+    if(!this.isBrowser) return;
     this.token=this.activatedRoute.snapshot.params['token'];
   }
 
   onSubmit() {
-    
-    
+
+
     const resetPw: PasswordReset = {
       confirm_password: this.confirmation?.value,
       email:'camer@gmail.com',

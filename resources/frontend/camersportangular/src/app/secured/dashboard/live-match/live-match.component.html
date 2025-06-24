@@ -182,7 +182,7 @@
           <label class="block text-gray-700 mb-1">
             <span class="text-red-500 mr-1">*</span>Description
           </label>
-          <editor [init]="init" formControlName="description" aria-placeholder="Description"/>
+          <editor *ngIf="isTinyMceLoaded" [init]="init" formControlName="description" aria-placeholder="Description"/>
 
         </div>
       </div>

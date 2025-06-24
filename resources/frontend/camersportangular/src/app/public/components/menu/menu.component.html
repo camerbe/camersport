@@ -9,14 +9,14 @@
       <a [routerLink]="'/accueil'" rel="noopener noreferrer" styleClass="flex items-center">
         <!-- Option 1: Logo simple -->
         <img
-          [ngSrc]="'assets/images/camersport.png'"
-          [width]="538"
-          [height]="368"
+          [ngSrc]="'assets/images/camersport.webp'"
+          [width]="400"
+          [height]="400"
           alt="Camer-Sport Logo"
           class="h-15 md:h-20 w-auto"
           fetchpriority="high"
-          loading="eager"
-
+          decoding="async"
+          [priority]="true"
           >
 
 
