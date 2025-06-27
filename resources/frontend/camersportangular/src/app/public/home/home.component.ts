@@ -53,7 +53,7 @@ export class HomeComponent implements OnInit {
       this.isBrowser = isPlatformBrowser(this.platformId);
       afterNextRender(()=>{
         this.randomNumber = Math.floor(Math.random() * 1000001) / 1000000;
-        console.log('Route data:', this.route.snapshot.data['articleItems']);
+        //console.log('Route data:', this.route.snapshot.data['articleItems']);
         this.articleItemsService.updateState(this.route.snapshot.data['articleItems']);
       })
   }
@@ -77,7 +77,7 @@ export class HomeComponent implements OnInit {
             this.jsonLdArticles=data.slice(0, 20);
             //console.log(data);
             this.article = data.slice(0, 1)[0];
-            console.log(this.jsonLdArticles)
+            //console.log(this.jsonLdArticles)
             //this.article = this.jsonLdArticles[0];
             //console.log(this.article);
           },

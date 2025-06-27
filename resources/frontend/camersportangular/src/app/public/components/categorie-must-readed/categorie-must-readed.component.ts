@@ -25,27 +25,11 @@ export class CategorieMustReadedComponent implements OnInit {
     private router: Router,
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
-    // this.zone.runOutsideAngular(() => {
-    //   this.router.events.subscribe((event) => {
-    //     if (event instanceof NavigationEnd) {
-    //       this.zone.run(() => {
-    //         // Handle the event in the Angular zone
-    //       });
-    //     }
-    //   });
-    // });
+
   }
   ngOnInit(): void {
     if (!this.isBrowser) return;
-    // this.zone.runOutsideAngular(() => {
-    //   this.router.events.subscribe((event) => {
-    //     if (event instanceof NavigationEnd) {
-    //       this.zone.run(() => {
-    //         // Handle the event in the Angular zone
-    //       });
-    //     }
-    //   });
-    // });
+    
   }
   gotoArticle(slug: string) {
     if (!this.isBrowser) return;

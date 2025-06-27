@@ -11,6 +11,7 @@ import { ArticleItemsService } from '../../../services/article-items.service';
 import { ArticleService } from '../../../services/article.service';
 import slugify from 'slugify';
 import { isPlatformBrowser } from '@angular/common';
+import { title } from 'process';
 
 @Component({
   selector: 'app-article',
@@ -37,17 +38,7 @@ export class ArticleComponent implements OnInit,AfterViewInit  {
     //console.log('ARIA label (Renderer2):', label);
   }
 
-  // renderer: Renderer2=inject(Renderer2);
-  // route:ActivatedRoute= inject(ActivatedRoute);
-  // router:Router= inject(Router);
-  // sanitizer:DomSanitizer= inject(DomSanitizer);
-  // metaService:Meta= inject(Meta);
-  // titleService:Title= inject(Title);
-  // jldService:JsonLdService= inject(JsonLdService);
-  // hashtagExtractorService:HashtagExtractorService=inject(HashtagExtractorService);
-  // canonicalService: CanonicalService= inject(CanonicalService);
-  // articleItemsService: ArticleItemsService = inject(ArticleItemsService);
-  // articleService: ArticleService = inject(ArticleService);
+
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -79,12 +70,13 @@ export class ArticleComponent implements OnInit,AfterViewInit  {
   categorieMustReaded: ArticleDetail[] = [];
   competitionMustReaded: ArticleDetail[] = [];
   isMobile: boolean = false;
-
+  socialShare!: { title: string; url: string; hashtags: any[] };
   ngOnInit(): void {
-    this.articles=this.route.snapshot.data['articleItems'] ;
-    if (!this.isBrowser) return;
-    let currentArticle = this.route.snapshot.data['slug'] ;
 
+    if (!this.isBrowser) return;
+    this.articles=this.route.snapshot.data['articleItems'] ;
+    let currentArticle = this.route.snapshot.data['slug'] ;
+    //console.log('Current Article:', currentArticle);
     if (!currentArticle || !currentArticle['data']) {
       console.error('Article data is missing');
       this.router.navigate(['/accueil']);
@@ -171,6 +163,12 @@ export class ArticleComponent implements OnInit,AfterViewInit  {
     this.metaService.updateTag({ name: 'article:author', content: this.article.auteur });
     this.metaService.updateTag({ name: 'article:publisher', content: 'camer-sport.com' });
     this.titleService.setTitle(title);
+
+    this.socialShare = {
+      title: this.article.titre.toString(),
+      url: `${window.location.protocol}//${window.location.host}${this.router.url}`,
+      hashtags: this.hashtagExtractorService.extractHashtags(this.article.motclef).split(',').map(tag => tag.trim()),
+    };
 
     const jsonLd={
       "@context": "https://schema.org",

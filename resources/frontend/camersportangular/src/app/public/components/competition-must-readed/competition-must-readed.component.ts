@@ -1,6 +1,10 @@
 import { ChangeDetectionStrategy, Component, Inject, inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
 import { ArticleDetail } from '../../../core/models/article-detail';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
+import { ArticleService } from '../../../services/article.service';
+import { Article } from '../../../core/models/article';
+
 
 
 @Component({
@@ -12,7 +16,9 @@ import { Router } from '@angular/router';
 export class CompetitionMustReadedComponenton implements OnInit {
   @Input() mustReadedCompetition: ArticleDetail[] = [];
   @Input() mustReadedLabel: string = '';
+  //@Input() competitionID!: number ;
 
+  //articles: ArticleDetail[] = [];
   // router:Router=inject(Router);
   /**
    *
@@ -20,13 +26,23 @@ export class CompetitionMustReadedComponenton implements OnInit {
   isBrowser!: boolean;
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
-    private router: Router
-
+    private router: Router,
+    private articleService: ArticleService
   ) {
-    this.isBrowser = typeof window !== 'undefined';
+    this.isBrowser = isPlatformBrowser(this.platformId);
   }
   ngOnInit(): void {
     if (!this.isBrowser) return;
+    // this.articleService.competitionMustReaded(this.competitionID).subscribe({
+    //   next: (data) => {
+    //     const tempData = data as unknown as Article;
+    //     this.articles = tempData['data'] as unknown as ArticleDetail[];
+    //     console.log(this.articles);
+    //   },
+    //   error: (error) => {
+    //     console.error('Erreur lors de la récupération des articles les plus lus:', error);
+    //   }
+    // });
   }
 
   gotoArticle(slug: string) {

@@ -50,6 +50,7 @@ import { RegisterPasswordComponent } from './register-password/register-password
 import { NgOptimizedImage } from '@angular/common';
 import { ResetPasswordComponent } from './register-password/reset-password/reset-password.component';
 import { RssComponent } from './layout/rss/rss.component';
+import { SocialShareComponent } from './components/social-share/social-share.component';
 @NgModule({
   declarations: [
     LoginComponent,
@@ -76,7 +77,8 @@ import { RssComponent } from './layout/rss/rss.component';
     LayoutComponent,
     RegisterPasswordComponent,
     ResetPasswordComponent,
-    RssComponent
+    RssComponent,
+    SocialShareComponent
   ],
   imports: [
     CommonModule,

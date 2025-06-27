@@ -82,9 +82,10 @@
               class="text-justify md:text-xl text-gray-500 prose md:prose-lg lg:prose-xl"
               [innerHTML]="sanitizer.bypassSecurityTrustHtml(article.article)"
               >
-
+              <app-social-share [hashtags]="socialShare.hashtags" [url]="socialShare.url" [title]="socialShare.title" />
             </div>
             <p-divider></p-divider>
+            <app-social-share [hashtags]="socialShare.hashtags" [url]="socialShare.url" [title]="socialShare.title" />
             <app-viralize [zId]="'AADZ292NV-IHr4M_'" class="bg-amber-700 py-4" ></app-viralize>
             <!-- <div
               style="line-height: 1.8;"
@@ -133,9 +134,11 @@
               </ng-template>
 
             </p-dataView>
+
             <p-scrollTop />
           </p-panel>
         </p-card>
+
       </article>
       <app-taboola></app-taboola>
     </div>
@@ -144,7 +147,7 @@
   <div class="col-12 md:col-4 my-0">
     <app-categorie-must-readed *ngIf="isBrowser" [mustReadedCategorie]="categorieMustReaded" [mustReadedLabel]="article.categorie.categorie"/>
 
-    <div class="bg-amber-500">
+    <p-card class="my-3" styleClass="h-full">
           <app-ads
           [adClient]="'ca-pub-8638642715460968'"
           [adFormat]="'auto'"
@@ -156,9 +159,9 @@
         />
         <!-- <app-taboola />-->
 
-    </div>
+    </p-card>
 
-    <app-competition-must-readed [mustReadedCompetition]="competitionMustReaded" [mustReadedLabel]="article.competition.competition"/>
+    <app-competition-must-readed *ngIf="isBrowser" [mustReadedCompetition]="competitionMustReaded" [mustReadedLabel]="article.competition.competition"/>
     <app-classement></app-classement>
   </div>
 

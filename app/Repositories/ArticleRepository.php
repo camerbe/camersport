@@ -234,21 +234,22 @@ class ArticleRepository extends Repository implements IArticleRepository
             return Article::with(['categorie','competition','bled'])
                 ->where('categorie_id', $categorieId)
                 ->orderByDesc('hit')
-                ->take(5)
+                ->limit(5)
                 ->get();
         });
         //dd($articles);
         return ArticleResource::collection($articles);
     }
     public function competitionMustReaded(int $competitionId){
-
-        $cacheKey = 'article-list-competition-must-readed';
+        $competition=Competition::find($competitionId);
+        $cacheKey = 'article-list-'.Str::trim($competition->competition);
+        //$cacheKey = 'article-list-competition-must-readed';
         $cacheDuration=now()->addDay(1);
         $articles = Cache::remember($cacheKey, $cacheDuration, function () use($competitionId) {
             return Article::with(['categorie','competition','bled'])
                 ->where('competition_id', $competitionId)
                 ->orderByDesc('hit')
-                ->take(5)
+                ->limit(5)
                 ->get();
         });
         return ArticleResource::collection($articles);

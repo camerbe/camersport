@@ -53,16 +53,6 @@ export class ArticleComponent implements OnInit,AfterViewInit {
 
 
 
-
-  // fb:FormBuilder=inject(FormBuilder);
-  // authSevice:AuthService=inject(AuthService);
-  // expiredAtService:ExpiredAtService=inject(ExpiredAtService);
-  // articleService:ArticleService=inject(ArticleService);
-  // router:Router=inject(Router);
-  // activatedRoute:ActivatedRoute=inject(ActivatedRoute);
-  // hashtagExtractorService:HashtagExtractorService=inject(HashtagExtractorService);
-  // datePipe:DatePipe=inject(DatePipe);
-
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private fb: FormBuilder,
@@ -93,8 +83,8 @@ export class ArticleComponent implements OnInit,AfterViewInit {
       categorie_id :['',Validators.required],
       competition_id :['',Validators.required],
       pays_code :['',Validators.required],
-      motclef:['',[Validators.pattern(this.motclefRegex)]],
-      hashtag:['',[Validators.pattern(this.hashtagRegex)]],
+      motclef:['',[Validators.pattern(this.motclefRegex),Validators.required]],
+      hashtag:['',[Validators.pattern(this.hashtagRegex),Validators.required]],
     });
 
   }
