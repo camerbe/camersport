@@ -4,6 +4,8 @@ namespace App\Services;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
+
+
 class FileSyncService
 {
     protected $sourceDir;
@@ -17,6 +19,7 @@ class FileSyncService
     {
         $this->sourceDir = $sourceDir;
         $this->destinationDir = $destinationDir;
+
     }
     public function syncFiles()
     {

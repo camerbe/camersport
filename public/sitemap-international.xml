@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
     <url>
     <loc>http://localhost:8000/article/la-boxeuse-algerienne-imane-khelif-serait-biologiquement-de-sexe-masculin-algeria</loc>
-    <lastmod>2025-06-08T15:11:16+02:00</lastmod>
+    <lastmod>2025-06-25T19:14:40+02:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -11,7 +11,7 @@
         </url>
     <url>
     <loc>http://localhost:8000/article/france-desire-doue-maitre-de-la-finale-double-et-passe-decisive-pour-le-psg-en-ligue-des-champions</loc>
-    <lastmod>2025-06-08T13:38:16+02:00</lastmod>
+    <lastmod>2025-06-25T18:58:10+02:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -20,7 +20,7 @@
         </url>
     <url>
     <loc>http://localhost:8000/article/france-mbappe-favori-pour-le-ballon-dor-2025-le-classement-exclusif-donze-mondial</loc>
-    <lastmod>2025-06-08T20:04:31+02:00</lastmod>
+    <lastmod>2025-06-25T19:07:13+02:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -29,16 +29,16 @@
         </url>
     <url>
     <loc>http://localhost:8000/article/afrique-du-sud-rdpc-pourquoi-la-candidature-de-paul-biya-est-juridiquement-impossible-sans-congres-south-africa</loc>
-    <lastmod>2025-06-08T20:05:34+02:00</lastmod>
+    <lastmod>2025-06-25T18:21:23+02:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
     <image:image>
-    <image:loc>http://localhost:8000/storage/42/Alex-Nguepi210525500.jpg</image:loc>
+    <image:loc>http://localhost:8000/storage/photos/shares/camer/Thierry-Marchand261124500.jpg</image:loc>
 </image:image>
         </url>
     <url>
     <loc>http://localhost:8000/article/senegal-cabral-libii-officiellement-investi-candidat-du-pcrn-apres-deliberation-du-bureau-politique-senegal</loc>
-    <lastmod>2025-06-08T19:50:13+02:00</lastmod>
+    <lastmod>2025-06-25T10:45:07+02:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -47,7 +47,7 @@
         </url>
     <url>
     <loc>http://localhost:8000/article/senegal-violences-lors-du-defile-a-doualaun-militant-du-sdf-violemment-interpelle-par-les-forces-de-lordre-senegal</loc>
-    <lastmod>2025-06-01T14:38:10+02:00</lastmod>
+    <lastmod>2025-06-24T15:06:22+02:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -56,7 +56,7 @@
         </url>
     <url>
     <loc>http://localhost:8000/article/senegal-sadio-mane-nouveau-proprietaire-du-club-de-bourges-en-national-2-senegal</loc>
-    <lastmod>2025-06-08T19:49:33+02:00</lastmod>
+    <lastmod>2025-06-25T19:09:48+02:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -65,7 +65,7 @@
         </url>
     <url>
     <loc>http://localhost:8000/article/angola-91-electeurs-decedes-detectes-a-bafounda-un-signal-fort-pour-la-transparence-electorale</loc>
-    <lastmod>2025-06-08T19:48:27+02:00</lastmod>
+    <lastmod>2025-06-25T10:44:02+02:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -74,7 +74,7 @@
         </url>
     <url>
     <loc>http://localhost:8000/article/angola-rebecca-enonchong-denonce-la-bureaucratie-et-corruption-qui-etouffent-leconomie-camerounaise</loc>
-    <lastmod>2025-05-31T18:09:00+02:00</lastmod>
+    <lastmod>2025-06-24T15:06:12+02:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -83,7 +83,7 @@
         </url>
     <url>
     <loc>http://localhost:8000/article/bresil-un-autre-sujet-brulant-souleve-par-bahebeck-concerne-la-langue-nationale-camerounaise-brazil</loc>
-    <lastmod>2025-05-30T16:20:35+02:00</lastmod>
+    <lastmod>2025-06-25T14:57:12+02:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
     <image:image>

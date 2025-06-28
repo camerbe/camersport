@@ -70,7 +70,7 @@ export class ArticleComponent implements OnInit,AfterViewInit  {
   categorieMustReaded: ArticleDetail[] = [];
   competitionMustReaded: ArticleDetail[] = [];
   isMobile: boolean = false;
-  socialShare!: { title: string; url: string; hashtags: any[] };
+  socialShare!: { title: string; url: string; hashtags: any[],media:string };
   ngOnInit(): void {
 
     if (!this.isBrowser) return;
@@ -123,7 +123,7 @@ export class ArticleComponent implements OnInit,AfterViewInit  {
     }
 
 
-    this.canonicalService.updateCanonicalUrl(this.router.url);
+    this.canonicalService.updateCanonicalUrl(`${window.location.protocol}//${window.location.host}${this.router.url}`);
 
 
     //console.log('Article:', this.article);
@@ -168,7 +168,9 @@ export class ArticleComponent implements OnInit,AfterViewInit  {
       title: this.article.titre.toString(),
       url: `${window.location.protocol}//${window.location.host}${this.router.url}`,
       hashtags: this.hashtagExtractorService.extractHashtags(this.article.motclef).split(',').map(tag => tag.trim()),
+      media:this.article.images.url,
     };
+    console.log('Social Share:', this.socialShare);
 
     const jsonLd={
       "@context": "https://schema.org",

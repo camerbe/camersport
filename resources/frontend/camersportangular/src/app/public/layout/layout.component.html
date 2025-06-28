@@ -1,12 +1,12 @@
- <!--<div class="min-h-screen flex flex-col">-->
-  <app-menu></app-menu>
+ <div class="min-h-screen flex flex-col pt-20 bg-gray-100">
+  <app-menu class="mb-4"></app-menu>
   <!-- Header-->
   <!-- Main Content -->
   <div class="px-4  bg-gray-100">
     <!-- Carousel -->
     <!-- Ad Banner -->
-    <p-card>
-
+    <!-- <p-card> -->
+      <div style="margin-top: 4rem;display: flex; justify-content: center; align-items: center;">
         <app-ads
           [adClient]="'ca-pub-8638642715460968'"
           [adFormat]="'auto'"
@@ -15,8 +15,8 @@
           [adStyle]="{ display: 'block' }"
 
       />
-
-    </p-card>
+      </div>  
+    <!-- </p-card> -->
 
     <!-- News Grid -->
     <div class="grid p-fluid">
@@ -120,4 +120,4 @@
     </div>
   </div>
 </div>
- <!--</div>-->
+ </div>

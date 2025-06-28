@@ -4,8 +4,10 @@ namespace App\Console\Commands;
 
 use App\Http\Resources\ArticleResource;
 use App\Services\ArticleService;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Spatie\Sitemap\Sitemap;
+use Spatie\Sitemap\Tags\News;
 use Spatie\Sitemap\Tags\Image;
 use Spatie\Sitemap\SitemapGenerator;
 use Spatie\Sitemap\Tags\Url;
@@ -44,6 +46,9 @@ class GenerateSitemap extends Command
         $sitemapCamer = Sitemap::create();
         $sitemapInternational = Sitemap::create();
         $sitemaplions = Sitemap::create();
+        $sitemapGoogleNews = Sitemap::create();
+
+
 
         $items= ArticleResource::collection($this->articleService->publicIndex()->take(30));
         $itemCamers=ArticleResource::collection($this->articleService->publicIndex())->filter(function ($el){
@@ -55,6 +60,10 @@ class GenerateSitemap extends Command
         $itemLions=ArticleResource::collection($this->articleService->publicIndex())->filter(function ($el){
             return $el->categorie->slugcategorie ==='lions-indomptables';
         })->take(30);
+
+        $google_news=ArticleResource::collection($this->articleService->publicIndex())->filter(function($el){
+            return $el->date_parution <= now();
+        })->take(50);
         //dd($itemLions);
         foreach ($items as $item){
             $media=$item->getFirstMedia('article');
@@ -106,7 +115,8 @@ class GenerateSitemap extends Command
 
         }
         foreach ($itemLions as $item){
-            $media=$item->getFirstMedia('article');
+            $media=$item->getMedia('article')->where('name',$item->slug)->first();;
+            //dd($media->original_url);
             $image=\App\Helpers\ImageHelper::extractImgSrc($item->image);
             $titre=\App\Helpers\ImageHelper::appendCountryIfFound($item->titre,$item->bled->pays);
 
@@ -121,10 +131,38 @@ class GenerateSitemap extends Command
             $sitemaplions->add($articleUrl);
 
         }
+        $this->info('Generating Google News sitemap...');
+        foreach ($google_news as $item){
+            $media=$item->getFirstMedia('article');
+            $image=\App\Helpers\ImageHelper::extractImgSrc($item->image);
+            $titre=\App\Helpers\ImageHelper::appendCountryIfFound($item->titre,$item->bled->pays);
+            /*$newsTag=new News(
+                config('app.name'),
+                config('app.locale', 'fr'),
+                $titre,
+                new Carbon($item->date_parution)
+            );*/
+
+            //$newsTag->setKeywords($item->motclef); // 'actualité, sport, football'
+            //$newsTag->setGenres('Blog, Sports');
+            $articleUrl=Url::create(config('app.url')."/article/{$item->slug}")
+                ->setLastModificationDate(new Carbon($item->updated_at));
+            $articleUrl->addNews(
+                config('app.name'),
+                config('app.locale', 'fr'),
+                $titre,
+                new Carbon($item->date_parution)
+            );
+            $articleUrl->addImage(url($media->original_url),$titre,'',$item->titre);
+            $sitemapGoogleNews->add($articleUrl);
+        }
+
+
         $sitemap->writeToFile(public_path('sitemap.xml'));
         $sitemapCamer->writeToFile(public_path('sitemap-camer.xml'));
         $sitemapInternational->writeToFile(public_path('sitemap-international.xml'));
         $sitemaplions->writeToFile(public_path('sitemap-lions.xml'));
+        $sitemapGoogleNews->writeToFile(public_path('sitemap-actualites.xml'));
         $this->info('Sitemap generated successfully at public/sitemap.xml!');
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+use App\Services\FileSyncService;
 use Intervention\Image\Laravel\Facades\Image;
 use App\Helpers\ImageHelper;
 use App\Http\Controllers\Controller;
@@ -53,6 +54,7 @@ class ArticleController extends Controller
         $article=$this->articleService->create($request->all());
 
         $image=ImageHelper::extractImgSrc($request->image);
+
         //dd($image);
         if ($article){
             if($image){

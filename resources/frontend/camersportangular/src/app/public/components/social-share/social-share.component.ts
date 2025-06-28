@@ -8,13 +8,16 @@ import { Component, Input } from '@angular/core';
 export class SocialShareComponent {
   @Input() title!: string;
   @Input() url!: string;
+  @Input() media!:string;
   @Input() hashtags: string[] = [];
 
   encode(value: string): string {
     return encodeURIComponent(value);
   }
   get twitterUrl(): string {
-    return `https://x.com/intent/post?text=${this.encode(this.title)}&url=${this.encode(this.url)}&hashtags=${this.hashtags.join(',')}`;
+    const cleanedHashtags = this.hashtags.map(tag => tag.substring(1)).join(',');
+    const mediaParam = this.media ? `&media=${this.encode(this.media)}` : '';
+    return `https://x.com/intent/post?text=${this.encode(this.title)}&url=${this.encode(this.url)}&hashtags=${cleanedHashtags}${mediaParam}`;
   }
   get facebookUrl(): string {
     return `https://www.facebook.com/sharer/sharer.php?u=${this.encode(this.url)}`;
