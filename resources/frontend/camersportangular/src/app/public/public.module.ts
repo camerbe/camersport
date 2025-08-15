@@ -51,10 +51,10 @@ import { NgOptimizedImage } from '@angular/common';
 import { ResetPasswordComponent } from './register-password/reset-password/reset-password.component';
 import { RssComponent } from './layout/rss/rss.component';
 import { SocialShareComponent } from './components/social-share/social-share.component';
+import { CamerComponent } from './components/camer/camer.component';
+import { TagModule } from 'primeng/tag';
 @NgModule({
   declarations: [
-    LoginComponent,
-    CarouselComponent,
     MenuComponent,
     AdsComponent,
     HomeComponent,
@@ -78,7 +78,10 @@ import { SocialShareComponent } from './components/social-share/social-share.com
     RegisterPasswordComponent,
     ResetPasswordComponent,
     RssComponent,
-    SocialShareComponent
+    SocialShareComponent,
+    LoginComponent,
+    CarouselComponent,
+    CamerComponent
   ],
   imports: [
     CommonModule,
@@ -106,11 +109,13 @@ import { SocialShareComponent } from './components/social-share/social-share.com
     BreadcrumbModule,
     ToolbarModule,
     DialogModule,
-    NgOptimizedImage
+    NgOptimizedImage,
+    TagModule
+
 
   ],
   exports: [
-    AdsComponent
+
   ]
 })
 export class PublicModule { }

@@ -50,6 +50,8 @@ return [
              * determine the correct value.
              */
             'contentType' => '',
+            'hub' => 'https://pubsubhubbub.appspot.com/', // L'URL du Hub
+            'self' => 'https://camer-sport.com/api/rss',
         ],
     ],
 ];

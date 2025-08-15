@@ -19,7 +19,8 @@ export class MenuComponent implements AfterViewInit ,OnInit{
     @Inject(PLATFORM_ID) private platformId: Object,
     private cdr: ChangeDetectorRef,
     private zone: NgZone,
-    private router: Router
+    private router: Router,
+
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
     afterNextRender(()=>{
@@ -69,7 +70,7 @@ export class MenuComponent implements AfterViewInit ,OnInit{
         {
           label: 'Mtn Elite One',
           rel: 'nofollow',
-          routerLink: ['/lions-indomptables'],
+          routerLink: ['/competitions/mtn-elite-one'],
           routerLinkActive: "text-rose-500 hover:text-rose-500",
           routerLinkActiveOptions: { exact: true },
           command: (event) => {
@@ -87,7 +88,7 @@ export class MenuComponent implements AfterViewInit ,OnInit{
         {
           label: 'Mtn Elite Two',
           rel: 'nofollow',
-          routerLink: ['/competitions/lions-en-club'],
+          routerLink: ['/competitions/mtn-elite-two'],
           routerLinkActive: "text-rose-500 hover:text-rose-500",
           routerLinkActiveOptions: { exact: true },
           command: (event) => {
@@ -111,14 +112,14 @@ export class MenuComponent implements AfterViewInit ,OnInit{
         {
           label: 'Lions Indomptables',
           rel: 'nofollow',
-          routerLink: ['/lions-indomptables'],
+          routerLink: ['/competitions/lions-indomptables'],
           routerLinkActive: "text-rose-500 hover:text-rose-500",
           routerLinkActiveOptions: { exact: true },
           command: (event) => {
             this.activeParentItem = event.item && event.item['parent'] ? event.item['parent'] : null;  if(event.item) {
               //event.item.skipLocationChange = true;
               this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-                this.router.navigate(['/lions-indomptables']);
+                this.router.navigate(['/competitions','lions-indomptables']);
               });
             };
           },
@@ -231,18 +232,7 @@ export class MenuComponent implements AfterViewInit ,OnInit{
   }
   ngAfterViewInit(): void {
     if (!this.isBrowser) return;
-    // this.zone.runOutsideAngular(() => {
-    //   this.router.events.subscribe((event) => {
-    //     if (event instanceof NavigationEnd) {
-    //       this.zone.run(() => {
-    //         // Handle the event in the Angular zone
-    //       });
-    //     }
-    //   });
-    // });
-    //this.items=this.itemMenu;
-
-      this.cdr.detectChanges();
+    this.cdr.detectChanges();
 
   }
   submitSearch() {

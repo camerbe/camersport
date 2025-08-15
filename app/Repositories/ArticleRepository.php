@@ -101,7 +101,7 @@ class ArticleRepository extends Repository implements IArticleRepository
             $competition->categories()->wherePivot('categorie_id',$data["categorie_id"])
                 ->first() ?? $competition->categories()->attach($data["categorie_id"]);;
         }
-
+        //dd($data);
         //unset($data["competition_id"]);
         return new ArticleResource(parent::create($data));
     }
@@ -158,6 +158,7 @@ class ArticleRepository extends Repository implements IArticleRepository
             Article::withoutEvents(function () use ($article) {
                 $article->hit++;
                 $article->save();
+
             });
 
         }

@@ -47,7 +47,7 @@ export class CompetitionMustReadedComponenton implements OnInit {
 
   gotoArticle(slug: string) {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate(['/article', slug]);
+      this.router.navigate(['/', slug]);
     });
   }
 }

@@ -17,7 +17,7 @@ export class ThemoneytizerComponent implements AfterViewInit, OnDestroy {
   @ViewChild('adContainer', { static: true }) adContainer!: ElementRef<HTMLDivElement>;
 
   //renderer: Renderer2= inject(Renderer2);
-  el: ElementRef= inject(ElementRef);
+ // el: ElementRef= inject(ElementRef);
   //observer!: IntersectionObserver;
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 

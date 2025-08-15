@@ -1,0 +1,11 @@
+User-agent: *
+Disallow: /api/
+Disallow: /login/
+Disallow: /register/
+Disallow: /reset/
+Allow: /
+
+Sitemap: http://localhost:8000/sitemap.xml
+Sitemap: http://localhost:8000/sitemap-camer.xml
+Sitemap: http://localhost:8000/sitemap-international.xml
+Sitemap: http://localhost:8000/sitemap-lions.xml

@@ -2,6 +2,7 @@
   <div class="col-12 md:col-8 my-3">
 
     <div class="h-full">
+
       <article itemscope itemtype="https://schema.org/NewsArticle">
         <p-card *ngIf="isBrowser" styleClass="px-3 md:py-4">
           <ng-template pTemplate="header">
@@ -9,7 +10,7 @@
               <div class="text-right text-sm text-500 mt-1">
                 {{ article.date_parution | date: 'dd MMM yyyy HH:mm:ss' }}
               </div> -->
-                <h2 class=" md:text-3xl font-bold  uppercase " style="line-height: 1.7;" itemprop="headline">
+                <h2 class="pt-3 md:text-3xl font-bold  uppercase " style="line-height: 1.7;" itemprop="headline">
                   {{ article.titre }}
                 </h2>
                 <p-divider

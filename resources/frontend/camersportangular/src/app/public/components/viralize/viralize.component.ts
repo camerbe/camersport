@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Inject, Input, PLATFORM_ID, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, Input, PLATFORM_ID, Renderer2, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-viralize',
@@ -11,7 +11,10 @@ export class ViralizeComponent implements AfterViewInit {
   @Input() zId!: string;
   @ViewChild('adContainer', { static: true }) adContainer!: ElementRef<HTMLDivElement>;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private renderer:Renderer2
+  ) {}
 
 
   ngAfterViewInit(): void {
@@ -30,11 +33,20 @@ export class ViralizeComponent implements AfterViewInit {
   }
   injectViralizeScript() {
     const script = document.createElement('script');
-    script.src =`https://content.viralize.tv/display/?zid=${this.zId}`;
+    //script.src =`https://content.viralize.tv/display/?zid=${this.zId}`;
+    script.src =`https://ads.viralize.tv/display/?zid=${this.zId}`;
     script.type = 'text/javascript';
     script.setAttribute('data-wid', 'auto');
     script.async = true;
-    this.adContainer.nativeElement.appendChild(script);
+    //this.adContainer.nativeElement.appendChild(script);
+    this.renderer.appendChild(document.body, script);
+
+
+    // const script = this.renderer.createElement('script');
+    // script.src = 'https://ads.viralize.tv/display/?zid=AADZ3InnB0waF_lc';
+    // script.type = 'text/javascript';
+    // script.setAttribute('data-wid', 'auto');
+    // this.renderer.appendChild(document.body, script);
   }
 
 }

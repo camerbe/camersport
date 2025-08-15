@@ -7,22 +7,23 @@
         <description><![CDATA[La référence du sport camerounais]]></description>
         <language>fr-FR</language>
         <lastBuildDate>{{ now()->toRssString() }}</lastBuildDate>
+        <atom:link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
         <atom:link href="{{ url('/') }}/rss" rel="self" type="application/rss+xml" />
 
         @foreach($items as $item)
             @php
                 $image=\App\Helpers\ImageHelper::extractImgSrc($item->image);
                 $media=$item->getFirstMedia('article');
-                //dd($media);
+                //dd($media->original_url);
                 $titre=\App\Helpers\ImageHelper::appendCountryIfFound($item->titre,$item->bled->pays)
             @endphp
             <item>
                 <title><![CDATA[{{ $titre }}]]></title>
-                <link>{{ url(env('FRONTEND_URL').'/article/' . $item->slug) }}</link>
+                <link>{{ url(env('FRONTEND_URL').'/' . $item->slug) }}</link>
                 <description><![CDATA[
                     <p>{!! $item->chapeau !!}</p>
                     @if($item->image)
-                        <p><img src="{{$media->url}}" alt="{{ $item->titre }}" width="600"/></p>
+                        <p><img src="{{$media->original_url}}" alt="{{ $item->titre }}" width="600"/></p>
                     @endif
                     ]]>
                 </description>
@@ -35,8 +36,8 @@
                     <category>{{ $item->category->name }}</category>
                 @endif
                 @if($item->image)
-                    <enclosure url="{{ $image }}" type="{{$media->mime_type}}" length="{{$media->size}}" />
-                    <media:thumbnail url="{{ $image }}" />
+                    <enclosure url="{{ $media->original_url}}" type="{{$media->mime_type}}" length="{{$media->size}}" />
+                    <media:thumbnail url="{{ $media->original_url }}" />
                 @endif
             </item>
         @endforeach

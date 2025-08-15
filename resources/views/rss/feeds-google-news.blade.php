@@ -21,7 +21,7 @@
         <docs>https://www.rssboard.org/rss-specification</docs>
         <ttl>60</ttl>
         <atom:link href="{{ url('/').'/rss/google-news' }}" rel="self" type="application/rss+xml" />
-
+        <atom:link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
         <image>
             <url>{{ asset('images/logo-rss.png') }}</url>
             <title>{{ config('app.name') . ' - Google News' }}</title>
@@ -40,9 +40,9 @@
             <item>
 
                 <title><![CDATA[{{ $titre }}]]></title>
-                <link>{{ url(env('FRONTEND_URL').'/article/' . $item->slug) }}</link>
+                <link>{{ url(env('FRONTEND_URL').'/' . $item->slug) }}</link>
                 <description><![CDATA[{{ $item->chapeau }}]]></description>
-                <guid isPermaLink="true">{{ url(env('FRONTEND_URL').'/article/' . $item->slug) }}</guid>
+                <guid isPermaLink="true">{{ url(env('FRONTEND_URL').'/' . $item->slug) }}</guid>
                 <pubDate>{{ $item->updated_at->toRssString() }}</pubDate>
 
                 @if($item->auteur)
@@ -79,7 +79,7 @@
 
                 @if(isset($image))
                     <media:content
-                        url="{{ $image }}"
+                        url="{{ $media->original_url }}"
                         type="{{$media->mime_type}}"
                         medium="image">
                         @if(isset($item->titre))
@@ -92,7 +92,7 @@
 
 
                     <enclosure
-                        url="{{ $image }}"
+                        url="{{ $media->original_url }}"
                         type="{{$media->mime_type}}"
                         length="{{$media->size}}" />
                 @endif
@@ -100,7 +100,7 @@
 
                 <dc:date>{{  \Carbon\Carbon::parse($item->date_parution)->toAtomString() }}</dc:date>
                 <dc:type>Text</dc:type>
-                <dc:format>text/html</dc:format>
+                <dc:format>text/xml</dc:format>
                 <dc:language>{{'fr'}}</dc:language>
                 <dc:rights>Copyright {{ date('Y') }} {{ config('app.name') }}</dc:rights>
 

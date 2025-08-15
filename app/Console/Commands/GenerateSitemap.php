@@ -12,6 +12,7 @@ use Spatie\Sitemap\Tags\Image;
 use Spatie\Sitemap\SitemapGenerator;
 use Spatie\Sitemap\Tags\Url;
 
+
 class GenerateSitemap extends Command
 {
     /**

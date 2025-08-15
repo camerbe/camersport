@@ -32,13 +32,19 @@ const routes: Routes = [
         component: HomeComponent,
         resolve: { articleItems: articleItemsResolver }
       },
-      { path: 'rss', component: RssComponent },
       {
-        path: 'article/:slug',
+        path: ':slug',
         component: ArticleComponent,
         resolve: { slug: articleSlugResolver },
-        runGuardsAndResolvers: 'paramsChange'
+        runGuardsAndResolvers: 'always'
       },
+      { path: 'rss', component: RssComponent },
+      // {
+      //   path: ':slug',
+      //   component: ArticleComponent,
+      //   resolve: { slug: articleSlugResolver },
+      //   runGuardsAndResolvers: 'paramsChange'
+      // },
       {
         path: 'article/categorie/:categorie_id',
         component: ArticleComponent
@@ -47,10 +53,10 @@ const routes: Routes = [
         path: 'article/competition/:competition_id',
         component: ArticleComponent
       },
-      {
-        path: 'lions-indomptables',
-        component: LionsIndomptablesComponent
-      },
+      // {
+      //   path: 'lions-indomptables',
+      //   component: LionsIndomptablesComponent
+      // },
       { path: 'live', component: LiveComponent },
       {
         path: 'competitions',
@@ -65,10 +71,11 @@ const routes: Routes = [
             }
           }
         ]
-      }
+      },
+
     ]
   },
-
+  //{ path: '**', redirectTo: 'accueil' }
   // Redirection pour les routes inconnues
   //{ path: '**', component: Pa }
 ];

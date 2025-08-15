@@ -8,6 +8,7 @@ import { CanonicalService } from '../../../services/canonical.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import { PaginatorState } from 'primeng/paginator';
+import slugify from 'slugify';
 
 @Component({
   selector: 'app-competition-detail',
@@ -19,7 +20,7 @@ export class CompetitionDetailComponent implements OnInit {
   randomNumber!: number;
   articles:ArticleDetail[]=[];
   labelCompetition!:string;
-
+  otherNews:ArticleDetail[]=[];
 
   articlesPerPage = 10;
   currentPage = 0;
@@ -29,7 +30,9 @@ export class CompetitionDetailComponent implements OnInit {
   article!:ArticleDetail;
   slug!:string;
   isBrowser!: boolean;
-
+  competitionLabel: string = '';
+  slugCategorie: string = slugify('Lions Indomptables', { lower: true, strict: true });
+  isCategory: boolean = false;
     constructor(
       @Inject(PLATFORM_ID) private platformId: Object,
       private articleItemService: ArticleItemsService,
@@ -46,21 +49,21 @@ export class CompetitionDetailComponent implements OnInit {
         this.randomNumber = Math.floor(Math.random() * 1000001) / 1000000;
       }
       afterNextRender(() => {
-        console.log('Route data:', this.route.snapshot.data['articleItems']);
+        //console.log('Route data:', this.route.snapshot.data['articleItems']);
         // Update the state of articleItemsService with the data from the route
       });
       //this.articles=this.route.snapshot.data['articleItems'] ;
 
     }
     ngOnInit(): void {
-      console.log('Route data:', this.route.snapshot.data['articleItems']);
+      //console.log('Route data:', this.route.snapshot.data['articleItems']);
 
       const resolvedArticles = this.route.snapshot.data['articleItems'];
       if (!resolvedArticles) return
       this.articleItemService.updateState(resolvedArticles);
       if (!this.isBrowser) return;
       this.slug=this.route.snapshot.params['competition'];
-
+      this.isCategory = this.slugCategorie === this.slug;
 
       if (isPlatformBrowser(this.platformId)){
          if( this.articles.length === 0 || this.articles === undefined || this.articles === null){
@@ -70,12 +73,18 @@ export class CompetitionDetailComponent implements OnInit {
             next: (data: ArticleDetail[]) => {
               //console.log('Data received from articleItemsService:', data);
               if (Array.isArray(data)) {
-
-                this.articles = data.filter(item => item.competition && item.competition.slugcompetition === this.slug).slice(0, 100);
-                if( this.articles !==null) {
-                  this.jsonLdArticles=this.articles.slice(0, 20);
-                  this.article = this.jsonLdArticles[0];
+                if (this.isCategory) {
+                  this.articles = data.filter(item => item.categorie.slugcategorie === this.slugCategorie).slice(0, 100);
+                  this.competitionLabel = this.articles[0]?.categorie?.categorie;
                 }
+                else{
+                  this.articles = data.filter(item => item.competition.slugcompetition === this.slug).slice(0, 100);
+                  this.competitionLabel = this.articles[0]?.competition?.competition;
+                }
+                this.otherNews=data.slice(0, 25).filter((item:ArticleDetail) => item.pays_code !== "CMR");
+                this.jsonLdArticles = this.articles.slice(0, 20);
+                this.article = this.jsonLdArticles[0];
+
 
 
               } else {
@@ -101,18 +110,22 @@ export class CompetitionDetailComponent implements OnInit {
           this.metaService.updateTag({ name: 'og:title', content: this.article.titre });
           this.metaService.updateTag({ name: 'og:description', content: this.article.chapeau });
           this.metaService.updateTag({ name: 'og:image', content: imageUrl });
-          this.metaService.updateTag({ name: 'og:url', content: this.router.url });
+          this.metaService.updateTag({ name: 'og:image:width', content: this.article.images.width });
+          this.metaService.updateTag({ name: 'og:image:height', content: this.article.images.height });
+          this.metaService.updateTag({ name: 'og:image:alt', content: this.article.titre });
+          this.metaService.updateTag({ name: 'og:url', content: `${window.location.protocol}//${window.location.host}${this.router.url}` });
           this.metaService.updateTag({ name: 'og:type', content: 'article' });
           this.metaService.updateTag({ name: 'og:locale', content: 'fr_FR' });
           this.metaService.updateTag({ name: 'og:locale:alternate', content: 'en-us' });
           this.metaService.updateTag({ name: 'og:site_name', content: 'Camer-sport.com' });
-          this.metaService.updateTag({ name: 'twitter:title', content: this.article.titre });
+          this.metaService.updateTag({ name: 'twitter:title', content:  this.article.titre.slice(0, 70) + '...'   });
           this.metaService.updateTag({ name: 'twitter:description', content: this.article.chapeau });
           this.metaService.updateTag({ name: 'twitter:image', content: imageUrl  });
+          this.metaService.updateTag({ name: 'twitter:image:alt', content: this.article.titre  });
           this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
           this.metaService.updateTag({ name: 'twitter:site', content: '@camer.be' });
           this.metaService.updateTag({ name: 'twitter:creator', content: '@camersport' });
-          this.metaService.updateTag({ name: 'twitter:url', content: this.router.url });
+          this.metaService.updateTag({ name: 'twitter:url', content: `${window.location.protocol}//${window.location.host}${this.router.url}` });
           this.metaService.updateTag({ name: 'robots', content: 'index, follow' });
           //this.metaService.updateTag({ name: 'canonical', content: this.router.url });
           this.metaService.updateTag({ name: 'article:modified_time', content: new Date(Date.now()).toISOString().slice(0, 19) + '+00:00' });
@@ -149,8 +162,8 @@ export class CompetitionDetailComponent implements OnInit {
             "image": {
               "@type": "ImageObject",
               "url": article.images.url,
-              "width": 500,
-              "height": 500
+              "width": this.article.images.width,
+              "height": this.article.images.height
             },
             "datePublished": articleDate,
             "dateModified": today,

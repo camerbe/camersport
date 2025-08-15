@@ -15,7 +15,8 @@ export class SocialShareComponent {
     return encodeURIComponent(value);
   }
   get twitterUrl(): string {
-    const cleanedHashtags = this.hashtags.map(tag => tag.substring(1)).join(',');
+    const cleanedHashtags = this.hashtags.map(tag => tag.replace('#','')).join(',');
+    
     const mediaParam = this.media ? `&media=${this.encode(this.media)}` : '';
     return `https://x.com/intent/post?text=${this.encode(this.title)}&url=${this.encode(this.url)}&hashtags=${cleanedHashtags}${mediaParam}`;
   }

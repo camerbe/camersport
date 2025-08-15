@@ -29,12 +29,12 @@ export class CategorieMustReadedComponent implements OnInit {
   }
   ngOnInit(): void {
     if (!this.isBrowser) return;
-    
+
   }
   gotoArticle(slug: string) {
     if (!this.isBrowser) return;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate(['/article', slug]);
+      this.router.navigate(['/', slug]);
     });
   }
 }

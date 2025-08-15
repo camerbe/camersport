@@ -14,8 +14,9 @@ export class HashtagExtractorService {
     const matches = text.match(hashtagRegex);
     const result = matches ? matches.map(tag => tag.trim()) : [];
     const resultString: string = result.join(",");
-    return resultString.trimEnd().slice(0, -1);
+    return resultString;
   }
+
   removeHashtags(text: string): string {
     return text.replace(/#\S+/g, '').trim();
   }

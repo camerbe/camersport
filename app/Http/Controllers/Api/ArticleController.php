@@ -185,6 +185,7 @@ class ArticleController extends Controller
      */
 
     public function getArticleBySlug($slug){
+        //dd($slug);
         $article=$this->articleService->getArticleBySlug($slug);
 
         if($article){

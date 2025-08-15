@@ -31,4 +31,10 @@ class RssController extends Controller
         return response($rss, 200)->header('Content-Type', 'application/xml');
 
     }
+    public function sitemapImage(){
+        $items=ArticleResource::collection($this->articleService->publicIndex()->take(50));
+        $rss = View::make('rss.feed-image', compact('items'));
+        return response($rss, 20)->header('Content-Type', 'application/xml');
+
+    }
 }

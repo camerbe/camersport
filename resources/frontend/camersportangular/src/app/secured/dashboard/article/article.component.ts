@@ -198,7 +198,7 @@ export class ArticleComponent implements OnInit,AfterViewInit {
         return;
       }
     if(this.isAddMode){
-
+      this.frmArticle.patchValue({date_parution: this.datePipe.transform(this.frmArticle.value.date_parution,'yyyy-MM-dd HH:mm:ss')});
       //console.log(this.frmArticle.value);
       this.articleService.create(this.frmArticle.value)
       .subscribe({
@@ -207,7 +207,7 @@ export class ArticleComponent implements OnInit,AfterViewInit {
       });
     }
     else{
-
+      this.frmArticle.patchValue({date_parution: this.datePipe.transform(this.frmArticle.value.date_parution,'yyyy-MM-dd HH:mm:ss')});
       this.articleService.patch(this.id,this.frmArticle.value)
       .subscribe({
         next:()=>this.router.navigate(['/secured/dashboard/article/list'])
@@ -293,10 +293,11 @@ export class ArticleComponent implements OnInit,AfterViewInit {
                 const hashtags=this.hashtagExtractorService.extractHashtags(resData.motclef);
                 const motscles=this.hashtagExtractorService.removeHashtags(resData.motclef);
                 //console.log(`motscles: ${motscles}`);
-                resData.date_parution=new Date(this.datePipe.transform(resData.date_parution,'yyyy-MM-ddTHH:mm:ss') || '');
+                resData.date_parution=new Date(this.datePipe.transform(resData.date_parution,'yyyy-MM-dd HH:mm:ss') || '');
                 resData.motclef=motscles.substring(0,motscles.length-1).replace(/, /g,',');
                 this.frmArticle.patchValue(
                   {
+
                     competition_id:resData.competition_id,
                     categorie_id:resData.categorie.id,
                     hashtag:hashtags.trim(),

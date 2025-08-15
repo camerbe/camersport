@@ -59,6 +59,7 @@ export class LionsIndomptablesComponent implements OnInit {
     //this.articleItemService.updateState(this.route.snapshot.data['articleItems']);
     if(!this.isBrowser) return;
     //if (isPlatformBrowser(this.platformId)){
+    //console.log(this.articles);
       if( this.articles.length === 0 || this.articles === undefined || this.articles === null) {
         this.updatePagedArticles();
         this.articleItemService.state$.subscribe({

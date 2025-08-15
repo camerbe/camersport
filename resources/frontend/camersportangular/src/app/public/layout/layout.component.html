@@ -6,16 +6,16 @@
     <!-- Carousel -->
     <!-- Ad Banner -->
     <!-- <p-card> -->
-      <div style="margin-top: 4rem;display: flex; justify-content: center; align-items: center;">
+      <!-- <div style="margin-top: 4rem;display: flex; justify-content: center; align-items: center;"> -->
         <app-ads
           [adClient]="'ca-pub-8638642715460968'"
           [adFormat]="'auto'"
           [adSlot]="'6927429462'"
           fullWidthResponsive="true"
           [adStyle]="{ display: 'block' }"
-
+          styleClass="margin-top: 4rem;display: flex; justify-content: center; align-items: center;"
       />
-      </div>  
+      <!-- </div> -->
     <!-- </p-card> -->
 
     <!-- News Grid -->
@@ -24,19 +24,19 @@
     </div>
 
     <!-- Footer Ad -->
-     <p-card class="my-3">
-        <app-ads
-        [adClient]="'ca-pub-8638642715460968'"
-        [adFormat]="'auto'"
-        [adSlot]="'6927429462'"
-        fullWidthResponsive="true"
-        styleClass="bg-gray-500 mt-3 border-round mb-4 text-center"
-        [adStyle]="{ display: 'block' }"
+     <!-- <p-card class="my-3"> -->
+    <app-ads
+      [adClient]="'ca-pub-8638642715460968'"
+      [adFormat]="'auto'"
+      [adSlot]="'6927429462'"
+      fullWidthResponsive="true"
+      styleClass="my-3 bg-gray-500 mt-3 border-round mb-4 text-center"
+      [adStyle]="{ display: 'block' }"
 
-      />
+    />
       <!-- <app-taboola />-->
 
-     </p-card>
+     <!-- </p-card> -->
 
   </div>
 

@@ -2,7 +2,7 @@ import { routes } from './../../app-routing.module';
 import { ArticleDetail } from './../../core/models/article-detail';
 import { JsonLdService } from './../../services/json-ld.service';
 import { ArticleService } from './../../services/article.service';
-import { afterNextRender, Component, Inject, inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
+import { afterNextRender, AfterViewInit, ChangeDetectorRef, Component, Inject, inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
 
 
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,7 +18,7 @@ import { PaginatorState } from 'primeng/paginator';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit,AfterViewInit {
 
   //@Input() news:ArticleDetail[]=[];
   articles:ArticleDetail[]=[];
@@ -34,6 +34,7 @@ export class HomeComponent implements OnInit {
   currentPage = 0;
   pagedArticles: ArticleDetail[] = [];
   isBrowser!: boolean;
+  labelCompetition: string= 'actualité sportive camerounaise';
 
 
   /**
@@ -48,14 +49,19 @@ export class HomeComponent implements OnInit {
     private metaService: Meta,
     private titleService: Title,
     private canonicalService: CanonicalService,
-    private articleItemsService: ArticleItemsService
+    private articleItemsService: ArticleItemsService,
+    private cdr: ChangeDetectorRef
   ) {
       this.isBrowser = isPlatformBrowser(this.platformId);
       afterNextRender(()=>{
         this.randomNumber = Math.floor(Math.random() * 1000001) / 1000000;
         //console.log('Route data:', this.route.snapshot.data['articleItems']);
         this.articleItemsService.updateState(this.route.snapshot.data['articleItems']);
+
       })
+  }
+  ngAfterViewInit(): void {
+    this.cdr.detectChanges();
   }
 
 
@@ -69,7 +75,7 @@ export class HomeComponent implements OnInit {
             //console.log(data);
             if(!data || data.length === 0) return
             this.articles=data;
-            this.news=data.slice(0, 25).filter((item:ArticleDetail) => item.pays_code === "CMR");
+            this.news=data.slice(0, 50).filter((item:ArticleDetail) => item.pays_code === "CMR");
             this.otherNews=data.slice(0, 25).filter((item:ArticleDetail) => item.pays_code !== "CMR");
             //console.log(this.otherNews);
             this.slicedArticles=data.slice(0, 5);
@@ -91,18 +97,20 @@ export class HomeComponent implements OnInit {
           this.metaService.updateTag({ name: 'og:title', content: this.article.titre });
           this.metaService.updateTag({ name: 'og:description', content: this.article.chapeau });
           this.metaService.updateTag({ name: 'og:image', content: this.article.images.url });
-          this.metaService.updateTag({ name: 'og:url', content: this.router.url });
+          this.metaService.updateTag({ name: 'og:image:alt', content: this.article.titre });
+          this.metaService.updateTag({ name: 'og:url', content: `${window.location.protocol}//${window.location.host}${this.router.url}` });
           this.metaService.updateTag({ name: 'og:type', content: 'article' });
           this.metaService.updateTag({ name: 'og:locale', content: 'fr_FR' });
           this.metaService.updateTag({ name: 'og:locale:alternate', content: 'en-us' });
           this.metaService.updateTag({ name: 'og:site_name', content: 'Camer-sport.com' });
-          this.metaService.updateTag({ name: 'twitter:title', content: this.article.titre });
+          this.metaService.updateTag({ name: 'twitter:title', content: this.article.titre.slice(0, 70) + '...' });
           this.metaService.updateTag({ name: 'twitter:description', content: this.article.chapeau });
           this.metaService.updateTag({ name: 'twitter:image', content: this.article.images.url });
+          this.metaService.updateTag({ name: 'twitter:image:alt', content: this.article.titre });
           this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
           this.metaService.updateTag({ name: 'twitter:site', content: '@camer.be' });
           this.metaService.updateTag({ name: 'twitter:creator', content: '@camersport' });
-          this.metaService.updateTag({ name: 'twitter:url', content: this.router.url });
+          this.metaService.updateTag({ name: 'twitter:url', content: `${window.location.protocol}//${window.location.host}${this.router.url}` });
           this.metaService.updateTag({ name: 'robots', content: 'index, follow' });
           //this.metaService.updateTag({ name: 'canonical', content: this.router.url });
           this.metaService.updateTag({ name: 'article:modified_time', content: new Date(Date.now()).toISOString().slice(0, 19) + '+00:00' });
@@ -144,8 +152,8 @@ export class HomeComponent implements OnInit {
         "image": {
           "@type": "ImageObject",
           "url": article.images.url,
-          "width": 500,
-          "height": 500
+          "width": this.article.images.width,
+          "height": this.article.images.height
         },
         "datePublished": articleDate,
         "dateModified": today,
@@ -175,7 +183,7 @@ export class HomeComponent implements OnInit {
 
   onPageChange($event: PaginatorState) {
     this.currentPage = ($event.page ?? 0) | 0; // Ensure currentPage is always a number
-    this.articlesPerPage = $event.rows || 10; // Default to 10 if rows is undefined
+    this.articlesPerPage = $event.rows || 5; // Default to 10 if rows is undefined
     this.updatePagedArticles();
   }
 
