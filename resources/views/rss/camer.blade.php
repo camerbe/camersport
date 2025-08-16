@@ -8,7 +8,7 @@
         <language>fr-FR</language>
         <lastBuildDate>{{ now()->toRssString() }}</lastBuildDate>
         <atom:link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
-        <atom:link href="{{ url('/') }}/rss" rel="self" type="application/rss+xml" />
+        <atom:link href="{{ url('/') }}/rss/camer" rel="self" type="application/rss+xml" />
 
         @foreach($items as $item)
             @php
@@ -19,7 +19,7 @@
             @endphp
             <item>
                 <title><![CDATA[{{ $titre }}]]></title>
-                <link>{{ url(env('FRONTEND_URL').'/' . $item->slug) }}</link>
+                <link>{{ url('/' . $item->slug) }}</link>
                 <description><![CDATA[
                     <p>{!! $item->chapeau !!}</p>
                     @if($item->image)
@@ -27,7 +27,7 @@
                     @endif
                     ]]>
                 </description>
-                <guid isPermaLink="true">{{ url('api/articles/slug/' . $item->slug) }}</guid>
+                <guid isPermaLink="true">{{ url('/' . $item->slug) }}</guid>
                 <pubDate>{{ $item->created_at->toRssString() }}</pubDate>
                 @if($item->auteur)
                     <author>{{'camer.be@gmail.com' }} {{'('.$item->auteur.')'}}</author>
@@ -35,7 +35,7 @@
                 @if($item->categorie)
                     <category>{{ $item->categorie->categorie }}</category>
                 @endif
-                @if($image)
+                @if($item->image)
                     <enclosure url="{{ $media->original_url}}" type="{{$media->mime_type}}" length="{{$media->size}}" />
                     <media:thumbnail url="{{ $media->original_url }}" />
                 @endif

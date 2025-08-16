@@ -31,10 +31,43 @@ class RssController extends Controller
         return response($rss, 200)->header('Content-Type', 'application/xml');
 
     }
-    public function sitemapImage(){
-        $items=ArticleResource::collection($this->articleService->publicIndex()->take(50));
-        $rss = View::make('rss.feed-image', compact('items'));
-        return response($rss, 20)->header('Content-Type', 'application/xml');
+    public function sitemapInternational(){
+        $items=ArticleResource::collection(
+            $this->articleService->publicIndex()
+                ->where('pays_code','<>','CMR')
+                ->take(50)
+        );
+        $rss = View::make('rss.international', compact('items'));
+        return response($rss, 200)->header('Content-Type', 'application/xml');
+
+    }
+    public function sitemapCamer(){
+        $items=ArticleResource::collection(
+            $this->articleService->publicIndex()
+                ->where('pays_code','CMR')
+                ->take(50)
+        );
+        $rss = View::make('rss.camer', compact('items'));
+        return response($rss, 200)->header('Content-Type', 'application/xml');
+
+    }
+    public function sitemapLion(){
+        $items=ArticleResource::collection(
+            $this->articleService->publicIndex()
+                ->where('categorie.categorie','Lions Indomptables')
+                ->take(50)
+        );
+        $rss = View::make('rss.lion', compact('items'));
+        return response($rss, 200)->header('Content-Type', 'application/xml');
+
+    }
+    public function sitemapActualite(){
+        $items=ArticleResource::collection(
+            $this->articleService->publicIndex()
+                ->take(100)
+        );
+        $rss = View::make('rss.actualite', compact('items'));
+        return response($rss, 200)->header('Content-Type', 'application/xml');
 
     }
 }

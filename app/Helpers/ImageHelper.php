@@ -41,7 +41,12 @@ class ImageHelper
         return $title;
     }
 
-
+    public static function parseImageUrl(string $string): string
+    {
+        return str_starts_with($string, 'http')
+            ? $string
+            : 'https://camer-sport.com' . $string;
+    }
 
 
 }
